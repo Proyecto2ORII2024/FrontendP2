@@ -71,7 +71,11 @@ npm run dev
 ```
 **PARA CREAR BRANCH**
 ```bash
-git checkout -b nombre_branch
+git branch -M nombre_branch
+```
+**PARA CAMBIAR DE BRANCH**
+```bash
+git checkout nombre_branch
 ```
 **PARA SUBIR**
 ```bash
