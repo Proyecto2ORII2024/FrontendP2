@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import MainButton from '../buttons/MainButton';
 
 function FloatingContainer({open, setOpen, children}){
     return(
@@ -7,9 +7,7 @@ function FloatingContainer({open, setOpen, children}){
           <div className={`bg-white shadow-md mt-5 border border-primary-dark p-5 rounded-[20px] mx-auto w-4/5 md:w-2/3 transition-transform duration-300 transform overflow-auto ${open ? 'scale-100 translate-y-0' : 'scale-95 -translate-y-10'}`}>
             {children}
           </div>
-          <button type="button" className="flex items-center my-3 gap-1 p-1.5 mx-auto text-white font-medium bg-primary-dark hover:bg-primary-light duration-150 rounded-2xl" onClick={() => setOpen(false)}>
-            Entendido
-          </button>
+          <MainButton text={'Entendido'} bgColor={'primary-dark'} hoverBg={'primary-light'} textColor={'white'} onClick={() => setOpen(false)} className={'my-3'} type={'button'}/>
         </div>
     );
 }
