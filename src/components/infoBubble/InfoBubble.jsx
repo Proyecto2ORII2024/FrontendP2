@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import FloatingContainer from '../floatingContainer/FloatingContainer';
 import PropTypes from 'prop-types';
 
-const InfoBubble = ({ info }) => {
+function InfoBubble ({ info }) {
     const [isHovered, setIsHovered] = useState(true);
+    const [isFloating, setIsFloating] = useState(false);
 
     return(
         <div className='relative inline-block items-center group'>
@@ -28,13 +30,15 @@ const InfoBubble = ({ info }) => {
                 {info.longInfo && (
                     <article className='flex flex-col items-center'>
                         <p className='text-xs my-2'>Da clic en el botón para ver más información</p>
-                        <button className='bg-primary-dark px-3 py-1 rounded-full text-white text-sm mt-1'>
+                        <button className='bg-primary-dark px-3 py-1 rounded-full text-white text-sm mt-1' onClick={() => setIsFloating(true)}>
                             Ver más
                         </button>
                     </article>
-                    
                 )}
             </div>
+            <FloatingContainer open={isFloating} setOpen={setIsFloating}>
+                <p>Hola</p>
+            </FloatingContainer>
         </div>
     )
 }

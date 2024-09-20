@@ -7,7 +7,7 @@ function FormPage(){
             shortInfo: "Puede verificar si existe convenio, en el siguiente enlace:  http://www.unicauca.edu.co/orii/es/convenios",
         },
         uniOgDt:{
-            title: "¿Existe convenio con la universidad de origen o destino?",
+            title: "Sentido",
             longInfo: "Puede verificar si existe convenio, en el siguiente enlace:  http://www.unicauca.edu.co/orii/es/convenios",
         }
     }
