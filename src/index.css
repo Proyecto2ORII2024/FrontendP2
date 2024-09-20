@@ -5,5 +5,6 @@
 @tailwind utilities;  
 
 *{
-    font-family:  'Titillium Web','Open Sans';
+    font-family:  'Titillium Web','Open Sans', system-ui;
+
 }
