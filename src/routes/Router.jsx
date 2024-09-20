@@ -4,7 +4,7 @@ import Login from "../pages/loginPage/Login";
 import MainAdmin from "../pages/mainAdminPage/MainAdmin";
 import MainUser from "../pages/mainUserPage/MainUser";
 import StatisticsPage from "../pages/statisticsPage/StatisticsPage";
-import FormPage from "../pages/formPage/formPage";
+import FormPage from "../pages/formPage/FormPage";
 import ConvenioAdminPage from "../pages/convenioAdminPage/ConvenioAdminPage";
 import CreateConvenioPage from "../pages/createConvenioPage/CreateConvenioPage";
 
