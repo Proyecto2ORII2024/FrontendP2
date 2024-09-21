@@ -36,8 +36,22 @@ function InfoBubble ({ info }) {
                     </article>
                 )}
             </div>
-            <FloatingContainer open={isFloating} setOpen={setIsFloating}>
-                <p>Hola</p>
+            <FloatingContainer open={isFloating} setOpen={setIsFloating} bttType={1}>
+                <h1 className='text-center text-2xl font-bold'>{info.title}</h1>
+                {info.longInfo.text.map((text, i) => (
+                    <p key={i} className='text-sm'>
+                        {text}
+                    </p>
+                ))}
+                {info.longInfo.list && (
+                    <ul className='list-disc list-inside'>
+                        {Object.entries(info.longInfo.list).map(([key, value], index) => (
+                            <li key={index} className='text-sm'>
+                                <span className="font-bold">{key}</span>: {value}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </FloatingContainer>
         </div>
     )

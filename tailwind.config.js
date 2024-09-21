@@ -49,6 +49,30 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.scrollbar-thin': {
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#f1f1f1 transparent' // Set the scrollbar color to transparent
+        },
+        "scrollbar-webkit":{
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track" :{
+            background: "transparent"
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#000",
+            borderRadius: "20px",
+            border: '1px solid white'
+          }
+        }
+      };
+
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    }
+  ],
 }
 
