@@ -36,7 +36,8 @@ function InfoBubble ({ info }) {
                     </article>
                 )}
             </div>
-            <FloatingContainer open={isFloating} setOpen={setIsFloating} bttType={1}>
+            {info.longInfo && (
+                <FloatingContainer open={isFloating} setOpen={setIsFloating} bttType={1}>
                 <h1 className='text-center text-2xl font-bold'>{info.title}</h1>
                 {info.longInfo.text.map((text, i) => (
                     <p key={i} className='text-sm'>
@@ -53,6 +54,7 @@ function InfoBubble ({ info }) {
                     </ul>
                 )}
             </FloatingContainer>
+            )}
         </div>
     )
 }

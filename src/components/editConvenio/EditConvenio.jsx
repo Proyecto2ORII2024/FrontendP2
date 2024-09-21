@@ -38,7 +38,7 @@ function EditConvenio({agreementId, open, setOpen}) {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "pais", shortInfo: "Pais" }} />
+                  <InfoBubble info={{ title: "pais", shortInfo: "Pais", longInfo: "" }} />
                   <p>Pais</p>
                 </div>
                 <input id="country"
@@ -56,7 +56,7 @@ function EditConvenio({agreementId, open, setOpen}) {
               </label>
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo" }} />
+                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo", longInfo: "" }} />
                   <p>Codigo</p>
                 </div>
                 <input id="code"
@@ -75,7 +75,7 @@ function EditConvenio({agreementId, open, setOpen}) {
             <section className="flex">
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Institución", shortInfo: "Institución" }} />
+                  <InfoBubble info={{ title: "Institución", shortInfo: "Institución", longInfo: "" }} />
                   <p>Institución</p>
                 </div>
                 <input id="institution"
@@ -94,7 +94,7 @@ function EditConvenio({agreementId, open, setOpen}) {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio" }} />
+                  <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio", longInfo: "" }} />
                   <p>Fecha de inicio</p>
                 </div>
                 <input id="startDate"
@@ -110,7 +110,7 @@ function EditConvenio({agreementId, open, setOpen}) {
               </label>
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito" }} />
+                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito", longInfo: "" }} />
                   <p>Ambito</p>
                 </div>
                 <select id="scope"
@@ -129,7 +129,7 @@ function EditConvenio({agreementId, open, setOpen}) {
             </section>
             <label htmlFor="description" className="flex flex-col w-full">
             <div  className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción" }} />
+                  <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción", longInfo: "" }} />
                   <p>Descripción</p>
                 </div>
             </label>
