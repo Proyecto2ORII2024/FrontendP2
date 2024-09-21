@@ -87,7 +87,7 @@ function ConvenioAdminPage() {
       setIsSearching(true);
       setSearchAgreement(
         convenios.filter((convenio) =>
-          convenio.codigo.toLowerCase().includes(e.target.value.toLowerCase())
+          convenio.codigo.toLowerCase().includes(e.target.value.toLowerCase()) || convenio.pais.toLowerCase().includes(e.target.value.toLowerCase()) || convenio.institucion.toLowerCase().includes(e.target.value.toLowerCase()) || convenio.descripcion.toLowerCase().includes(e.target.value.toLowerCase())
         )
       );
     }
