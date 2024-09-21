@@ -1,26 +1,34 @@
+import FloatingContainer from "../floatingContainer/FloatingContainer";
 import MainButton from "../../components/buttons/MainButton";
 import InfoBubble from "../../components/infoBubble/InfoBubble";
 import { useForm } from "react-hook-form";
-function CreateConvenioPage() {
+import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+function EditConvenio({agreementId, open, setOpen}) {
+    const [isOpened, setIsOpened] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+    useEffect(() => {
+        console.log(agreementId)
+        setIsOpened(open);
+    }, [open, agreementId]);
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
+    
+      const onSubmit = (data) => {
+        console.log(data);
+      };
 
   return (
-    <>
+    <FloatingContainer open={isOpened} setOpen={() => setOpen(false)}>
       <main>
         <h2 className="w-full mt-5 p-5 text-lg text-center">
-          A continuación podrá crear un convenio, por favor verifique que la
-          información ingresada es correcta e ingrese todos los campos.
+        A continuación edite los campos que considere prudente sin dejar campos vacios.
         </h2>
-
 
         <section className="w-full flex justify-center">
           <form
@@ -33,9 +41,8 @@ function CreateConvenioPage() {
                   <InfoBubble info={{ title: "pais", shortInfo: "Pais", longInfo: "" }} />
                   <p>Pais</p>
                 </div>
-                <input
-                  id="country"
-                  autoComplete="off"
+                <input id="country"
+                autoComplete="off"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
@@ -71,8 +78,7 @@ function CreateConvenioPage() {
                   <InfoBubble info={{ title: "Institución", shortInfo: "Institución", longInfo: "" }} />
                   <p>Institución</p>
                 </div>
-                <input
-                  id="institution"
+                <input id="institution"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
@@ -91,8 +97,7 @@ function CreateConvenioPage() {
                   <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio", longInfo: "" }} />
                   <p>Fecha de inicio</p>
                 </div>
-                <input
-                  id="startDate"
+                <input id="startDate"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="date"
                   {...register("fechaInicio", { required: true })}
@@ -108,8 +113,7 @@ function CreateConvenioPage() {
                   <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito", longInfo: "" }} />
                   <p>Ambito</p>
                 </div>
-                <select
-                  id="scope"
+                <select id="scope"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   {...register("ambito", { required: true })}
                 >
@@ -124,7 +128,7 @@ function CreateConvenioPage() {
               </label>
             </section>
             <label htmlFor="description" className="flex flex-col w-full">
-            <div className="flex gap-2 items-center">
+            <div  className="flex gap-2 items-center">
                   <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción", longInfo: "" }} />
                   <p>Descripción</p>
                 </div>
@@ -144,18 +148,23 @@ function CreateConvenioPage() {
             <section className="flex justify-center">
               <MainButton
                 type="submit"
-                text="Crear Convenio"
+                text="Guardar"
                 bgColor="primary"
                 hoverBg="primary-light"
                 textColor="white"
               />
-
             </section>
           </form>
         </section>
       </main>
-    </>
+    </FloatingContainer>
   );
 }
 
-export default CreateConvenioPage;
+EditConvenio.propTypes = {
+    agreementId: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+};
+
+export default EditConvenio;

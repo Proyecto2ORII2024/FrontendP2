@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import FloatingContainer from '../floatingContainer/FloatingContainer';
 import PropTypes from 'prop-types';
 
-const InfoBubble = ({ info }) => {
-    const [isHovered, setIsHovered] = useState(true);
+function InfoBubble ({ info }) {
+    const [isHovered, setIsHovered] = useState(false);
+    const [isFloating, setIsFloating] = useState(false);
 
     return(
         <div className='relative inline-block items-center group'>
@@ -28,13 +30,31 @@ const InfoBubble = ({ info }) => {
                 {info.longInfo && (
                     <article className='flex flex-col items-center'>
                         <p className='text-xs my-2'>Da clic en el botón para ver más información</p>
-                        <button className='bg-primary-dark px-3 py-1 rounded-full text-white text-sm mt-1'>
+                        <button className='bg-primary-dark px-3 py-1 rounded-full text-white text-sm mt-1' onClick={() => setIsFloating(true)}>
                             Ver más
                         </button>
                     </article>
-                    
                 )}
             </div>
+            {info.longInfo && (
+                <FloatingContainer open={isFloating} setOpen={setIsFloating} bttType={1}>
+                <h1 className='text-center text-2xl font-bold'>{info.title}</h1>
+                {info.longInfo.text.map((text, i) => (
+                    <p key={i} className='text-sm'>
+                        {text}
+                    </p>
+                ))}
+                {info.longInfo.list && (
+                    <ul className='list-disc list-inside'>
+                        {Object.entries(info.longInfo.list).map(([key, value], index) => (
+                            <li key={index} className='text-sm'>
+                                <span className="font-bold">{key}</span>: {value}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </FloatingContainer>
+            )}
         </div>
     )
 }
