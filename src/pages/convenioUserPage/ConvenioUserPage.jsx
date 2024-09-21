@@ -107,7 +107,7 @@ function ConvenioUserPage() {
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-[#928F9A]">
+                    <tr className="bg-grays-dark">
                       <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
@@ -125,7 +125,7 @@ function ConvenioUserPage() {
                     {convenios.map((convenio, index) => (
                       <tr
                         className={`${
-                          index % 2 != 0 ? "md:bg-[#E4E1EC]" : "md:bg-[#FBF8FF]"
+                          index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                         } flex flex-col md:table-row border-b`}
                         key={convenio.codigo}
                       >
@@ -165,7 +165,7 @@ function ConvenioUserPage() {
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-[#928F9A]">
+                    <tr className="bg-grays-dark">
                       <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
@@ -183,7 +183,7 @@ function ConvenioUserPage() {
                     {convenios.map((convenio, index) => (
                       <tr
                         className={`${
-                          index % 2 != 0 ? "md:bg-[#E4E1EC]" : "md:bg-[#FBF8FF]"
+                          index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                         } flex flex-col md:table-row border-b`}
                         key={convenio.codigo}
                       >
@@ -224,7 +224,7 @@ function ConvenioUserPage() {
           <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none  px-5 lg:px-20 ">
             <table className="w-full text-left table-auto border-collapse md:table">
               <thead className="hidden md:table-header-group">
-                <tr className="bg-[#928F9A]">
+                <tr className="bg-grays-dark">
                   <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                   <th className={`${styles.thIn} w-[300px]`}>Institución</th>
                   <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
@@ -238,7 +238,7 @@ function ConvenioUserPage() {
                 {searchAgreement.map((convenio, index) => (
                   <tr
                     className={`${
-                      index % 2 != 0 ? "md:bg-[#E4E1EC]" : "md:bg-[#FBF8FF]"
+                      index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                     } flex flex-col md:table-row border-b`}
                     key={convenio.codigo}
                   >

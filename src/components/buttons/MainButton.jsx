@@ -5,7 +5,7 @@ function MainButton({onClick, bgColor, hoverBg, textColor, text, className, type
         <button
             onClick={onClick}
             type={type || "button"}
-            className={`px-[20px] py-[11px] text-[14px] rounded-full bg-${bgColor} font-semibold text-${textColor} hover:bg-${hoverBg} duration-200 ${className}`}
+            className={`px-[20px] py-[11px] text-[14px] rounded-full bg-${bgColor} font-semibold text-${textColor} hover:bg-${hoverBg} duration-200 ${className || ""}`}
         >
             {text}
         </button>

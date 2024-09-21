@@ -8,6 +8,7 @@ import search from "../../assets/icons/search.svg";
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import EditConvenio from "../../components/editConvenio/EditConvenio.jsx";
+import DeleteConvenio from "../../components/deleteConvenio/DeleteConvenio.jsx";
 
 import styles from "./styles.js";
 
@@ -62,6 +63,7 @@ function ConvenioAdminPage() {
     },
   ]);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [agreementId, setAgreementId] = useState("");
 
   const handleSelect = (e, id) => {
@@ -113,6 +115,7 @@ function ConvenioAdminPage() {
       <main>
 
         <EditConvenio open={open} setOpen={setOpen} agreementId={agreementId}/>
+        <DeleteConvenio open={openDelete} setOpen={setOpenDelete} agreementId={agreementId} />
 
         <h2 className="w-full mt-5 p-5 text-lg text-center">
           A continuación se presenta una lista con todos los convenios
@@ -146,7 +149,7 @@ function ConvenioAdminPage() {
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-[#928F9A]">
+                    <tr className="bg-grays-dark">
                       <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
@@ -168,7 +171,7 @@ function ConvenioAdminPage() {
                     {convenios.map((convenio, index) => (
                       <tr
                         className={`${
-                          index % 2 != 0 ? "md:bg-[#E4E1EC]" : "md:bg-[#FBF8FF]"
+                          index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                         } flex flex-col md:table-row border-b`}
                         key={convenio.codigo}
                       >
@@ -211,7 +214,7 @@ function ConvenioAdminPage() {
                                   alt="editIcom"
                                 />
                               </button>
-                              <button>
+                              <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
@@ -246,7 +249,7 @@ function ConvenioAdminPage() {
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
-                    <tr className="bg-[#928F9A]">
+                    <tr className="bg-grays-dark">
                       <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
@@ -268,7 +271,7 @@ function ConvenioAdminPage() {
                     {convenios.map((convenio, index) => (
                       <tr
                         className={`${
-                          index % 2 != 0 ? "md:bg-[#E4E1EC]" : "md:bg-[#FBF8FF]"
+                          index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                         } flex flex-col md:table-row border-b`}
                         key={convenio.codigo}
                       >
@@ -311,7 +314,7 @@ function ConvenioAdminPage() {
                                   alt="editIcom"
                                 />
                               </button>
-                              <button>
+                              <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
@@ -347,7 +350,7 @@ function ConvenioAdminPage() {
           <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none  px-5 lg:px-20 ">
             <table className="w-full text-left table-auto border-collapse md:table">
               <thead className="hidden md:table-header-group">
-                <tr className="bg-[#928F9A]">
+                <tr className="bg-grays-dark">
                   <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                   <th className={`${styles.thIn} w-[300px]`}>Institución</th>
                   <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
@@ -363,7 +366,7 @@ function ConvenioAdminPage() {
                 {searchAgreement.map((convenio, index) => (
                   <tr
                     className={`${
-                      index % 2 != 0 ? "md:bg-[#E4E1EC]" : "md:bg-[#FBF8FF]"
+                      index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                     } flex flex-col md:table-row border-b`}
                     key={convenio.codigo}
                   >
@@ -400,7 +403,7 @@ function ConvenioAdminPage() {
                               alt="editIcom"
                             />
                           </button>
-                          <button>
+                          <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
                             <img
                               className={styles.buttonAction}
                               src={deleteIcon}
