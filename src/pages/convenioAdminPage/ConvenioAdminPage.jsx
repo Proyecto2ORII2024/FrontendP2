@@ -62,9 +62,11 @@ function ConvenioAdminPage() {
       selected: true,
     },
   ]);
+
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [agreementId, setAgreementId] = useState("");
+
 
   const handleSelect = (e, id) => {
     setConvenios(
@@ -105,6 +107,7 @@ function ConvenioAdminPage() {
             convenio.descripcion
               .toLowerCase()
               .includes(e.target.value.toLowerCase())
+
         )
       );
     }
@@ -214,7 +217,9 @@ function ConvenioAdminPage() {
                                   alt="editIcom"
                                 />
                               </button>
+
                               <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
+
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
@@ -232,7 +237,9 @@ function ConvenioAdminPage() {
                             <input
                               className="h-[25px] w-[25px]"
                               type="checkbox"
+
                               name={convenio.codigo}
+
                               value={convenio.codigo}
                               checked={convenio.selected}
                               onChange={(e) => handleSelect(e, convenio.codigo)}
@@ -249,7 +256,9 @@ function ConvenioAdminPage() {
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
+
                     <tr className="bg-grays-dark">
+
                       <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
@@ -271,7 +280,9 @@ function ConvenioAdminPage() {
                     {convenios.map((convenio, index) => (
                       <tr
                         className={`${
+
                           index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
+
                         } flex flex-col md:table-row border-b`}
                         key={convenio.codigo}
                       >
@@ -286,7 +297,9 @@ function ConvenioAdminPage() {
                           {convenio.institucion}
                         </td>
                         <td className={styles.tdIn}>
+
                           <span className="md:hidden font-bold">Codigo: </span>
+
                           {convenio.codigo}
                         </td>
                         <td className={styles.tdIn}>
@@ -307,14 +320,18 @@ function ConvenioAdminPage() {
                               Acciones:{" "}
                             </span>
                             <div className="flex md:gap-0 justify-around w-[80%]">
+
                             <button onClick={() => {setOpen(true); setAgreementId(convenio.codigo)}}>
+
                                 <img
                                   className={styles.buttonAction}
                                   src={editIcon}
                                   alt="editIcom"
                                 />
                               </button>
+
                               <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
+
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
@@ -333,7 +350,9 @@ function ConvenioAdminPage() {
                               className="h-[25px] w-[25px]"
                               type="checkbox"
                               value={convenio.codigo}
+
                               name={convenio.codigo}
+
                               checked={convenio.selected}
                               onChange={(e) => handleSelect(e, convenio.codigo)}
                             />
@@ -350,7 +369,9 @@ function ConvenioAdminPage() {
           <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none  px-5 lg:px-20 ">
             <table className="w-full text-left table-auto border-collapse md:table">
               <thead className="hidden md:table-header-group">
+
                 <tr className="bg-grays-dark">
+
                   <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                   <th className={`${styles.thIn} w-[300px]`}>Institución</th>
                   <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
@@ -366,7 +387,9 @@ function ConvenioAdminPage() {
                 {searchAgreement.map((convenio, index) => (
                   <tr
                     className={`${
+
                       index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
+
                     } flex flex-col md:table-row border-b`}
                     key={convenio.codigo}
                   >
@@ -396,14 +419,18 @@ function ConvenioAdminPage() {
                       <div className="flex md:justify-center items-center">
                         <span className="md:hidden font-bold">Acciones: </span>
                         <div className="flex md:gap-0 justify-around w-[80%]">
+
                         <button onClick={() => {setOpen(true); setAgreementId(convenio.codigo)}}>
+
                             <img
                               className={styles.buttonAction}
                               src={editIcon}
                               alt="editIcom"
                             />
                           </button>
+
                           <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
+
                             <img
                               className={styles.buttonAction}
                               src={deleteIcon}
@@ -421,7 +448,9 @@ function ConvenioAdminPage() {
                         <input
                           className="h-[25px] w-[25px]"
                           type="checkbox"
+
                               name={convenio.codigo}
+
                           value={convenio.codigo}
                           checked={convenio.selected}
                           onChange={(e) => handleSelect(e, convenio.codigo)}

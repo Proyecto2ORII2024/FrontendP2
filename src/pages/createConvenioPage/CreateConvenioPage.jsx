@@ -1,8 +1,8 @@
 import MainButton from "../../components/buttons/MainButton";
 import InfoBubble from "../../components/infoBubble/InfoBubble";
 import { useForm } from "react-hook-form";
-
 function CreateConvenioPage() {
+
   const {
     register,
     handleSubmit,
@@ -20,6 +20,7 @@ function CreateConvenioPage() {
           A continuación podrá crear un convenio, por favor verifique que la
           información ingresada es correcta e ingrese todos los campos.
         </h2>
+
 
         <section className="w-full flex justify-center">
           <form
@@ -148,6 +149,7 @@ function CreateConvenioPage() {
                 hoverBg="primary-light"
                 textColor="white"
               />
+
             </section>
           </form>
         </section>
