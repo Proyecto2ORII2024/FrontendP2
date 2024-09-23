@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import arrow from "../../assets/icons/arrow.svg";
+import arrow from "../../assets/icons/arrowIcon.svg";
 
 const Accordeon = ({title, children}) =>{
     const [open, setOpen] = useState(false);

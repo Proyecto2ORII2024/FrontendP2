@@ -1,86 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import editIcon from "../../assets/icons/editIcon.svg";
-import search from "../../assets/icons/search.svg";
+import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import EditConvenio from "../../components/editConvenio/EditConvenio.jsx";
 import DeleteConvenio from "../../components/deleteConvenio/DeleteConvenio.jsx";
 
+import { obtainAgreements } from "./agreementMiddleware.js";
+
 import styles from "./styles.js";
 
 function ConvenioAdminPage() {
   const [isSearching, setIsSearching] = useState(false);
+  const [nationalAgreements, setNationalAgreements] = useState([]);
+  const [internationalAgreements, setInternationalAgreements] = useState([]);
+  const [agreements, setAgreements] = useState([]);
   const [searchAgreement, setSearchAgreement] = useState([]);
-  const [convenios, setConvenios] = useState([
-    {
-      pais: "Alemania",
-      institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
-      codigo: "25-32.7 040 2023",
-      fechaInicio: "2023-01-01",
-      descripcion:
-        "Otorgar una subvención no reembolsable para la financiación de proyectos en el programa de financiación viajes de estudio para grupos de estudiantes extranjeros en Alemania, con fondos del Ministerio Federal de Relaciones Exteriores.",
-      selected: true,
-    },
-    {
-      pais: "Alemania",
-      institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
-      codigo: "25-32.8 040 2023",
-      fechaInicio: "2023-01-01",
-      descripcion:
-        "Otorgar una subvención no reembolsable para la financiación de proyectos en el programa de financiación viajes de estudio para grupos de estudiantes extranjeros en Alemania, con fondos del Ministerio Federal de Relaciones Exteriores.",
-      selected: false,
-    },
-    {
-      pais: "Alemania",
-      institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
-      codigo: "25-32.9 040 2023",
-      fechaInicio: "2023-01-01",
-      descripcion:
-        "Otorgar una subvención no reembolsable para la financiación de proyectos en el programa de financiación viajes de estudio para grupos de estudiantes extranjeros en Alemania, con fondos del Ministerio Federal de Relaciones Exteriores.",
-      selected: true,
-    },
-    {
-      pais: "Alemania",
-      institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
-      codigo: "25-32.10 040 2023",
-      fechaInicio: "2023-01-01",
-      descripcion:
-        "Otorgar una subvención no reembolsable para la financiación de proyectos en el programa de financiación viajes de estudio para grupos de estudiantes extranjeros en Alemania, con fondos del Ministerio Federal de Relaciones Exteriores.",
-      selected: false,
-    },
-    {
-      pais: "Alemania",
-      institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
-      codigo: "25-32.11 040 2023",
-      fechaInicio: "2023-01-01",
-      descripcion:
-        "Otorgar una subvención no reembolsable para la financiación de proyectos en el programa de financiación viajes de estudio para grupos de estudiantes extranjeros en Alemania, con fondos del Ministerio Federal de Relaciones Exteriores.",
-      selected: true,
-    },
-  ]);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [agreementId, setAgreementId] = useState("");
 
-  const handleSelect = (e, id) => {
-    setConvenios(
-      convenios.map((convenio) =>
-        convenio.codigo === id
-          ? { ...convenio, selected: e.target.checked }
-          : convenio
-      )
-    );
-    setSearchAgreement(
-      searchAgreement.map((convenio) =>
-        convenio.codigo === id
-          ? { ...convenio, selected: e.target.checked }
-          : convenio
-      )
-    );
+  useEffect(() => {
+    const fetchData = async () => {
+      const agreementsData = await obtainAgreements();
+      setNationalAgreements(agreementsData.NATIONAL);
+      setInternationalAgreements(agreementsData.INTERNATIONAL);
+      setAgreements(agreementsData.ALL);
+    };
+    fetchData();
+  }, []);
+
+  const handleSelect = (e, id, scope) => {
+    if (scope === "NATIONAL") {
+      setNationalAgreements(
+        nationalAgreements.map((convenio) =>
+          convenio.agreementNumber === id
+            ? { ...convenio, status: e.target.checked ? "ACTIVE": "INACTIVE" }
+            : convenio
+        )
+      );
+    } else {
+      setInternationalAgreements(
+        internationalAgreements.map((convenio) =>
+          convenio.agreementNumber === id
+            ? { ...convenio, status: e.target.checked ? "ACTIVE": "INACTIVE" }
+            : convenio
+        )
+      );
+    }
   };
 
   const navigate = useNavigate();
@@ -91,18 +62,18 @@ function ConvenioAdminPage() {
     } else {
       setIsSearching(true);
       setSearchAgreement(
-        convenios.filter(
+        agreements.filter(
           (convenio) =>
-            convenio.codigo
+            convenio.agreementNumber
               .toLowerCase()
               .includes(e.target.value.toLowerCase()) ||
-            convenio.pais
+            convenio.country
               .toLowerCase()
               .includes(e.target.value.toLowerCase()) ||
-            convenio.institucion
+            convenio.institution
               .toLowerCase()
               .includes(e.target.value.toLowerCase()) ||
-            convenio.descripcion
+            convenio.description
               .toLowerCase()
               .includes(e.target.value.toLowerCase())
         )
@@ -150,11 +121,11 @@ function ConvenioAdminPage() {
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-grays-dark">
-                      <th className={`${styles.thIn} w-[150px]`}>Pais</th>
+                      <th className={`${styles.thIn} w-[150px]`}>country</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
                       </th>
-                      <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
+                      <th className={`${styles.thIn} w-[200px]`}>agreementNumber</th>
                       <th className={`${styles.thIn} w-[350px]`}>
                         Descripción
                       </th>
@@ -168,38 +139,38 @@ function ConvenioAdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {convenios.map((convenio, index) => (
+                    {nationalAgreements.map((agreement, index) => (
                       <tr
                         className={`${
                           index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                         } flex flex-col md:table-row border-b`}
-                        key={convenio.codigo}
+                        key={agreement.agreementNumber}
                       >
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Pais: </span>
-                          {convenio.pais}
+                          <span className="md:hidden font-bold">country: </span>
+                          {agreement.country}
                         </td>
                         <td className={styles.tdIn}>
                           <span className="md:hidden font-bold">
                             Instiución:{" "}
                           </span>
-                          {convenio.institucion}
+                          {agreement.institution}
                         </td>
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Cosido: </span>
-                          {convenio.codigo}
+                          <span className="md:hidden font-bold">Codigo: </span>
+                          {agreement.agreementNumber}
                         </td>
                         <td className={styles.tdIn}>
                           <span className="md:hidden font-bold">
                             Descripción:{" "}
                           </span>
-                          {convenio.descripcion}
+                          {agreement.description}
                         </td>
                         <td className={styles.tdIn}>
                           <span className="md:hidden font-bold">
                             Fecha de inicio:{" "}
                           </span>
-                          {convenio.fechaInicio}
+                          {agreement.startDate}
                         </td>
                         <td className={styles.tdIn}>
                           <div className="flex md:justify-center items-center">
@@ -207,14 +178,14 @@ function ConvenioAdminPage() {
                               Acciones:
                             </span>
                             <div className="flex md:gap-0 justify-around w-[80%]">
-                              <button onClick={() => {setOpen(true); setAgreementId(convenio.codigo)}}>
+                              <button onClick={() => {setOpen(true); setAgreementId(agreement.agreementNumber)}}>
                                 <img
                                   className={styles.buttonAction}
                                   src={editIcon}
                                   alt="editIcom"
                                 />
                               </button>
-                              <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
+                              <button onClick={() => {setOpenDelete(true); setAgreementId(agreement.agreementNumber)}}>
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
@@ -232,10 +203,10 @@ function ConvenioAdminPage() {
                             <input
                               className="h-[25px] w-[25px]"
                               type="checkbox"
-                              name={convenio.codigo}
-                              value={convenio.codigo}
-                              checked={convenio.selected}
-                              onChange={(e) => handleSelect(e, convenio.codigo)}
+                              name={agreement.agreementNumber}
+                              value={agreement.agreementNumber}
+                              checked={agreement.status}
+                              onChange={(e) => handleSelect(e, agreement.agreementNumber)}
                             />
                           </div>
                         </td>
@@ -250,11 +221,11 @@ function ConvenioAdminPage() {
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-grays-dark">
-                      <th className={`${styles.thIn} w-[150px]`}>Pais</th>
+                      <th className={`${styles.thIn} w-[150px]`}>country</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
                       </th>
-                      <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
+                      <th className={`${styles.thIn} w-[200px]`}>agreementNumber</th>
                       <th className={`${styles.thIn} w-[350px]`}>
                         Descripción
                       </th>
@@ -268,38 +239,38 @@ function ConvenioAdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {convenios.map((convenio, index) => (
+                    {internationalAgreements.map((agreement, index) => (
                       <tr
                         className={`${
                           index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                         } flex flex-col md:table-row border-b`}
-                        key={convenio.codigo}
+                        key={agreement.agreementNumber}
                       >
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Pais: </span>
-                          {convenio.pais}
+                          <span className="md:hidden font-bold">country: </span>
+                          {agreement.country}
                         </td>
                         <td className={styles.tdIn}>
                           <span className="md:hidden font-bold">
                             Instiución:{" "}
                           </span>
-                          {convenio.institucion}
+                          {agreement.institution}
                         </td>
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Codigo: </span>
-                          {convenio.codigo}
+                          <span className="md:hidden font-bold">agreementNumber: </span>
+                          {agreement.agreementNumber}
                         </td>
                         <td className={styles.tdIn}>
                           <span className="md:hidden font-bold">
                             Descripción:{" "}
                           </span>
-                          {convenio.descripcion}
+                          {agreement.description}
                         </td>
                         <td className={styles.tdIn}>
                           <span className="md:hidden font-bold">
                             Fecha de inicio:{" "}
                           </span>
-                          {convenio.fechaInicio}
+                          {agreement.startDate}
                         </td>
                         <td className={styles.tdIn}>
                           <div className="flex md:justify-center items-center">
@@ -307,14 +278,14 @@ function ConvenioAdminPage() {
                               Acciones:{" "}
                             </span>
                             <div className="flex md:gap-0 justify-around w-[80%]">
-                            <button onClick={() => {setOpen(true); setAgreementId(convenio.codigo)}}>
+                            <button onClick={() => {setOpen(true); setAgreementId(agreement.agreementNumber)}}>
                                 <img
                                   className={styles.buttonAction}
                                   src={editIcon}
                                   alt="editIcom"
                                 />
                               </button>
-                              <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
+                              <button onClick={() => {setOpenDelete(true); setAgreementId(agreement.agreementNumber)}}>
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
@@ -332,10 +303,10 @@ function ConvenioAdminPage() {
                             <input
                               className="h-[25px] w-[25px]"
                               type="checkbox"
-                              value={convenio.codigo}
-                              name={convenio.codigo}
-                              checked={convenio.selected}
-                              onChange={(e) => handleSelect(e, convenio.codigo)}
+                              value={agreement.agreementNumber}
+                              name={agreement.agreementNumber}
+                              checked={agreement.status}
+                              onChange={(e) => handleSelect(e, agreement.agreementNumber)}
                             />
                           </div>
                         </td>
@@ -351,9 +322,9 @@ function ConvenioAdminPage() {
             <table className="w-full text-left table-auto border-collapse md:table">
               <thead className="hidden md:table-header-group">
                 <tr className="bg-grays-dark">
-                  <th className={`${styles.thIn} w-[150px]`}>Pais</th>
+                  <th className={`${styles.thIn} w-[150px]`}>country</th>
                   <th className={`${styles.thIn} w-[300px]`}>Institución</th>
-                  <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
+                  <th className={`${styles.thIn} w-[200px]`}>agreementNumber</th>
                   <th className={`${styles.thIn} w-[350px]`}>Descripción</th>
                   <th className={`${styles.thIn} w-[200px]`}>
                     Fecha de inicio
@@ -363,47 +334,47 @@ function ConvenioAdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {searchAgreement.map((convenio, index) => (
+                {searchAgreement.map((agreement, index) => (
                   <tr
                     className={`${
                       index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
                     } flex flex-col md:table-row border-b`}
-                    key={convenio.codigo}
+                    key={agreement.agreementNumber}
                   >
                     <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">Pais: </span>
-                      {convenio.pais}
+                      <span className="md:hidden font-bold">country: </span>
+                      {agreement.country}
                     </td>
                     <td className={styles.tdIn}>
                       <span className="md:hidden font-bold">Instiución: </span>
-                      {convenio.institucion}
+                      {agreement.institution}
                     </td>
                     <td className={styles.tdIn}>
                       <span className="md:hidden font-bold">Cosido: </span>
-                      {convenio.codigo}
+                      {agreement.agreementNumber}
                     </td>
                     <td className={styles.tdIn}>
                       <span className="md:hidden font-bold">Descripción: </span>
-                      {convenio.descripcion}
+                      {agreement.description}
                     </td>
                     <td className={styles.tdIn}>
                       <span className="md:hidden font-bold">
                         Fecha de inicio:{" "}
                       </span>
-                      {convenio.fechaInicio}
+                      {agreement.startDate}
                     </td>
                     <td className={styles.tdIn}>
                       <div className="flex md:justify-center items-center">
                         <span className="md:hidden font-bold">Acciones: </span>
                         <div className="flex md:gap-0 justify-around w-[80%]">
-                        <button onClick={() => {setOpen(true); setAgreementId(convenio.codigo)}}>
+                        <button onClick={() => {setOpen(true); setAgreementId(agreement.agreementNumber)}}>
                             <img
                               className={styles.buttonAction}
                               src={editIcon}
                               alt="editIcom"
                             />
                           </button>
-                          <button onClick={() => {setOpenDelete(true); setAgreementId(convenio.codigo)}}>
+                          <button onClick={() => {setOpenDelete(true); setAgreementId(agreement.agreementNumber)}}>
                             <img
                               className={styles.buttonAction}
                               src={deleteIcon}
@@ -421,10 +392,10 @@ function ConvenioAdminPage() {
                         <input
                           className="h-[25px] w-[25px]"
                           type="checkbox"
-                              name={convenio.codigo}
-                          value={convenio.codigo}
-                          checked={convenio.selected}
-                          onChange={(e) => handleSelect(e, convenio.codigo)}
+                              name={agreement.agreementNumber}
+                          value={agreement.agreementNumber}
+                          checked={agreement.status}
+                          onChange={(e) => handleSelect(e, agreement.agreementNumber)}
                         />
                       </div>
                     </td>
