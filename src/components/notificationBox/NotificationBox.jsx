@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { colors, styles } from './BoxStyles';
+import { colors, styles } from './BoxStyles.js';
 
 const NotificationBox = ({type, title, children, open, setOpen}) => {
 
-    const color = colors[type];
+    const color = colors[type || 'info'];
+    console.log(color, type)
 
     return(
         <article className={`${color.bgLight} ${styles.mainContainer} ${open === true ? 'translate-x-0 ml-6': '-translate-x-full'}`}>

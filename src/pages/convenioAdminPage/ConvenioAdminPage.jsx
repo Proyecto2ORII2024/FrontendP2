@@ -34,26 +34,6 @@ function ConvenioAdminPage() {
     fetchData();
   }, []);
 
-  const handleSelect = (e, id, scope) => {
-    if (scope === "NATIONAL") {
-      setNationalAgreements(
-        nationalAgreements.map((convenio) =>
-          convenio.agreementNumber === id
-            ? { ...convenio, status: e.target.checked ? "ACTIVE": "INACTIVE" }
-            : convenio
-        )
-      );
-    } else {
-      setInternationalAgreements(
-        internationalAgreements.map((convenio) =>
-          convenio.agreementNumber === id
-            ? { ...convenio, status: e.target.checked ? "ACTIVE": "INACTIVE" }
-            : convenio
-        )
-      );
-    }
-  };
-
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -76,6 +56,7 @@ function ConvenioAdminPage() {
             convenio.description
               .toLowerCase()
               .includes(e.target.value.toLowerCase())
+
         )
       );
     }
@@ -121,21 +102,18 @@ function ConvenioAdminPage() {
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
                     <tr className="bg-grays-dark">
-                      <th className={`${styles.thIn} w-[150px]`}>country</th>
+                      <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
                       </th>
-                      <th className={`${styles.thIn} w-[200px]`}>agreementNumber</th>
+                      <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
                       <th className={`${styles.thIn} w-[350px]`}>
                         Descripción
                       </th>
                       <th className={`${styles.thIn} w-[200px]`}>
                         Fecha de inicio
                       </th>
-                      <th className={`${styles.thIn} w-[250px]`}>Acciones</th>
-                      <th className={`${styles.thIn} w-[250px]`}>
-                        Seleccionar
-                      </th>
+                      <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -147,7 +125,7 @@ function ConvenioAdminPage() {
                         key={agreement.agreementNumber}
                       >
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">country: </span>
+                          <span className="md:hidden font-bold">Pais: </span>
                           {agreement.country}
                         </td>
                         <td className={styles.tdIn}>
@@ -172,7 +150,7 @@ function ConvenioAdminPage() {
                           </span>
                           {agreement.startDate}
                         </td>
-                        <td className={styles.tdIn}>
+                        <td className={styles.tdOut}>
                           <div className="flex md:justify-center items-center">
                             <span className="md:hidden font-bold">
                               Acciones:
@@ -195,21 +173,6 @@ function ConvenioAdminPage() {
                             </div>
                           </div>
                         </td>
-                        <td className={styles.tdOut}>
-                          <div className="flex md:justify-center gap-2">
-                            <span className="md:hidden font-bold">
-                              Seleccionar:{" "}
-                            </span>
-                            <input
-                              className="h-[25px] w-[25px]"
-                              type="checkbox"
-                              name={agreement.agreementNumber}
-                              value={agreement.agreementNumber}
-                              checked={agreement.status}
-                              onChange={(e) => handleSelect(e, agreement.agreementNumber)}
-                            />
-                          </div>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -220,34 +183,34 @@ function ConvenioAdminPage() {
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
                 <table className="w-full text-left table-auto border-collapse md:table">
                   <thead className="hidden md:table-header-group">
+
                     <tr className="bg-grays-dark">
-                      <th className={`${styles.thIn} w-[150px]`}>country</th>
+                      <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                       <th className={`${styles.thIn} w-[300px]`}>
                         Institución
                       </th>
-                      <th className={`${styles.thIn} w-[200px]`}>agreementNumber</th>
+                      <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
                       <th className={`${styles.thIn} w-[350px]`}>
                         Descripción
                       </th>
                       <th className={`${styles.thIn} w-[200px]`}>
                         Fecha de inicio
                       </th>
-                      <th className={`${styles.thIn} w-[250px]`}>Acciones</th>
-                      <th className={`${styles.thIn} w-[250px]`}>
-                        Seleccionar
-                      </th>
+                      <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     {internationalAgreements.map((agreement, index) => (
                       <tr
                         className={`${
+
                           index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
+
                         } flex flex-col md:table-row border-b`}
                         key={agreement.agreementNumber}
                       >
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">country: </span>
+                          <span className="md:hidden font-bold">Pais: </span>
                           {agreement.country}
                         </td>
                         <td className={styles.tdIn}>
@@ -257,7 +220,7 @@ function ConvenioAdminPage() {
                           {agreement.institution}
                         </td>
                         <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">agreementNumber: </span>
+                          <span className="md:hidden font-bold">Codigo: </span>
                           {agreement.agreementNumber}
                         </td>
                         <td className={styles.tdIn}>
@@ -272,7 +235,7 @@ function ConvenioAdminPage() {
                           </span>
                           {agreement.startDate}
                         </td>
-                        <td className={styles.tdIn}>
+                        <td className={styles.tdOut}>
                           <div className="flex md:justify-center items-center">
                             <span className="md:hidden font-bold">
                               Acciones:{" "}
@@ -295,21 +258,6 @@ function ConvenioAdminPage() {
                             </div>
                           </div>
                         </td>
-                        <td className={styles.tdOut}>
-                          <div className="flex md:justify-center gap-2">
-                            <span className="md:hidden font-bold">
-                              Seleccionar:{" "}
-                            </span>
-                            <input
-                              className="h-[25px] w-[25px]"
-                              type="checkbox"
-                              value={agreement.agreementNumber}
-                              name={agreement.agreementNumber}
-                              checked={agreement.status}
-                              onChange={(e) => handleSelect(e, agreement.agreementNumber)}
-                            />
-                          </div>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -321,28 +269,30 @@ function ConvenioAdminPage() {
           <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none  px-5 lg:px-20 ">
             <table className="w-full text-left table-auto border-collapse md:table">
               <thead className="hidden md:table-header-group">
+
                 <tr className="bg-grays-dark">
-                  <th className={`${styles.thIn} w-[150px]`}>country</th>
+                  <th className={`${styles.thIn} w-[150px]`}>Pais</th>
                   <th className={`${styles.thIn} w-[300px]`}>Institución</th>
-                  <th className={`${styles.thIn} w-[200px]`}>agreementNumber</th>
+                  <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
                   <th className={`${styles.thIn} w-[350px]`}>Descripción</th>
                   <th className={`${styles.thIn} w-[200px]`}>
                     Fecha de inicio
                   </th>
-                  <th className={`${styles.thIn} w-[250px]`}>Acciones</th>
-                  <th className={`${styles.thIn} w-[250px]`}>Seleccionar</th>
+                  <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {searchAgreement.map((agreement, index) => (
                   <tr
                     className={`${
+
                       index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
+
                     } flex flex-col md:table-row border-b`}
                     key={agreement.agreementNumber}
                   >
                     <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">country: </span>
+                      <span className="md:hidden font-bold">Pais: </span>
                       {agreement.country}
                     </td>
                     <td className={styles.tdIn}>
@@ -350,7 +300,7 @@ function ConvenioAdminPage() {
                       {agreement.institution}
                     </td>
                     <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">Cosido: </span>
+                      <span className="md:hidden font-bold">Codigo: </span>
                       {agreement.agreementNumber}
                     </td>
                     <td className={styles.tdIn}>
@@ -363,7 +313,7 @@ function ConvenioAdminPage() {
                       </span>
                       {agreement.startDate}
                     </td>
-                    <td className={styles.tdIn}>
+                    <td className={styles.tdOut}>
                       <div className="flex md:justify-center items-center">
                         <span className="md:hidden font-bold">Acciones: </span>
                         <div className="flex md:gap-0 justify-around w-[80%]">
@@ -382,21 +332,6 @@ function ConvenioAdminPage() {
                             />
                           </button>
                         </div>
-                      </div>
-                    </td>
-                    <td className={styles.tdOut}>
-                      <div className="flex md:justify-center gap-2">
-                        <span className="md:hidden font-bold">
-                          Seleccionar:{" "}
-                        </span>
-                        <input
-                          className="h-[25px] w-[25px]"
-                          type="checkbox"
-                              name={agreement.agreementNumber}
-                          value={agreement.agreementNumber}
-                          checked={agreement.status}
-                          onChange={(e) => handleSelect(e, agreement.agreementNumber)}
-                        />
                       </div>
                     </td>
                   </tr>
