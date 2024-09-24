@@ -63,7 +63,10 @@ InfoBubble.propTypes = {
     info: PropTypes.shape({
         title: PropTypes.string.isRequired,
         shortInfo: PropTypes.string,
-        longInfo: PropTypes.string,
+        longInfo: PropTypes.shape({
+            text: PropTypes.array,
+            list: PropTypes.object
+        }),
     }).isRequired,
 };
 

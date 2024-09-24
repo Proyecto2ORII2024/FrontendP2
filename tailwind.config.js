@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
       colors:{
@@ -52,28 +52,28 @@ export default {
     },
   },
   plugins: [
-    function ({ addUtilities }) {
+    function({addUtilities}){
       const newUtilities = {
-        '.scrollbar-thin': {
+        '.scrollbar-thin':{
           scrollbarWidth: 'thin',
-          scrollbarColor: '#f1f1f1 transparent' // Set the scrollbar color to transparent
+          scrollbarcolor: 'rgb(31 29 29) white',
         },
-        "scrollbar-webkit":{
-          "&::-webkit-scrollbar": {
-            width: "8px",
+        '.scrollbar-webkit':{
+          '&::-webkit-scrollbar': {
+            width: '8px'
           },
-          "&::-webkit-scrollbar-track" :{
-            background: "transparent"
+          '&::-webkit-scrollbar-track' :{
+            background: 'white'
           },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "#000",
-            borderRadius: "20px",
+          '&::-webkit-scrollbar-thumb':{
+            backgroundColor: 'rgb(31 41 55)',
+            borderRadius: '20px',
             border: '1px solid white'
           }
         }
-      };
+      }
 
-      addUtilities(newUtilities, ['responsive', 'hover']);
+      addUtilities(newUtilities, ['responsive', 'hover'])
     }
   ],
 }
