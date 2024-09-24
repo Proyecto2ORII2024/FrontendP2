@@ -8,3 +8,15 @@ export const getAgreements = async () => {
 export const createAgreement = async (agreement) => {
     return await axios.post(`${apiUrl}/convenio`, agreement);
 }
+
+export const updateAgreement = async (agreement, agreementId) => {
+    return await axios.put(`${apiUrl}/convenio/${agreementId}`, agreement);
+}
+
+export const deleteAgreement = async (agreementId) => {
+    return await axios.delete(`${apiUrl}/convenio/${agreementId}`);
+}
+
+export const getAgreement = async (agreementId) => {
+    return await axios.get(`${apiUrl}/convenio/${agreementId}`);
+}

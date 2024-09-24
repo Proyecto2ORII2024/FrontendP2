@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import deleteIcon from "../../assets/icons/deleteIcon.svg";
-import editIcon from "../../assets/icons/editIcon.svg";
 import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import EditConvenio from "../../components/editConvenio/EditConvenio.jsx";
 import DeleteConvenio from "../../components/deleteConvenio/DeleteConvenio.jsx";
+import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
+import AgreementTable from "../../components/agreementTable/AgreementTable.jsx";
 
 import { obtainAgreements } from "./agreementMiddleware.js";
-
-import styles from "./styles.js";
 
 function ConvenioAdminPage() {
   const [isSearching, setIsSearching] = useState(false);
@@ -23,6 +21,8 @@ function ConvenioAdminPage() {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [agreementId, setAgreementId] = useState("");
+  const [wasDeleted, setWasDeleted] = useState("");
+  const [wasUpdated, setwasUpdated] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +56,6 @@ function ConvenioAdminPage() {
             convenio.description
               .toLowerCase()
               .includes(e.target.value.toLowerCase())
-
         )
       );
     }
@@ -65,14 +64,60 @@ function ConvenioAdminPage() {
   return (
     <>
       <main>
+        <EditConvenio
+          open={open}
+          setOpen={setOpen}
+          agreementId={agreementId}
+          setUpdated={setwasUpdated}
+        />
+        <DeleteConvenio
+          open={openDelete}
+          setOpen={setOpenDelete}
+          agreementId={agreementId}
+          setDeleted={setWasDeleted}
+        />
+        <NotificationBox
+          type={wasDeleted}
+          title={
+            wasDeleted === "success"
+              ? "Convenio eliminado"
+              : "Error al eliminar convenio"
+          }
+          open={wasDeleted === "success" || wasDeleted === "error"}
+          setOpen={() => setWasDeleted("")}
+        >
+          {wasDeleted === "success" ? (
+            <p>El convenio ha sido eliminado exitosamente</p>
+          ) : (
+            <p>
+              Ha ocurrido un error al eliminar el convenio, por favor intente de
+              nuevo
+            </p>
+          )}
+        </NotificationBox>
+        <NotificationBox
+          type={wasUpdated}
+          title={
+            wasUpdated === "success"
+              ? "Convenio editado"
+              : "Error al editar convenio"
+          }
+          open={wasUpdated === "success" || wasUpdated === "error"}
+          setOpen={() => setwasUpdated("")}
+        >
+          {wasUpdated === "success" ? (
+            <p>El convenio ha sido editado exitosamente</p>
+          ) : (
+            <p>
+              Ha ocurrido un error al editar el convenio, por favor intente de
+              nuevo
+            </p>
+          )}
+        </NotificationBox>
 
-        <EditConvenio open={open} setOpen={setOpen} agreementId={agreementId}/>
-        <DeleteConvenio open={openDelete} setOpen={setOpenDelete} agreementId={agreementId} />
-
-        <h2 className="w-full mt-5 p-5 text-lg text-center">
+        <h2 className="w-full mt-5 md:pl-20 p-5 text-xl text-left">
           A continuación se presenta una lista con todos los convenios
-          registrados, seleccione aquellos que seran mostrados a los
-          funcionarios de las facultades.
+          registrados.
         </h2>
         <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
           <MainButton
@@ -99,256 +144,35 @@ function ConvenioAdminPage() {
           <>
             <Accordeon title="Nacional">
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
-                <table className="w-full text-left table-auto border-collapse md:table">
-                  <thead className="hidden md:table-header-group">
-                    <tr className="bg-grays-dark">
-                      <th className={`${styles.thIn} w-[150px]`}>Pais</th>
-                      <th className={`${styles.thIn} w-[300px]`}>
-                        Institución
-                      </th>
-                      <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
-                      <th className={`${styles.thIn} w-[350px]`}>
-                        Descripción
-                      </th>
-                      <th className={`${styles.thIn} w-[200px]`}>
-                        Fecha de inicio
-                      </th>
-                      <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {nationalAgreements.map((agreement, index) => (
-                      <tr
-                        className={`${
-                          index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-                        } flex flex-col md:table-row border-b`}
-                        key={agreement.agreementNumber}
-                      >
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Pais: </span>
-                          {agreement.country}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">
-                            Instiución:{" "}
-                          </span>
-                          {agreement.institution}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Codigo: </span>
-                          {agreement.agreementNumber}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">
-                            Descripción:{" "}
-                          </span>
-                          {agreement.description}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">
-                            Fecha de inicio:{" "}
-                          </span>
-                          {agreement.startDate}
-                        </td>
-                        <td className={styles.tdOut}>
-                          <div className="flex md:justify-center items-center">
-                            <span className="md:hidden font-bold">
-                              Acciones:
-                            </span>
-                            <div className="flex md:gap-0 justify-around w-[80%]">
-                              <button onClick={() => {setOpen(true); setAgreementId(agreement.agreementNumber)}}>
-                                <img
-                                  className={styles.buttonAction}
-                                  src={editIcon}
-                                  alt="editIcom"
-                                />
-                              </button>
-                              <button onClick={() => {setOpenDelete(true); setAgreementId(agreement.agreementNumber)}}>
-                                <img
-                                  className={styles.buttonAction}
-                                  src={deleteIcon}
-                                  alt="deleteIcon"
-                                />
-                              </button>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <AgreementTable
+                  agreements={nationalAgreements}
+                  setOpen={setOpen}
+                  setAgreementId={setAgreementId}
+                  setOpenDelete={setOpenDelete}
+                />
               </section>
             </Accordeon>
             <Accordeon title="Internacional">
               <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none">
-                <table className="w-full text-left table-auto border-collapse md:table">
-                  <thead className="hidden md:table-header-group">
-
-                    <tr className="bg-grays-dark">
-                      <th className={`${styles.thIn} w-[150px]`}>Pais</th>
-                      <th className={`${styles.thIn} w-[300px]`}>
-                        Institución
-                      </th>
-                      <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
-                      <th className={`${styles.thIn} w-[350px]`}>
-                        Descripción
-                      </th>
-                      <th className={`${styles.thIn} w-[200px]`}>
-                        Fecha de inicio
-                      </th>
-                      <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {internationalAgreements.map((agreement, index) => (
-                      <tr
-                        className={`${
-
-                          index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-
-                        } flex flex-col md:table-row border-b`}
-                        key={agreement.agreementNumber}
-                      >
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Pais: </span>
-                          {agreement.country}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">
-                            Instiución:{" "}
-                          </span>
-                          {agreement.institution}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">Codigo: </span>
-                          {agreement.agreementNumber}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">
-                            Descripción:{" "}
-                          </span>
-                          {agreement.description}
-                        </td>
-                        <td className={styles.tdIn}>
-                          <span className="md:hidden font-bold">
-                            Fecha de inicio:{" "}
-                          </span>
-                          {agreement.startDate}
-                        </td>
-                        <td className={styles.tdOut}>
-                          <div className="flex md:justify-center items-center">
-                            <span className="md:hidden font-bold">
-                              Acciones:{" "}
-                            </span>
-                            <div className="flex md:gap-0 justify-around w-[80%]">
-                            <button onClick={() => {setOpen(true); setAgreementId(agreement.agreementNumber)}}>
-                                <img
-                                  className={styles.buttonAction}
-                                  src={editIcon}
-                                  alt="editIcom"
-                                />
-                              </button>
-                              <button onClick={() => {setOpenDelete(true); setAgreementId(agreement.agreementNumber)}}>
-                                <img
-                                  className={styles.buttonAction}
-                                  src={deleteIcon}
-                                  alt="deleteIcon"
-                                />
-                              </button>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <AgreementTable
+                  agreements={internationalAgreements}
+                  setOpen={setOpen}
+                  setAgreementId={setAgreementId}
+                  setOpenDelete={setOpenDelete}
+                />
               </section>
             </Accordeon>
           </>
         ) : (
           <section className="w-full flex justify-center mb-5 max-h-screen overflow-auto border md:border-none  px-5 lg:px-20 ">
-            <table className="w-full text-left table-auto border-collapse md:table">
-              <thead className="hidden md:table-header-group">
-
-                <tr className="bg-grays-dark">
-                  <th className={`${styles.thIn} w-[150px]`}>Pais</th>
-                  <th className={`${styles.thIn} w-[300px]`}>Institución</th>
-                  <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
-                  <th className={`${styles.thIn} w-[350px]`}>Descripción</th>
-                  <th className={`${styles.thIn} w-[200px]`}>
-                    Fecha de inicio
-                  </th>
-                  <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {searchAgreement.map((agreement, index) => (
-                  <tr
-                    className={`${
-
-                      index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-
-                    } flex flex-col md:table-row border-b`}
-                    key={agreement.agreementNumber}
-                  >
-                    <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">Pais: </span>
-                      {agreement.country}
-                    </td>
-                    <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">Instiución: </span>
-                      {agreement.institution}
-                    </td>
-                    <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">Codigo: </span>
-                      {agreement.agreementNumber}
-                    </td>
-                    <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">Descripción: </span>
-                      {agreement.description}
-                    </td>
-                    <td className={styles.tdIn}>
-                      <span className="md:hidden font-bold">
-                        Fecha de inicio:{" "}
-                      </span>
-                      {agreement.startDate}
-                    </td>
-                    <td className={styles.tdOut}>
-                      <div className="flex md:justify-center items-center">
-                        <span className="md:hidden font-bold">Acciones: </span>
-                        <div className="flex md:gap-0 justify-around w-[80%]">
-                        <button onClick={() => {setOpen(true); setAgreementId(agreement.agreementNumber)}}>
-                            <img
-                              className={styles.buttonAction}
-                              src={editIcon}
-                              alt="editIcom"
-                            />
-                          </button>
-                          <button onClick={() => {setOpenDelete(true); setAgreementId(agreement.agreementNumber)}}>
-                            <img
-                              className={styles.buttonAction}
-                              src={deleteIcon}
-                              alt="deleteIcon"
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <AgreementTable
+              agreements={searchAgreement}
+              setOpen={setOpen}
+              setAgreementId={setAgreementId}
+              setOpenDelete={setOpenDelete}
+            />
           </section>
         )}
-        <section className="w-full mb-5 flex justify-end">
-          <MainButton
-            text="Guardar Selecciones"
-            bgColor="primary"
-            hoverBg="primary-light"
-            textColor="white"
-            className="mt-5 xl:mr-48 lg:mr-32 md:mr-20 mr-10"
-          />
-        </section>
       </main>
     </>
   );
