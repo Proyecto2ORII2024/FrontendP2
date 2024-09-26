@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles';
+import styles from './styles';  
 
 function MainUser() {
   return (
@@ -10,16 +10,16 @@ function MainUser() {
       </h2>
       <div className={styles.optionsContainer}>
         <div className={styles.optionCard}>
-          <img src="./icons/users.svg" alt="Convenios" />
-          <p>Convenios</p>
+          <img src="/convenios.svg" alt="Icono Convenios" className={styles.icon} />
+          <p style={{ color: '#000066', fontWeight: 'bold' }}>Convenios</p>
         </div>
         <div className={styles.optionCard}>
-          <img src="./icons/forms.svg" alt="Formularios" />
-          <p>Formularios</p>
+          <img src="/formularios.svg" alt="Icono Formularios" className={styles.icon} />
+          <p style={{ color: '#000066', fontWeight: 'bold' }}>Formularios</p>
         </div>
         <div className={styles.optionCard}>
-          <img src="./icons/stats.svg" alt="Estadísticas" />
-          <p>Estadísticas</p>
+          <img src="/estadisticas.svg" alt="Icono Estadísticas" className={styles.icon} />
+          <p style={{ color: '#000066', fontWeight: 'bold' }}>Estadísticas</p>
         </div>
       </div>
     </div>
