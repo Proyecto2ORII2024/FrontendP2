@@ -7,6 +7,7 @@ import FormPage from "../pages/formPage/formPage";
 import ConvenioAdminPage from "../pages/convenioAdminPage/ConvenioAdminPage";
 import CreateConvenioPage from "../pages/createConvenioPage/CreateConvenioPage";
 import ConvenioUserPage from "../pages/convenioUserPage/ConvenioUserPage";
+import MainUserPage from "../pages/mainUserPage/MainUser";
 
 function Router() {
     return (
@@ -19,6 +20,7 @@ function Router() {
             <Route path="/admin/convenio" element={<ConvenioAdminPage />} />
             <Route path="/admin/convenio/create" element={<CreateConvenioPage />} />
             <Route path="/user/convenio" element={<ConvenioUserPage />} />
+            <Route path="/main/user/page" element={<MainUserPage />} />
         </Routes>
         </BrowserRouter>
     );
