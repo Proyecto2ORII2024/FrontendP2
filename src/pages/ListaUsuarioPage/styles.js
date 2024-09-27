@@ -4,5 +4,5 @@ export const styles = {
     thOut: "py-3 text-xl text-center",
     tdIn: "text-center border-white p-2 border-r-2",
     tdOut: "text-center border-white p-2", 
-    buttonAction: "h-[50px] w-[50px] hover:scale-105 duration-200"
+    buttonAction: "h-[30px] w-[30px] hover:scale-105 duration-200"
 }
