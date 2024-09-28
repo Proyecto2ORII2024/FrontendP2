@@ -209,15 +209,15 @@ export const inputInfo = {
         id:'direction',
         text: 'Sentido',
         required: true,
-        options: {
-           'OUTGOING_IN_PERSON': 'Saliente presencial',
-           'INCOMING_IN_PERSON': 'Entrante presencial',
-           'OUTGOING_VIRTUAL': 'Saliente virtual',
-           'INCOMING_VIRTUAL': 'Entrante virtual',
-           'Ola': 'Entrante virtual',
-           'HOla': 'Entrante virtual',
-           'TUma': 'Entrante virtual',
-        }
+        options: [
+            {value: 'OUTGOING_IN_PERSON', text: 'Saliente presencial'},
+            {value: 'INCOMING_IN_PERSON', text: 'Entrante presencial'},
+            {value: 'OUTGOING_VIRTUAL', text: 'Saliente virtual'},
+            {value: 'INCOMING_VIRTUAL', text: 'Entrante virtual'},
+            {value: 'asc', text: 'Saliente presencial'},
+            {value: 'sdvdv', text: 'Entrante presencial'},
+            {value: 'dfvfb', text: 'Saliente virtual'},
+        ],
     },
     numID:{
         id: 'personId',

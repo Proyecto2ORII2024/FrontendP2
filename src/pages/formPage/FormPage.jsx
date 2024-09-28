@@ -1,7 +1,7 @@
 import InfoBubble from "../../components/infoBubble/InfoBubble";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import { Info, inputInfo } from "./Information.js";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 //import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
@@ -11,6 +11,7 @@ function FormPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -18,7 +19,8 @@ function FormPage() {
     console.log(data);
   };
 
-  const errorStyle = 'rounded-xl outline-red-400 outline outline-2 outline-offset-8'
+  const errorStyle =
+    "rounded-xl outline-red-400 outline outline-2 outline-offset-8";
 
   //const [openNoti, setOpenNoti] = useState(false);
 
@@ -37,14 +39,38 @@ function FormPage() {
   return (
     <>
       <main className="flex flex-col gap-32">
-        <form className="flex flex-col" 
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <section className="grid grid-cols-1 mx-8 mt-10 md:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
+            <div>
 
-            <CustomSelect bubbleInf={Info.sentido} inputInf={inputInfo.sentido} errors={errors} register={register} options={inputInfo.sentido.options}/>
-          
-            <label className={`flex flex-col w-full ${errors.personType ? errorStyle :""}`}>
+              <Controller
+                name="sentido"
+                control={control}
+                defaultValue=""
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={{ text: "Sentido" }}
+                    options={inputInfo.sentido.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    info={Info.sentido}
+                  />
+                )}
+              />
+
+              {errors.sentido && (
+                <span className="text-sm text-red-400">
+                  Este campo es requerido
+                  </span>
+                  )}
+            </div>
+
+            <label
+              className={`flex flex-col w-full ${
+                errors.personType ? errorStyle : ""
+              }`}
+            >
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.tipo} />
                 <p>Tipo</p>
@@ -54,7 +80,9 @@ function FormPage() {
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 {...register("personType", { required: true })}
               >
-                <option value="" hidden>Tipo</option>
+                <option value="" hidden>
+                  Tipo
+                </option>
                 <option value="teacher">Profesor</option>
                 <option value="Estudiante">Estudiante</option>
                 <option value="Administrativo">Administrativo</option>
@@ -65,7 +93,11 @@ function FormPage() {
                 </span>
               )}
             </label>
-            <label className={`flex flex-col w-full ${errors.identificationType ? errorStyle :""}`}>
+            <label
+              className={`flex flex-col w-full ${
+                errors.identificationType ? errorStyle : ""
+              }`}
+            >
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.tipoDocumento} />
                 <p>Tipo de documento</p>
@@ -75,7 +107,9 @@ function FormPage() {
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 {...register("identificationType", { required: true })}
               >
-                <option value="" hidden>Tipo de documento</option>
+                <option value="" hidden>
+                  Tipo de documento
+                </option>
                 <option value="CC">CC</option>
                 <option value="PS">PASAPORTE</option>
                 <option value="CE">CE</option>
@@ -88,9 +122,19 @@ function FormPage() {
                 </span>
               )}
             </label>
-            <CustomInput bubbleInf={Info.numID} inputInf={inputInfo.numID} register={register} errors={errors}/>
-            <CustomInput bubbleInf={Info.nombre} inputInf={inputInfo.name} register={register} errors={errors}/>
-            
+            <CustomInput
+              bubbleInf={Info.numID}
+              inputInf={inputInfo.numID}
+              register={register}
+              errors={errors}
+            />
+            <CustomInput
+              bubbleInf={Info.nombre}
+              inputInf={inputInfo.name}
+              register={register}
+              errors={errors}
+            />
+
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.genero} />
@@ -100,7 +144,9 @@ function FormPage() {
                 id="gender"
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
               >
-                <option value="" hidden>Género</option>
+                <option value="" hidden>
+                  Género
+                </option>
                 <option value="O">Otro</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
@@ -150,8 +196,18 @@ function FormPage() {
                 Año
               </p>
             </label>
-            <CustomInput bubbleInf={Info.uniOrigen} inputInf={inputInfo.uniOrigen} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.uniDestino} inputInf={inputInfo.uniDestino} errors={errors} register={register}/>
+            <CustomInput
+              bubbleInf={Info.uniOrigen}
+              inputInf={inputInfo.uniOrigen}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.uniDestino}
+              inputInf={inputInfo.uniDestino}
+              errors={errors}
+              register={register}
+            />
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.convenio} />
@@ -165,7 +221,12 @@ function FormPage() {
                 <option value="Y">Sí</option>
               </select>
             </label>
-            <CustomInput bubbleInf={Info.numConvenio} inputInf={inputInfo.numConvenio} errors={errors} register={register}/>
+            <CustomInput
+              bubbleInf={Info.numConvenio}
+              inputInf={inputInfo.numConvenio}
+              errors={errors}
+              register={register}
+            />
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.tipoEvento} />
@@ -192,14 +253,54 @@ function FormPage() {
                 placeholder="Descripción del evento"
               />
             </label>
-            <CustomInput bubbleInf={Info.programaOrigen} inputInf={inputInfo.programaOrigen} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.programaAcogida} inputInf={inputInfo.programaAcogida} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.ciudad} inputInf={inputInfo.ciudad} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.pais} inputInf={inputInfo.pais} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.profPres} inputInf={inputInfo.profPres} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.facultad} inputInf={inputInfo.facultad} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.financiacion} inputInf={inputInfo.financiacion} errors={errors} register={register}/>
-            <CustomInput bubbleInf={Info.fuenteFinanciacion} inputInf={inputInfo.fuenteFinanciacion} errors={errors} register={register}/>
+            <CustomInput
+              bubbleInf={Info.programaOrigen}
+              inputInf={inputInfo.programaOrigen}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.programaAcogida}
+              inputInf={inputInfo.programaAcogida}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.ciudad}
+              inputInf={inputInfo.ciudad}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.pais}
+              inputInf={inputInfo.pais}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.profPres}
+              inputInf={inputInfo.profPres}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.facultad}
+              inputInf={inputInfo.facultad}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.financiacion}
+              inputInf={inputInfo.financiacion}
+              errors={errors}
+              register={register}
+            />
+            <CustomInput
+              bubbleInf={Info.fuenteFinanciacion}
+              inputInf={inputInfo.fuenteFinanciacion}
+              errors={errors}
+              register={register}
+            />
           </section>
           <div className="mx-auto my-10">
             <MainButton

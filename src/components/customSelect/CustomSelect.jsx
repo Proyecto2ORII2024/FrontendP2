@@ -1,83 +1,103 @@
-import InfoBubble from "../infoBubble/InfoBubble";
 import PropTypes from "prop-types";
-import arrow from '../../assets/icons/arrowIcon.svg'
-import { useState } from "react";
+import arrow from "../../assets/icons/arrowIcon.svg";
+import { useState, useRef, useEffect } from "react";
+import InfoBubble from "../infoBubble/InfoBubble";
 
-function CustomSelect({bubbleInf, inputInf, errors, register, options}) {
+function CustomSelect({ inputInf, options, value, onChange, info }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+  const selectRef = useRef(null); // Referencia al select
+
+  // Cerrar el menú cuando el usuario haga clic fuera del componente
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const selected = options.find((option) => option.value === value);
+    if(selected) {setSelectedOption(selected.text || "")}
+  }, [value, options]);
 
   return (
-    <label className="relative w-11/12">
-      <div className="flex items-center gap-2">
-        <InfoBubble info={bubbleInf}/>
-        <p>{inputInf.text}</p>
+    <div ref={selectRef}>
+      <div className="flex items-center gap-2 w-full">
+        <InfoBubble info={info} />
+        <p>Sentido</p>
       </div>
-      <article className='relative flex items-center w-full py-1 border-b-2 ml-7 border-neutral-hover' onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <input type="text" hidden value={inputValue} id={inputInf.id}
-          {...register(inputInf.id, { required: inputInf.required })}
-        />
-        <input
-          type="search"
-          id="srch"
-          className={`w-11/12 outline-none ${inputValue ? 'placeholder:text-black': 'placeholder:text-gray-500'}`}
-          autoComplete="off"
-          onChange={(e) =>{ setSearchValue(e.target.value.toLowerCase()); setIsMenuOpen(true) }}
-          placeholder={inputValue ? options[inputValue] : inputInf.text}
-          {...register("srch", {
-            shouldUnregister: true,
-          })}
-        />
-        <button
-          type="button"
-          className={`absolute right-0 top-1/2 transform -translate-y-1/2 size-5 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <img src={arrow} />
-        </button>
-      </article>
+      <button
+      type="button"
+        className="w-full border-b-2 ml-7"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        <div className="flex items-center justify-between w-full p-2 rounded-lg">
+          <div className="flex items-center">
+            <label className="text-sm text-gray-600">
+              {selectedOption || inputInf.text}
+            </label>
+          </div>
+          <img
+            src={arrow}
+            alt="arrow"
+            className={`w-4 h-4 transform duration-300 ${
+              isMenuOpen ? "rotate-180" : ""
+            }`}
+          />
+        </div>
+      </button>
       {isMenuOpen && (
-          <ul className="absolute w-full overflow-auto bg-white border-2 rounded-lg ml-7 border-primary-dark max-h-60 scrollbar-webkit">
-          {Object.entries(options).map(([key, value]) => (
-            <li key={key} className={`p-2 duration-150 cursor-pointer hover:bg-grays ${value.toLowerCase().includes(searchValue) ? "block" : "hidden"} ${inputValue === key ? 'bg-grays-dark': ''}`}
-              onClick={() => {
-                setInputValue(key);
-                setSearchValue("");
-              }}
-            >
-              {value}
-            </li>
-          ))}
-          </ul>
-        )
-      }
-      {errors[inputInf.id] && (
-        <span className="text-sm text-red-400 border-b-2 border-red-400 ml-7">
-          Escoja una opción
-        </span>
+        <div className="absolute w-[calc(100%-4rem)] md:w-[calc(50%-4rem)] lg:w-[calc(25%-5rem)] z-10 mt-1 bg-white rounded-lg shadow-lg ml-7">
+          <input
+            type="text"
+            className="w-full p-2 border-b-2"
+            placeholder="Search..."
+            value={searchValue}
+            name="search"
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <div className="max-h-40 overflow-y-auto flex flex-col">
+            {options
+              .filter((option) =>
+                option.text.toLowerCase().includes(searchValue.toLowerCase())
+              )
+              .map((option) => (
+                <button
+                  key={option.value}
+                  className="p-2 text-left hover:bg-gray-200"
+                  onClick={() => {
+                    onChange(option.value); // Actualizamos el valor en el formulario
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  {option.text}
+                </button>
+              ))}
+          </div>
+        </div>
       )}
-    </label>
+    </div>
   );
 }
 
-export default CustomSelect;
-
 CustomSelect.propTypes = {
-  bubbleInf: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    shortInfo: PropTypes.string,
-    longInfo: PropTypes.shape({
-      text: PropTypes.array,
-      list: PropTypes.object,
-    }),
-  }).isRequired,
   inputInf: PropTypes.shape({
     id: PropTypes.string,
     text: PropTypes.string,
     required: PropTypes.bool,
   }),
-  register: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  options: PropTypes.object.isRequired,
+  options: PropTypes.array.isRequired,
+  value: PropTypes.object,      // El valor del select
+  onChange: PropTypes.func,      // La función para actualizar el valor
+  info: PropTypes.string,
 };
+
+export default CustomSelect;
