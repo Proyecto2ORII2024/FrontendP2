@@ -203,3 +203,98 @@ export const Info = {
         shortInfo: 'Escriba aquí el nombre de la dependencia de la Universidad del Cauca y/o de otra institución que otorgó la financiación o la beca.'
     }
 }
+
+export const inputInfo = {
+    sentido:{
+        id:'direction',
+        text: 'Sentido',
+        required: true,
+        options: {
+           'OUTGOING_IN_PERSON': 'Saliente presencial',
+           'INCOMING_IN_PERSON': 'Entrante presencial',
+           'OUTGOING_VIRTUAL': 'Saliente virtual',
+           'INCOMING_VIRTUAL': 'Entrante virtual',
+           'Ola': 'Entrante virtual',
+           'HOla': 'Entrante virtual',
+           'TUma': 'Entrante virtual',
+        }
+    },
+    numID:{
+        id: 'personId',
+        text: 'Número de identificación',
+        type: 'text',
+        required: true
+    },
+    name:{
+        id: 'name',
+        text: 'Nombres y apellidos',
+        type: 'text',
+        required: true
+    },
+    uniOrigen:{
+        id: 'origin',
+        text: 'Universidad de origen',
+        type: 'text',
+        required: true
+    },
+    uniDestino:{
+        id: 'destination',
+        text: 'Universidad de destino',
+        type: 'text',
+        required: true
+    },
+    numConvenio:{
+        id: 'agreementId',
+        text: 'Número de convenio',
+        type: 'text',
+        required: true
+    },
+    programaOrigen:{
+        id: 'originProgram',
+        text: 'Programa de origen',
+        type: 'text',
+        required: true
+    },
+    programaAcogida:{
+        id: 'destinationProgram',
+        text: 'Programa de acogida',
+        type: 'text',
+        required: true
+    },
+    ciudad:{
+        id: 'city',
+        text: 'Ciudad',
+        type: 'text',
+        required: true
+    },
+    pais:{
+        id: 'country',
+        text: 'País',
+        type: 'text',
+        required: true
+    },
+    profPres:{
+        id: 'teacher',
+        text: 'Profesor presenta',
+        type: 'text',
+        required: false
+    },
+    facultad:{
+        id: 'faculty',
+        text: 'Facultad',
+        type: 'text',
+        required: true
+    },
+    financiacion:{
+        id: 'funding',
+        text: 'Financiación',
+        type: 'number',
+        required: true
+    },
+    fuenteFinanciacion:{
+        id: 'fundingSource',
+        text: 'Fuente de la financiación',
+        type: 'text',
+        required: true
+    }
+}

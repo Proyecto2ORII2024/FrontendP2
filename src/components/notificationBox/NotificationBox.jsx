@@ -11,7 +11,7 @@ const NotificationBox = ({type, title, children, open, setOpen}) => {
         if (open) {
             timer = setTimeout(() => {
                 setOpen(false);
-            }, 5000);
+            }, 10000);
         }
 
         return () => clearTimeout(timer);

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import editIcon from "../../assets/icons/editIcon.svg";
-import search from "../../assets/icons/search.svg";
+import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import MainButton from "../../components/buttons/MainButton.jsx";

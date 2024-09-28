@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import search from "../../assets/icons/search.svg";
+import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 

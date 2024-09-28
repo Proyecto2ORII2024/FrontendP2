@@ -63,11 +63,11 @@ export default {
             width: '8px'
           },
           '&::-webkit-scrollbar-track' :{
-            background: 'white'
+            background: 'transparent'
           },
           '&::-webkit-scrollbar-thumb':{
-            backgroundColor: 'rgb(31 41 55)',
-            borderRadius: '20px',
+            backgroundColor: 'rgb(67 67 67)',
+            borderRadius: '10px',
             border: '1px solid white'
           }
         }
