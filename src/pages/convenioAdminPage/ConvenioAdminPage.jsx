@@ -32,7 +32,7 @@ function ConvenioAdminPage() {
       setAgreements(agreementsData.ALL);
     };
     fetchData();
-  }, []);
+  }, [wasDeleted, wasUpdated]);
 
   const navigate = useNavigate();
 

@@ -68,7 +68,7 @@ function CreateConvenioPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true })}
+                  {...register("country", { required: true, value: "Colombia" })}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
