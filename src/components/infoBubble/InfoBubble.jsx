@@ -6,9 +6,14 @@ function InfoBubble ({ info }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isFloating, setIsFloating] = useState(false);
 
+    if(info.longInfo && info.longInfo.list){
+        const sortedList = Object.entries(info.longInfo.list).sort(([a], [b]) =>{return a.localeCompare(b)})
+        info.longInfo.list = Object.fromEntries(sortedList)
+    }
+
     return(
         <section className='relative'>
-            <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={()=> setIsHovered(false)} onClick={() => { if(info.longInfo){ setIsFloating(true)} }}>
+            <div onMouseEnter={() => setIsHovered(true)} onMouseLeave={()=> setIsHovered(false)} onClick={() => { if(info.longInfo.list){ setIsHovered(false); setIsFloating(true)} }}>
                 <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     viewBox="0 -960 960 960"  
@@ -19,7 +24,7 @@ function InfoBubble ({ info }) {
                 </svg>
             </div>
             {isHovered && (
-                <article className={`absolute flex flex-col items-center top-full p-2 border-2 bg-white border-primary-dark rounded-2xl z-10 w-64 transition-opacity duration-150`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={()=> setIsHovered(false)}>
+                <article className={`absolute flex flex-col items-center top-full p-2 border-2 bg-white border-primary-dark rounded-2xl z-20 w-64 transition-opacity duration-150`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={()=> setIsHovered(false)}>
                     <h1 className='text-sm font-semibold text-center'>
                         {info.title}
                     </h1>
@@ -39,11 +44,13 @@ function InfoBubble ({ info }) {
             {isFloating && (
                 <FloatingContainer open={isFloating} setOpen={setIsFloating} bttType={1}>
                     <h1 className='text-2xl font-bold text-center'>{info.title}</h1>
-                    {info.longInfo.text.map((text, i) => (
-                        <p key={i} className='text-sm'>
-                            {text}
-                        </p>
-                    ))}
+                    {info.longInfo.text && 
+                        info.longInfo.text.map((text, i) => (
+                            <p key={i} className='text-sm'>
+                                {text}
+                            </p>
+                        ))
+                    }
                     {info.longInfo.list && (
                         <ul className='list-disc list-inside'>
                             {Object.entries(info.longInfo.list).map(([key, value], index) => (

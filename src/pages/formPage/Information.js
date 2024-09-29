@@ -24,14 +24,13 @@ export const Info = {
                 'ESTUDIANTE': 'Cuando se trate de un estudiante de la Universidad del Cauca.  También debe seleccionar ESTUDIANTE, cuando se trate de un estudiante extranjero.',
 
                 'ADMINISTRATIVO': 'Cuando un funcionario administrativo de la Universidad del Cauca, sea autorizado para realizar movilidad académica.',
-
             }
         }
     },
     tipoDocumento: {
         title: 'Tipo de Documento',
         longInfo: {
-            text: ['Seleccione una de las letras que se indican a continuación, sin puntos ni comas:'],
+            text: ['Seleccione una de las letras que se indican a continuación:'],
             list: {
                 'CC': 'Cédula de Ciudadanía',
 
@@ -59,11 +58,11 @@ export const Info = {
     },
     fechaSalida:{
         title: 'Fecha de salida',
-        shortInfo: 'Seleccione en el calendario la fecha de salida.'
+        shortInfo: 'Seleccione en el calendario o escriba la fecha de salida.'
     },
     fechaEntrada:{
         title: 'Fecha de entrada',
-        shortInfo: 'Seleccione en el calendario la fecha de entrada.'
+        shortInfo: 'Seleccione en el calendario o escriba la fecha de entrada.'
     },
     diasEstancia: {
         title: 'Número de días de estancia',
@@ -214,9 +213,28 @@ export const inputInfo = {
             {value: 'INCOMING_IN_PERSON', text: 'Entrante presencial'},
             {value: 'OUTGOING_VIRTUAL', text: 'Saliente virtual'},
             {value: 'INCOMING_VIRTUAL', text: 'Entrante virtual'},
-            {value: 'asc', text: 'Saliente presencial'},
-            {value: 'sdvdv', text: 'Entrante presencial'},
-            {value: 'dfvfb', text: 'Saliente virtual'},
+        ],
+    },
+    tipo:{
+        id:'personType',
+        text: 'Tipo',
+        required: true,
+        options: [
+            {value: 'TEACHER', text: 'Profesor'},
+            {value: 'STUDENT', text: 'Estudiante'},
+            {value: 'ADMIN', text: 'Administrativo'},
+        ],
+    },
+    tipoDocumento:{
+        id:'identificationType',
+        text: 'Tipo de documento',
+        required: true,
+        options: [
+            {value: 'CC', text: 'CC'},
+            {value: 'PS', text: 'PS'},
+            {value: 'CE', text: 'CE'},
+            {value: 'DE', text: 'DE'},
+            {value: 'V', text: 'V'},
         ],
     },
     numID:{
@@ -225,11 +243,21 @@ export const inputInfo = {
         type: 'text',
         required: true
     },
-    name:{
+    nombre:{
         id: 'name',
         text: 'Nombres y apellidos',
         type: 'text',
         required: true
+    },
+    genero:{
+      id: 'gender',
+      text: 'Género',
+      required: true,
+      options: [
+        {value: 'F', text: 'Femenino'},
+        {value: 'M', text: 'Masculino'},
+        {value: 'O', text: 'Otro'},
+      ],  
     },
     uniOrigen:{
         id: 'origin',
@@ -243,9 +271,50 @@ export const inputInfo = {
         type: 'text',
         required: true
     },
+    convenio:{
+        id: 'hasAgreement',
+        text: '¿Existe convenio?',
+        required: false,
+        options: [
+            {value: 'Y', text: 'Sí'},
+            {value: 'N', text: 'No'},
+        ],
+    },
     numConvenio:{
         id: 'agreementId',
         text: 'Número de convenio',
+        type: 'text',
+        required: true
+    },
+    tipoEvento:{
+        id: 'eventType',
+        text: 'Tipo de evento',
+        required: true,
+        options: [
+            {value: 'ASISTENCIA', text: 'Asistencia a evento'},
+            {value: 'MISIÓN', text: 'Misión'},
+            {value: 'CURSO CORTO', text: 'Curso corto'},
+            {value: 'ESTANCIA DE INVESTIGACIÓN', text: 'Estancia de investigación'},
+            {value: 'SEMESTRE ACADÉMICO DE INTERCAMBIO', text: 'Semestre académico de intercambio'},
+            {value: 'DOBLE TITULACIÓN', text: 'Doble titulación'},
+            {value: 'PASANTÍA o PRÁCTICA', text: 'Pasantía o práctica'},
+            {value: 'ROTACIÓN MÉDICA', text: 'Rotación médica'},
+            {value: 'PROFESOR VISITANTE', text: 'Profesor visitante'},
+            {value: 'PROFESOR DE PROGRAMA DE PREGRADO', text: 'Profesor de programa de pregrado'},
+            {value: 'PROFESOR DE PROGRAMA DE ESPECIALIZACIÓN', text: 'Profesor de programa de especialización'},
+            {value: 'PROFESOR DE PROGRAMA DE MAESTRÍA', text: 'Profesor de programa de maestría'},
+            {value: 'PROFESOR DE PROGRAMA DE DOCTORADO', text: 'Profesor de programa de doctorado'},
+            {value: 'PROFESOR DE PROGRAMA DE POSTDOCTORADO', text: 'Profesor de programa de postdoctorado'},
+            {value: 'ESTUDIOS DE MAESTRÍA', text: 'Estudios de maestría'},
+            {value: 'ESTUDIOS DE DOCTORADO', text: 'Estudios de doctorado'},
+            {value: 'ESTUDIOS DE POSTDOCTORADO', text: 'Estudios de postdoctorado'},
+            {value: 'INTERNACIONALIZACIÓN EN CASA', text: 'Internacionalización en casa'},
+            {value: 'VOLUNTARIADO', text: 'Voluntariado'},
+        ]
+    },
+    descEvento:{
+        id: 'eventDescription',
+        text: 'Descripción de evento',
         type: 'text',
         required: true
     },

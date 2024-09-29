@@ -5,9 +5,13 @@ import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 //import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
-//import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function FormPage() {
+  const [days, setDays] = useState(0);
+  const [entryDate, setEntryDate] = useState("");
+  const [exitDate, setExitDate] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -19,12 +23,7 @@ function FormPage() {
     console.log(data);
   };
 
-  const errorStyle =
-    "rounded-xl outline-red-400 outline outline-2 outline-offset-8";
-
-  //const [openNoti, setOpenNoti] = useState(false);
-
-  /*function calcDays(fechaInicio, fechaFin) {
+  function calcDays(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
   
@@ -34,7 +33,22 @@ function FormPage() {
     const diferenciaDias = diferenciaMilisegundos / milisegundosPorDia;
   
     return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
-  }*/
+  }
+
+  useEffect(() => {
+    if (entryDate && exitDate) {
+      const startDate = new Date(entryDate);
+      const endDate = new Date(exitDate);
+      const calculatedDays = calcDays(startDate, endDate); // Convertir milisegundos a días
+
+      setDays(calculatedDays >= 0 ? calculatedDays : 0); // Si el resultado es negativo, se considera 0 días
+    }
+  }, [entryDate, exitDate]);
+
+
+  //const [openNoti, setOpenNoti] = useState(false);
+
+  
 
   return (
     <>
@@ -42,128 +56,85 @@ function FormPage() {
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <section className="grid grid-cols-1 mx-8 mt-10 md:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
             <div>
-
-              <Controller
-                name="sentido"
-                control={control}
-                defaultValue=""
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <CustomSelect
-                    inputInf={{ text: "Sentido" }}
-                    options={inputInfo.sentido.options}
-                    value={field.value}
-                    onChange={field.onChange}
-                    info={Info.sentido}
-                  />
+              <Controller name={inputInfo.sentido.id} control={control} defaultValue="" rules={{ required: inputInfo.sentido.required }} render={({ field }) => (
+                  <CustomSelect inputInf={inputInfo.sentido} options={inputInfo.sentido.options} value={field.value} onChange={field.onChange} bblInfo={Info.sentido}/>
                 )}
               />
-
-              {errors.sentido && (
-                <span className="text-sm text-red-400">
+              {errors[inputInfo.sentido.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                   Este campo es requerido
-                  </span>
-                  )}
+                </span>
+              )}
             </div>
 
-            <label
-              className={`flex flex-col w-full ${
-                errors.personType ? errorStyle : ""
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.tipo} />
-                <p>Tipo</p>
-              </div>
-              <select
-                id="personType"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                {...register("personType", { required: true })}
-              >
-                <option value="" hidden>
-                  Tipo
-                </option>
-                <option value="teacher">Profesor</option>
-                <option value="Estudiante">Estudiante</option>
-                <option value="Administrativo">Administrativo</option>
-              </select>
-              {errors.personType && (
-                <span className="text-sm text-red-400">
+            <div>
+              <Controller name={inputInfo.tipo.id} control={control} defaultValue="" rules={{ required: inputInfo.tipo.required }} render={({ field }) => (
+                  <CustomSelect inputInf={inputInfo.tipo} options={inputInfo.tipo.options} value={field.value} onChange={field.onChange} bblInfo={Info.tipo}/>
+                )}
+              />
+              {errors[inputInfo.tipo.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                   Este campo es requerido
                 </span>
               )}
-            </label>
-            <label
-              className={`flex flex-col w-full ${
-                errors.identificationType ? errorStyle : ""
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.tipoDocumento} />
-                <p>Tipo de documento</p>
-              </div>
-              <select
-                id="identificationType"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                {...register("identificationType", { required: true })}
-              >
-                <option value="" hidden>
-                  Tipo de documento
-                </option>
-                <option value="CC">CC</option>
-                <option value="PS">PASAPORTE</option>
-                <option value="CE">CE</option>
-                <option value="DE">DE</option>
-                <option value="V">V</option>
-              </select>
-              {errors.identificationType && (
-                <span className="text-sm text-red-400">
+            </div>
+
+            <div>
+              <Controller name={inputInfo.tipoDocumento.id} control={control} defaultValue="" rules={{ required: inputInfo.tipoDocumento.required }} render={({ field }) => (
+                  <CustomSelect inputInf={inputInfo.tipoDocumento} options={inputInfo.tipoDocumento.options} value={field.value} onChange={field.onChange} bblInfo={Info.tipoDocumento}/>
+                )}
+              />
+              {errors[inputInfo.tipoDocumento.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                   Este campo es requerido
                 </span>
               )}
-            </label>
+            </div>
+
             <CustomInput
               bubbleInf={Info.numID}
               inputInf={inputInfo.numID}
               register={register}
               errors={errors}
             />
+
             <CustomInput
               bubbleInf={Info.nombre}
-              inputInf={inputInfo.name}
+              inputInf={inputInfo.nombre}
               register={register}
               errors={errors}
             />
 
-            <label className="flex flex-col w-full">
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.genero} />
-                <p>Género</p>
-              </div>
-              <select
-                id="gender"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-              >
-                <option value="" hidden>
-                  Género
-                </option>
-                <option value="O">Otro</option>
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
-              </select>
-            </label>
+            <div>
+              <Controller name={inputInfo.genero.id} control={control} defaultValue="" rules={{ required: inputInfo.genero.required }} render={({ field }) => (
+                  <CustomSelect inputInf={inputInfo.genero} options={inputInfo.genero.options} value={field.value} onChange={field.onChange} bblInfo={Info.genero}/>
+                )}
+              />
+              {errors[inputInfo.genero.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </div>
+
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.fechaSalida} />
                 <p>Fecha de salida</p>
               </div>
               <input
-                id="outDate"
+                id="exitDate"
                 autoComplete="off"
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 type="date"
                 placeholder="Fecha de salida"
+                {...register ("exitDate", {required: true, onChange: (e) => setExitDate(e.target.value)})}
               />
+              {errors.exitDate && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
             </label>
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
@@ -171,20 +142,27 @@ function FormPage() {
                 <p>Fecha de entrada</p>
               </div>
               <input
-                id="inDate"
+                id="entryDate"
                 autoComplete="off"
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 type="date"
                 placeholder="Fecha de entrada"
+                {...register ("entryDate", {required: true, onChange: (e) => setEntryDate(e.target.value)})}
               />
+              {errors.entryDate && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
             </label>
+
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.diasEstancia} />
-                <p>Días de estancia</p>
+                <p>{days ? days : 'Días de estancia'}</p>
               </div>
               <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                Días de estancia
+                {days ? days : "Días de estancia" }
               </p>
             </label>
             <label className="flex flex-col w-full">
@@ -208,38 +186,37 @@ function FormPage() {
               errors={errors}
               register={register}
             />
-            <label className="flex flex-col w-full">
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.convenio} />
-                <p>¿Existe convenio?</p>
-              </div>
-              <select
-                id="docType"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-              >
-                <option value="N">No</option>
-                <option value="Y">Sí</option>
-              </select>
-            </label>
+
+            <div>
+              <Controller name={inputInfo.convenio.id} control={control} defaultValue="" rules={{ required: inputInfo.convenio.required }} render={({ field }) => (
+                  <CustomSelect inputInf={inputInfo.convenio} options={inputInfo.convenio.options} value={field.value} onChange={field.onChange} bblInfo={Info.convenio}/>
+                )}
+              />
+              {errors[inputInfo.convenio.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </div>
+
             <CustomInput
               bubbleInf={Info.numConvenio}
               inputInf={inputInfo.numConvenio}
               errors={errors}
               register={register}
             />
-            <label className="flex flex-col w-full">
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.tipoEvento} />
-                <p>Tipo de evento</p>
-              </div>
-              <input
-                id="eventType"
-                autoComplete="off"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                type="text"
-                placeholder="Evento"
+
+            <div>
+              <Controller name={inputInfo.tipoEvento.id} control={control} defaultValue="" rules={{ required: inputInfo.tipoEvento.required }} render={({ field }) => (
+                  <CustomSelect inputInf={inputInfo.tipoEvento} options={inputInfo.tipoEvento.options} value={field.value} onChange={field.onChange} bblInfo={Info.tipoEvento}/>
+                )}
               />
-            </label>
+              {errors[inputInfo.tipoEvento.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </div>
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.descEvento} />
