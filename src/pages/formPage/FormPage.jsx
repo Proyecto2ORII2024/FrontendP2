@@ -128,7 +128,8 @@ function FormPage() {
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 type="date"
                 placeholder="Fecha de salida"
-                {...register ("exitDate", {required: true, onChange: (e) => setExitDate(e.target.value)})}
+                onChange={(e) => console.log(e)}
+                {...register ("exitDate", {required: true, onChange: (e) => console.log(e)})}
               />
               {errors.exitDate && (
                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
@@ -147,6 +148,7 @@ function FormPage() {
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 type="date"
                 placeholder="Fecha de entrada"
+                
                 {...register ("entryDate", {required: true, onChange: (e) => setEntryDate(e.target.value)})}
               />
               {errors.entryDate && (
