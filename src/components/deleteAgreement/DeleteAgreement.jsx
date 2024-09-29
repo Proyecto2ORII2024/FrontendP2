@@ -1,13 +1,24 @@
 import FloatingContainer from "../floatingContainer/FloatingContainer";
-import MainButton from "../../components/buttons/MainButton";
+import MainButton from "../buttons/MainButton";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { deleteAgreement } from "../../services/agreement.service";
 
-function DeleteConvenio({ open, setOpen, agreementId }) {
+function DeleteAgreement({ open, setOpen, agreementId, setDeleted }) {
   const [isOpened, setIsOpened] = useState(false);
 
+  const onSubmit = () => {
+    deleteAgreement(agreementId).then((res) => {
+      if (res.status === 200){
+        setIsOpened(false);
+        setOpen(false);
+        setDeleted('success');
+      }else{
+        setDeleted('error');}
+    });
+  }
+
   useEffect(() => {
-    console.log(agreementId);
     setIsOpened(open);
   }, [open, agreementId]);
 
@@ -31,6 +42,7 @@ function DeleteConvenio({ open, setOpen, agreementId }) {
             bgColor="primary"
             hoverBg="primary-light"
             textColor="white"
+            onClick={onSubmit}
           />
         </section>
       </div>
@@ -38,10 +50,11 @@ function DeleteConvenio({ open, setOpen, agreementId }) {
   );
 }
 
-DeleteConvenio.propTypes = {
+DeleteAgreement.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
-  agreementId: PropTypes.string,
+  agreementId: PropTypes.string.isRequired,
+  setDeleted: PropTypes.func.isRequired,
 };
 
-export default DeleteConvenio;
+export default DeleteAgreement;
