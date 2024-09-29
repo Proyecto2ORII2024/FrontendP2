@@ -7,11 +7,14 @@ import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 //import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import { useState, useEffect } from "react";
 import { createForm } from "../../services/form.service.js";
+import { getAgreements } from "../../services/agreement.service.js";
 
 function FormPage() {
   const [days, setDays] = useState(0);
   const [entryDate, setEntryDate] = useState("");
   const [exitDate, setExitDate] = useState("");
+  const [agreements, setAgreements] = useState([]);
+  const [yes, setYes] = useState(true);
 
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
@@ -57,7 +60,6 @@ function FormPage() {
         firstName: "",
         lastName: "",
         identification: data.personId,
-        email: "",
       },
     };
 
@@ -79,6 +81,28 @@ function FormPage() {
 
     return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
   }
+
+  /**Esta funcion la sacas  aotro archivo */
+  const createAgreementOptions = (agreements) => {
+    const options = [];
+
+    agreements.forEach((agreement) => {
+      options.push({
+        value: agreement.id,
+        text: agreement.agreementNumber,
+      });
+    });
+
+    setAgreements(options);
+  };
+
+  useEffect(() => {
+    getAgreements().then((res) => {
+      createAgreementOptions(res.data);
+    }).catch((err) => {
+      console.log(err.response.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (entryDate && exitDate) {
@@ -281,7 +305,7 @@ function FormPage() {
                 name={inputInfo.convenio.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.convenio.required }}
+                rules={{ required: inputInfo.convenio.required, onChange: (e) => setYes(e.target.value === "N" ? false : true) }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.convenio}
@@ -299,12 +323,28 @@ function FormPage() {
               )}
             </div>
 
-            <CustomInput
-              bubbleInf={Info.numConvenio}
-              inputInf={inputInfo.numConvenio}
-              errors={errors}
-              register={register}
-            />
+            <div className={`${!yes ? "opacity-40 -z-50": ""}`}>
+              <Controller
+                name={inputInfo.numConvenio.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.numConvenio.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.numConvenio}
+                    options={agreements}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.numConvenio}
+                  />
+                )}
+              />
+              {errors[inputInfo.numConvenio.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </div>
 
             <div>
               <Controller
