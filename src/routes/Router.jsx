@@ -17,7 +17,9 @@ function Router() {
             <Route path="/admin" element={<MainAdmin />} />
             <Route path="/user" element={<MainUser />} />
             <Route path="/form" element={<FormPage />} />
-            <Route path="/main/user/page" element={<MainUserPage />} />
+            <Route path="/admin/agreement" element={<AgreementAdminPage />} />
+            <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
+            <Route path="/user/agreement" element={<AgreementUserPage />} />
         </Routes>
         </BrowserRouter>
     );
