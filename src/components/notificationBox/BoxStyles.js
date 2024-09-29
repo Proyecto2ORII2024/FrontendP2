@@ -1,23 +1,31 @@
 export const colors = {
     success: {
-        dark: 'success-dark',
-        light: 'success-light',
-        text: 'success-text'
+        bgLight: 'bg-success-light',
+        txtLight: 'text-error-light',
+        text: 'text-success-text',
+        bgDark: 'bg-success-dark',
+        txtDark: 'text-success-dark'
     },
     error: {
-        dark: 'error-dark',
-        light: 'error-light',
-        text: 'error-text'
+        bgLight: 'bg-error-light',
+        txtLight: 'text-error-light',
+        text: 'text-error-text',
+        bgDark: 'bg-error-dark',
+        txtDark: 'text-error-dark'
     },
     info: {
-        dark: 'info-dark',
-        light: 'info-light',
-        text: 'info-text'
+        bgLight: 'bg-info-light',
+        txtLight: 'text-info-light',
+        text: 'text-info-text',
+        bgDark: 'bg-info-dark',
+        txtDark: 'text-info-dark'
     },
     alert: {
-        dark: 'alert-dark',
-        light: 'alert-light',
-        text: 'alert-text'
+        bgLight: 'bg-alert-light',
+        txtLight: 'bg-alert-light',
+        text: 'text-alert-text',
+        bgDark: 'bg-alert-dark',
+        txtDark: 'text-alert-dark'
     }
 }
 

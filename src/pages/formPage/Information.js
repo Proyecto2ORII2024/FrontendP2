@@ -49,8 +49,12 @@ export const Info = {
         shortInfo: 'Escriba en forma correcta el número del documento sin puntos ni comas'
     },
     nombre:{
-        title: 'Nombres y apellidos completos',
-        shortInfo: 'Escriba nombres y apellidos completos de la persona y conforme está escrito en el documento de identificación.'
+        title: 'Nombre(s)',
+        shortInfo: 'Escriba el o los nombres de la persona, conforme está escrito en el documento de identificación.'
+    },
+    apellidos:{
+        title: 'Apellidos',
+        shortInfo: 'Escriba los nombres de la persona, conforme está escrito en el documento de identificación.'
     },
     genero:{
         title: 'Género',
@@ -240,12 +244,18 @@ export const inputInfo = {
     numID:{
         id: 'personId',
         text: 'Número de identificación',
-        type: 'text',
+        type: 'number',
         required: true
     },
     nombre:{
-        id: 'name',
-        text: 'Nombres y apellidos',
+        id: 'firstName',
+        text: 'Nombre(s)',
+        type: 'text',
+        required: true
+    },
+    apellidos:{
+        id: 'lastName',
+        text: 'Apellidos',
         type: 'text',
         required: true
     },
@@ -291,25 +301,25 @@ export const inputInfo = {
         text: 'Tipo de evento',
         required: true,
         options: [
-            {value: 'ASISTENCIA', text: 'Asistencia a evento'},
-            {value: 'MISIÓN', text: 'Misión'},
-            {value: 'CURSO CORTO', text: 'Curso corto'},
-            {value: 'ESTANCIA DE INVESTIGACIÓN', text: 'Estancia de investigación'},
-            {value: 'SEMESTRE ACADÉMICO DE INTERCAMBIO', text: 'Semestre académico de intercambio'},
-            {value: 'DOBLE TITULACIÓN', text: 'Doble titulación'},
-            {value: 'PASANTÍA o PRÁCTICA', text: 'Pasantía o práctica'},
-            {value: 'ROTACIÓN MÉDICA', text: 'Rotación médica'},
-            {value: 'PROFESOR VISITANTE', text: 'Profesor visitante'},
-            {value: 'PROFESOR DE PROGRAMA DE PREGRADO', text: 'Profesor de programa de pregrado'},
-            {value: 'PROFESOR DE PROGRAMA DE ESPECIALIZACIÓN', text: 'Profesor de programa de especialización'},
-            {value: 'PROFESOR DE PROGRAMA DE MAESTRÍA', text: 'Profesor de programa de maestría'},
-            {value: 'PROFESOR DE PROGRAMA DE DOCTORADO', text: 'Profesor de programa de doctorado'},
-            {value: 'PROFESOR DE PROGRAMA DE POSTDOCTORADO', text: 'Profesor de programa de postdoctorado'},
-            {value: 'ESTUDIOS DE MAESTRÍA', text: 'Estudios de maestría'},
-            {value: 'ESTUDIOS DE DOCTORADO', text: 'Estudios de doctorado'},
-            {value: 'ESTUDIOS DE POSTDOCTORADO', text: 'Estudios de postdoctorado'},
-            {value: 'INTERNACIONALIZACIÓN EN CASA', text: 'Internacionalización en casa'},
-            {value: 'VOLUNTARIADO', text: 'Voluntariado'},
+            {value: 1, text: 'Asistencia a evento'},
+            {value: 2, text: 'Misión'},
+            {value: 3, text: 'Curso corto'},
+            {value: 4, text: 'Estancia de investigación'},
+            {value: 5, text: 'Semestre académico de intercambio'},
+            {value: 6, text: 'Doble titulación'},
+            {value: 7, text: 'Pasantía o práctica'},
+            {value: 8, text: 'Rotación médica'},
+            {value: 9, text: 'Profesor visitante'},
+            {value: 10, text: 'Profesor de programa de pregrado'},
+            {value: 11, text: 'Profesor de programa de especialización'},
+            {value: 12, text: 'Profesor de programa de maestría'},
+            {value: 13, text: 'Profesor de programa de doctorado'},
+            {value: 14, text: 'Profesor de programa de postdoctorado'},
+            {value: 15, text: 'Estudios de maestría'},
+            {value: 16, text: 'Estudios de doctorado'},
+            {value: 17, text: 'Estudios de postdoctorado'},
+            {value: 18, text: 'Internacionalización en casa'},
+            {value: 19, text: 'Voluntariado'},
         ]
     },
     descEvento:{

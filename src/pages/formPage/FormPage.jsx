@@ -4,7 +4,7 @@ import { Info, inputInfo } from "./Information.js";
 import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
-//import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
+import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import { useState, useEffect } from "react";
 import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
@@ -14,7 +14,11 @@ function FormPage() {
   const [entryDate, setEntryDate] = useState("");
   const [exitDate, setExitDate] = useState("");
   const [agreements, setAgreements] = useState([]);
-  const [yes, setYes] = useState(true);
+  const [yes, setYes] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
+  const [notification, setNotification] = useState("");
+  const [notiOpen, setNotiOpen] = useState(false);
+
 
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
@@ -32,7 +36,7 @@ function FormPage() {
   } = useForm();
 
   const onSubmit = (data) => {
-    const formData = {
+    let formData = {
       orii: true,
       direction: data.direction,
       gender: data.gender,
@@ -43,13 +47,11 @@ function FormPage() {
       destinationProgram: data.destinationProgram,
       city: data.city,
       country: data.country,
-      teacher: data.teacher,
       faculty: data.faculty,
       funding: Number(data.funding),
       fundingSource: data.fundingSource,
       destination: data.destination,
       origin: data.origin,
-      agreementId: data.agreementId,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -57,14 +59,23 @@ function FormPage() {
       person: {
         identificationType: data.identificationType,
         personType: data.personType,
-        firstName: "",
-        lastName: "",
+        firstName: data.firstName,
+        lastName: data.lastName,
         identification: data.personId,
       },
     };
 
+    if(yes){
+      formData = {...formData, agreementId: data.agreementId}
+    }
+    if(isStudent){
+      formData = {...formData, teacher: data.teacher,}
+    }
+
     createForm(formData).then((res) => {
       console.log(res);
+      setNotification(res.status === 201 ? "success" : "error");
+      setNotiOpen(true);
     }).catch((err) => {
       console.log(err.response.data);
     });
@@ -110,11 +121,21 @@ function FormPage() {
     }
   }, [entryDate, exitDate]);
 
-  //const [openNoti, setOpenNoti] = useState(false);
-
   return (
     <>
       <main className="flex flex-col gap-32">
+        <NotificationBox
+          type={notification}
+          title={notification === "success" ? "Formulario diligenciado correctamente" : "Error al crear el formulario"}
+          open={notiOpen}
+          setOpen={setNotiOpen}
+        >
+          {notification === "success" ? (
+            <p>El formulario ha sido creado <span className="font-semibold">éxitosamente</span></p>
+          ) : (
+            <p>Ha ocurrido un error al crear el convenio, por favor intente de nuevo</p>
+          )}
+        </NotificationBox>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <section className="grid grid-cols-1 mx-8 mt-10 md:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
             <div>
@@ -145,7 +166,7 @@ function FormPage() {
                 name={inputInfo.tipo.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.tipo.required }}
+                rules={{ required: inputInfo.tipo.required, onChange: (e) => setIsStudent(e.target.value === "STUDENT") }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.tipo}
@@ -196,6 +217,14 @@ function FormPage() {
             <CustomInput
               bubbleInf={Info.nombre}
               inputInf={inputInfo.nombre}
+              register={register}
+              errors={errors}
+            />
+
+
+            <CustomInput
+              bubbleInf={Info.apellidos}
+              inputInf={inputInfo.apellidos}
               register={register}
               errors={errors}
             />
@@ -305,7 +334,7 @@ function FormPage() {
                 name={inputInfo.convenio.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.convenio.required, onChange: (e) => setYes(e.target.value === "N" ? false : true) }}
+                rules={{ required: inputInfo.convenio.required, onChange: (e) => setYes(e.target.value === "Y") }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.convenio}
@@ -323,12 +352,12 @@ function FormPage() {
               )}
             </div>
 
-            <div className={`${!yes ? "opacity-40 -z-50": ""}`}>
+            <div className={`${yes ? "": "opacity-40 -z-50"}`}>
               <Controller
                 name={inputInfo.numConvenio.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.numConvenio.required }}
+                rules={{ required: yes }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.numConvenio}
@@ -398,12 +427,15 @@ function FormPage() {
               errors={errors}
               register={register}
             />
-            <CustomInput
-              bubbleInf={Info.profPres}
-              inputInf={inputInfo.profPres}
-              errors={errors}
-              register={register}
-            />
+            <div className={`${isStudent ? '' : 'opacity-40 -z-50'}`}>
+              <CustomInput
+                bubbleInf={Info.profPres}
+                inputInf={inputInfo.profPres}
+                errors={errors}
+                register={register}
+              />
+            </div>
+            
             <CustomInput
               bubbleInf={Info.facultad}
               inputInf={inputInfo.facultad}

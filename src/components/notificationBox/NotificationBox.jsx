@@ -17,22 +17,11 @@ const NotificationBox = ({type, title, children, open, setOpen}) => {
 
     const color = colors[type || 'info'];
 
-    useEffect(() => {
-        let timer;
-        if (open) {
-            timer = setTimeout(() => {
-                setOpen(false);
-            }, 10000);
-        }
-
-        return () => clearTimeout(timer);
-    }, [open, setOpen]);
-
     return(
-        <article className={`bg-${color.light} ${styles.mainContainer} ${open === true ? 'translate-x-0 ml-6': '-translate-x-full'}`}>
-            <div className={`bg-${color.dark} ${styles.border}`}></div>
-            <section className={`text-${color.text} ${styles.textContainer}`}>
-                <h1 className={`text-${color.dark} font-bold text-base sm:text-lg`}>{title}</h1>
+        <article className={`${color.bgLight} ${styles.mainContainer} ${open === true ? 'translate-x-0 ml-6': '-translate-x-full'}`}>
+            <div className={`${color.bgDark} ${styles.border}`}></div>
+            <section className={`${color.text} ${styles.textContainer}`}>
+                <h1 className={`${color.txtDark} font-bold text-base`}>{title}</h1>
                 {children}
             </section>
             <button className={`${styles.button}`} onClick={() => setOpen(false)}>
