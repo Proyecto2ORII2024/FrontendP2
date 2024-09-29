@@ -44,9 +44,11 @@ export default {
           'text': '#1E257B'
         },
         'grays':{
+
           DEFAULT: "#E4E1EC",
           'light': "#FBF8FF",
           'dark': "#928F9A",
+
         }
       }
     },

@@ -1,10 +1,21 @@
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { colors, styles } from './BoxStyles';
+import PropTypes from 'prop-types';
+import { colors, styles } from './BoxStyles.js';
 
 const NotificationBox = ({type, title, children, open, setOpen}) => {
 
-    const color = colors[type];
+    useEffect(() => {
+        let timer;
+        if (open) {
+            timer = setTimeout(() => {
+                setOpen(false);
+            }, 10000);
+        }
+
+        return () => clearTimeout(timer);
+    }, [open, setOpen]);
+
+    const color = colors[type || 'info'];
 
     useEffect(() => {
         let timer;
@@ -34,7 +45,7 @@ const NotificationBox = ({type, title, children, open, setOpen}) => {
 export default NotificationBox;
 
 NotificationBox.propTypes = {
-    type: PropTypes.oneOf(['success', 'error', 'info', 'alert']).isRequired,
+    type: PropTypes.oneOf(['success', 'error', 'info', 'alert', '']).isRequired,
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     open: PropTypes.bool.isRequired,
