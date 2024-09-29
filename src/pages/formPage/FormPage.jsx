@@ -6,6 +6,7 @@ import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 //import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import { useState, useEffect } from "react";
+import { createForm } from "../../services/form.service.js";
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -41,7 +42,7 @@ function FormPage() {
       country: data.country,
       teacher: data.teacher,
       faculty: data.faculty,
-      funding: data.funding,
+      funding: Number(data.funding),
       fundingSource: data.fundingSource,
       destination: data.destination,
       origin: data.origin,
@@ -59,7 +60,12 @@ function FormPage() {
         email: "",
       },
     };
-    console.log(formData);
+
+    createForm(formData).then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log(err.response.data);
+    });
   };
 
   function calcDays(fechaInicio, fechaFin) {
