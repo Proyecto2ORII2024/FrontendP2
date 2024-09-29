@@ -12,6 +12,14 @@ function FormPage() {
   const [entryDate, setEntryDate] = useState("");
   const [exitDate, setExitDate] = useState("");
 
+  const updateEntryDate = (e) => {
+    setEntryDate(e.target.value);
+  };
+
+  const updateExitDate = (e) => {
+    setExitDate(e.target.value);
+  };
+
   const {
     register,
     handleSubmit,
@@ -20,35 +28,59 @@ function FormPage() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const formData = {
+      orii: true,
+      direction: data.direction,
+      gender: data.gender,
+      cta: 0,
+      entryDate: data.entryDate,
+      exitDate: data.exitDate,
+      originProgram: data.originProgram,
+      destinationProgram: data.destinationProgram,
+      city: data.city,
+      country: data.country,
+      teacher: data.teacher,
+      faculty: data.faculty,
+      funding: data.funding,
+      fundingSource: data.fundingSource,
+      destination: data.destination,
+      origin: data.origin,
+      agreementId: data.agreementId,
+      event: {
+        description: data.eventDescription,
+        eventTypeId: data.eventType,
+      },
+      person: {
+        identificationType: data.identificationType,
+        personType: data.personType,
+        firstName: "",
+        lastName: "",
+        identification: data.personId,
+        email: "",
+      },
+    };
+    console.log(formData);
   };
 
   function calcDays(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
-  
+
     const diferenciaMilisegundos = fin - inicio;
-  
+
     const milisegundosPorDia = 1000 * 60 * 60 * 24;
     const diferenciaDias = diferenciaMilisegundos / milisegundosPorDia;
-  
+
     return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
   }
 
   useEffect(() => {
     if (entryDate && exitDate) {
-      const startDate = new Date(entryDate);
-      const endDate = new Date(exitDate);
-      const calculatedDays = calcDays(startDate, endDate); // Convertir milisegundos a días
-
-      setDays(calculatedDays >= 0 ? calculatedDays : 0); // Si el resultado es negativo, se considera 0 días
+      setDays(calcDays(entryDate, exitDate));
     }
   }, [entryDate, exitDate]);
 
-
   //const [openNoti, setOpenNoti] = useState(false);
-
-  
 
   return (
     <>
@@ -56,8 +88,19 @@ function FormPage() {
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <section className="grid grid-cols-1 mx-8 mt-10 md:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
             <div>
-              <Controller name={inputInfo.sentido.id} control={control} defaultValue="" rules={{ required: inputInfo.sentido.required }} render={({ field }) => (
-                  <CustomSelect inputInf={inputInfo.sentido} options={inputInfo.sentido.options} value={field.value} onChange={field.onChange} bblInfo={Info.sentido}/>
+              <Controller
+                name={inputInfo.sentido.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.sentido.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.sentido}
+                    options={inputInfo.sentido.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.sentido}
+                  />
                 )}
               />
               {errors[inputInfo.sentido.id] && (
@@ -68,8 +111,19 @@ function FormPage() {
             </div>
 
             <div>
-              <Controller name={inputInfo.tipo.id} control={control} defaultValue="" rules={{ required: inputInfo.tipo.required }} render={({ field }) => (
-                  <CustomSelect inputInf={inputInfo.tipo} options={inputInfo.tipo.options} value={field.value} onChange={field.onChange} bblInfo={Info.tipo}/>
+              <Controller
+                name={inputInfo.tipo.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.tipo.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.tipo}
+                    options={inputInfo.tipo.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.tipo}
+                  />
                 )}
               />
               {errors[inputInfo.tipo.id] && (
@@ -80,8 +134,19 @@ function FormPage() {
             </div>
 
             <div>
-              <Controller name={inputInfo.tipoDocumento.id} control={control} defaultValue="" rules={{ required: inputInfo.tipoDocumento.required }} render={({ field }) => (
-                  <CustomSelect inputInf={inputInfo.tipoDocumento} options={inputInfo.tipoDocumento.options} value={field.value} onChange={field.onChange} bblInfo={Info.tipoDocumento}/>
+              <Controller
+                name={inputInfo.tipoDocumento.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.tipoDocumento.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.tipoDocumento}
+                    options={inputInfo.tipoDocumento.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.tipoDocumento}
+                  />
                 )}
               />
               {errors[inputInfo.tipoDocumento.id] && (
@@ -106,8 +171,19 @@ function FormPage() {
             />
 
             <div>
-              <Controller name={inputInfo.genero.id} control={control} defaultValue="" rules={{ required: inputInfo.genero.required }} render={({ field }) => (
-                  <CustomSelect inputInf={inputInfo.genero} options={inputInfo.genero.options} value={field.value} onChange={field.onChange} bblInfo={Info.genero}/>
+              <Controller
+                name={inputInfo.genero.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.genero.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.genero}
+                    options={inputInfo.genero.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.genero}
+                  />
                 )}
               />
               {errors[inputInfo.genero.id] && (
@@ -128,8 +204,10 @@ function FormPage() {
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 type="date"
                 placeholder="Fecha de salida"
-                onChange={(e) => console.log(e)}
-                {...register ("exitDate", {required: true, onChange: (e) => console.log(e)})}
+                {...register("exitDate", {
+                  required: true,
+                  onChange: updateExitDate,
+                })}
               />
               {errors.exitDate && (
                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
@@ -148,8 +226,10 @@ function FormPage() {
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                 type="date"
                 placeholder="Fecha de entrada"
-                
-                {...register ("entryDate", {required: true, onChange: (e) => setEntryDate(e.target.value)})}
+                {...register("entryDate", {
+                  required: true,
+                  onChange: updateEntryDate,
+                })}
               />
               {errors.entryDate && (
                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
@@ -161,10 +241,10 @@ function FormPage() {
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
                 <InfoBubble info={Info.diasEstancia} />
-                <p>{days ? days : 'Días de estancia'}</p>
+                <p>Días de estancia</p>
               </div>
               <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                {days ? days : "Días de estancia" }
+                {days ? days : "Días de estancia"}
               </p>
             </label>
             <label className="flex flex-col w-full">
@@ -173,7 +253,8 @@ function FormPage() {
                 <p>Año</p>
               </div>
               <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                Año
+                {new Date().getFullYear()}{" "}
+                {/**Verificar la forma de enviarlo al backend */}
               </p>
             </label>
             <CustomInput
@@ -190,8 +271,19 @@ function FormPage() {
             />
 
             <div>
-              <Controller name={inputInfo.convenio.id} control={control} defaultValue="" rules={{ required: inputInfo.convenio.required }} render={({ field }) => (
-                  <CustomSelect inputInf={inputInfo.convenio} options={inputInfo.convenio.options} value={field.value} onChange={field.onChange} bblInfo={Info.convenio}/>
+              <Controller
+                name={inputInfo.convenio.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.convenio.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.convenio}
+                    options={inputInfo.convenio.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.convenio}
+                  />
                 )}
               />
               {errors[inputInfo.convenio.id] && (
@@ -209,8 +301,19 @@ function FormPage() {
             />
 
             <div>
-              <Controller name={inputInfo.tipoEvento.id} control={control} defaultValue="" rules={{ required: inputInfo.tipoEvento.required }} render={({ field }) => (
-                  <CustomSelect inputInf={inputInfo.tipoEvento} options={inputInfo.tipoEvento.options} value={field.value} onChange={field.onChange} bblInfo={Info.tipoEvento}/>
+              <Controller
+                name={inputInfo.tipoEvento.id}
+                control={control}
+                defaultValue=""
+                rules={{ required: inputInfo.tipoEvento.required }}
+                render={({ field }) => (
+                  <CustomSelect
+                    inputInf={inputInfo.tipoEvento}
+                    options={inputInfo.tipoEvento.options}
+                    value={field.value}
+                    onChange={field.onChange}
+                    bblInfo={Info.tipoEvento}
+                  />
                 )}
               />
               {errors[inputInfo.tipoEvento.id] && (
@@ -219,19 +322,12 @@ function FormPage() {
                 </span>
               )}
             </div>
-            <label className="flex flex-col w-full">
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.descEvento} />
-                <p>Descripción del evento</p>
-              </div>
-              <input
-                id="eventDesc"
-                autoComplete="off"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                type="text"
-                placeholder="Descripción del evento"
-              />
-            </label>
+            <CustomInput
+              bubbleInf={Info.descEvento}
+              inputInf={inputInfo.descEvento}
+              errors={errors}
+              register={register}
+            />
             <CustomInput
               bubbleInf={Info.programaOrigen}
               inputInf={inputInfo.programaOrigen}
