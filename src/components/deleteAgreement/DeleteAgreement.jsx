@@ -1,10 +1,10 @@
 import FloatingContainer from "../floatingContainer/FloatingContainer";
-import MainButton from "../../components/buttons/MainButton";
+import MainButton from "../buttons/MainButton";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { deleteAgreement } from "../../services/agreement.service";
 
-function DeleteConvenio({ open, setOpen, agreementId, setDeleted }) {
+function DeleteAgreement({ open, setOpen, agreementId, setDeleted }) {
   const [isOpened, setIsOpened] = useState(false);
 
   const onSubmit = () => {
@@ -50,11 +50,11 @@ function DeleteConvenio({ open, setOpen, agreementId, setDeleted }) {
   );
 }
 
-DeleteConvenio.propTypes = {
+DeleteAgreement.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   agreementId: PropTypes.string.isRequired,
   setDeleted: PropTypes.func.isRequired,
 };
 
-export default DeleteConvenio;
+export default DeleteAgreement;

@@ -5,14 +5,14 @@ import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import MainButton from "../../components/buttons/MainButton.jsx";
-import EditConvenio from "../../components/editConvenio/EditConvenio.jsx";
-import DeleteConvenio from "../../components/deleteConvenio/DeleteConvenio.jsx";
+import EditAgreement from "../../components/editAgreement/EditAgreement.jsx";
+import DeleteAgreement from "../../components/deleteAgreement/DeleteAgreement.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AgreementTable from "../../components/agreementTable/AgreementTable.jsx";
 
-import { obtainAgreements } from "./agreementMiddleware.js";
+import { obtainAgreements } from "../../services/agreement.service.js";
 
-function ConvenioAdminPage() {
+function AgreementAdminPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [nationalAgreements, setNationalAgreements] = useState([]);
   const [internationalAgreements, setInternationalAgreements] = useState([]);
@@ -43,17 +43,17 @@ function ConvenioAdminPage() {
       setIsSearching(true);
       setSearchAgreement(
         agreements.filter(
-          (convenio) =>
-            convenio.agreementNumber
+          (agreement) =>
+            agreement.agreementNumber
               .toLowerCase()
               .includes(e.target.value.toLowerCase()) ||
-            convenio.country
+            agreement.country
               .toLowerCase()
               .includes(e.target.value.toLowerCase()) ||
-            convenio.institution
+            agreement.institution
               .toLowerCase()
               .includes(e.target.value.toLowerCase()) ||
-            convenio.description
+            agreement.description
               .toLowerCase()
               .includes(e.target.value.toLowerCase())
         )
@@ -64,13 +64,13 @@ function ConvenioAdminPage() {
   return (
     <>
       <main>
-        <EditConvenio
+        <EditAgreement
           open={open}
           setOpen={setOpen}
           agreementId={agreementId}
           setUpdated={setwasUpdated}
         />
-        <DeleteConvenio
+        <DeleteAgreement
           open={openDelete}
           setOpen={setOpenDelete}
           agreementId={agreementId}
@@ -178,4 +178,4 @@ function ConvenioAdminPage() {
   );
 }
 
-export default ConvenioAdminPage;
+export default AgreementAdminPage;
