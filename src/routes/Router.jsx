@@ -8,6 +8,7 @@ import AgreementAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
 import CreateAgreementPage from "../pages/createAgreementPage/CreateAgreementPage";
 import AgreementUserPage from "../pages/agreementUserPage/AgreementUserPage";
 
+
 function Router() {
     return (
         <BrowserRouter>
@@ -16,9 +17,7 @@ function Router() {
             <Route path="/admin" element={<MainAdmin />} />
             <Route path="/user" element={<MainUser />} />
             <Route path="/form" element={<FormPage />} />
-            <Route path="/admin/convenio" element={<AgreementAdminPage />} />
-            <Route path="/admin/convenio/create" element={<CreateAgreementPage />} />
-            <Route path="/user/convenio" element={<AgreementUserPage />} />
+            <Route path="/main/user/page" element={<MainUserPage />} />
         </Routes>
         </BrowserRouter>
     );
