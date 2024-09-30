@@ -12,7 +12,6 @@ function ListaUsuarioPage() {
     const [isSearching, setIsSearching] = useState(false);
     const [searchStudent, setSearchStudent] = useState([]);
     const [estudiantes, setEstudiantes] = useState([
-
         {
             Id:1,
             Correo: "ORI@UNICAUCA.EDU.CO",
