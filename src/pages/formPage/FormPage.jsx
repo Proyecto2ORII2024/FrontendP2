@@ -40,7 +40,7 @@ function FormPage() {
       orii: true,
       direction: data.direction,
       gender: data.gender,
-      cta: 0,
+      cta: 1,
       entryDate: data.entryDate,
       exitDate: data.exitDate,
       originProgram: data.originProgram,
@@ -52,6 +52,7 @@ function FormPage() {
       fundingSource: data.fundingSource,
       destination: data.destination,
       origin: data.origin,
+      agreementId : yes ? data.agreementId : 1,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -64,10 +65,7 @@ function FormPage() {
         identification: data.personId,
       },
     };
-
-    if(yes){
-      formData = {...formData, agreementId: data.agreementId}
-    }
+    
     if(isStudent){
       formData = {...formData, teacher: data.teacher,}
     }
