@@ -10,7 +10,6 @@ import AgreementUserPage from "../pages/agreementUserPage/AgreementUserPage";
 import ListaEstudiante from "../pages/listaUsuarioPage/ListaUsuarioPage.jsx";
 import RegistrarUsuarioPage from "../pages/registrarUsuario/RegistrarUsuarioPage";
 
-import ConvenioUserPage from "../pages/convenioUserPage/ConvenioUserPage";
 
 function Router() {
     return (
@@ -25,7 +24,7 @@ function Router() {
             <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
             <Route path="/user/agreement" element={<AgreementUserPage />} />
             <Route path="/estudiante" element={<ListaEstudiante />} />
-            <Route path="/user/convenio" element={<ConvenioUserPage />} />
+
         </Routes>
         </BrowserRouter>
     );
