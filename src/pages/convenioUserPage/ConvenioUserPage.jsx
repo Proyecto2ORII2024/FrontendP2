@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import search from "../../assets/icons/search.svg";
+import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 
-import styles from "../convenioAdminPage/styles.js";
+import styles from "../agreementAdminPage/styles.js";
 
 function ConvenioUserPage() {
   const [isSearching, setIsSearching] = useState(false);
@@ -20,7 +20,7 @@ function ConvenioUserPage() {
       selected: true,
     },
     {
-      pais: "Alemania",
+      pais: "Mexico",
       institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
       codigo: "25-32.8 040 2023",
       fechaInicio: "2023-01-01",
@@ -29,7 +29,7 @@ function ConvenioUserPage() {
       selected: false,
     },
     {
-      pais: "Alemania",
+      pais: "Australia",
       institucion: "SERVICIO ALEMÁN DE INTERCAMBIO ACADÉMICO (DAAD)",
       codigo: "25-32.9 040 2023",
       fechaInicio: "2023-01-01",

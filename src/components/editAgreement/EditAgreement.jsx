@@ -1,26 +1,46 @@
-import FloatingContainer from "../floatingContainer/FloatingContainer";
-import MainButton from "../../components/buttons/MainButton";
-import InfoBubble from "../../components/infoBubble/InfoBubble";
+import FloatingContainer from "../floatingContainer/FloatingContainer.jsx";
+import MainButton from "../buttons/MainButton.jsx";
+import InfoBubble from "../infoBubble/InfoBubble.jsx";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
+import { getAgreement, updateAgreement } from "../../services/agreement.service.js";
 
-function EditConvenio({agreementId, open, setOpen}) {
+function EditAgreement({agreementId, open, setOpen, setUpdated}) {
     const [isOpened, setIsOpened] = useState(false);
 
-    useEffect(() => {
-        console.log(agreementId)
-        setIsOpened(open);
-    }, [open, agreementId]);
-
     const {
-        register,
-        handleSubmit,
-        formState: { errors },
-      } = useForm();
+      register,
+      handleSubmit,
+      setValue,
+      formState: { errors },
+    } = useForm();
+
+    useEffect(() => {
+      if (open) {
+        getAgreement(agreementId).then((response) => {
+          const { data } = response;
+          setValue("country", data.country);
+          setValue("agreementNumber", data.agreementNumber);
+          setValue("institution", data.institution);
+          setValue("startDate", data.startDate);
+          setValue("scope", data.scope);
+          setValue("description", data.description);
+        });
+      }
+      setIsOpened(open);
+    }, [open, agreementId, setValue]);
     
       const onSubmit = (data) => {
-        console.log(data);
+        updateAgreement(data, agreementId).then((res) => {
+          if (res.status === 200) {
+            setIsOpened(false);
+            setOpen(false);
+            setUpdated("success");
+          }else{
+            setUpdated("error");
+          }
+        });
       };
 
   return (
@@ -46,9 +66,9 @@ function EditConvenio({agreementId, open, setOpen}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("pais", { required: true })}
+                  {...register("country", { required: true })}
                 />
-                {errors.pais && (
+                {errors.country && (
                   <span className="text-sm text-red-400">
                     Este campo es requerido
                   </span>
@@ -63,9 +83,9 @@ function EditConvenio({agreementId, open, setOpen}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Codigo"
-                  {...register("codigo", { required: true })}
+                  {...register("agreementNumber", { required: true })}
                 />
-                {errors.codigo && (
+                {errors.agreementNumber && (
                   <span className="text-sm text-red-400">
                     Este campo es requerido
                   </span>
@@ -82,9 +102,9 @@ function EditConvenio({agreementId, open, setOpen}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
-                  {...register("institucion", { required: true })}
+                  {...register("institution", { required: true })}
                 />
-                {errors.institucion && (
+                {errors.institution && (
                   <span className="text-sm text-red-400">
                     Este campo es requerido
                   </span>
@@ -100,9 +120,9 @@ function EditConvenio({agreementId, open, setOpen}) {
                 <input id="startDate"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="date"
-                  {...register("fechaInicio", { required: true })}
+                  {...register("startDate", { required: true })}
                 />
-                {errors.fechaInicio && (
+                {errors.startDate && (
                   <span className="text-sm text-red-400">
                     Este campo es requerido
                   </span>
@@ -115,12 +135,12 @@ function EditConvenio({agreementId, open, setOpen}) {
                 </div>
                 <select id="scope"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
-                  {...register("ambito", { required: true })}
+                  {...register("scope", { required: true })}
                 >
-                  <option value="Nacional">Nacional</option>
-                  <option value="Internacional">Internacional</option>
+                  <option value="NATIONAL">Nacional</option>
+                  <option value="INTERNATIONAL">Internacional</option>
                 </select>
-                {errors.ambito && (
+                {errors.scope && (
                   <span className="text-sm text-red-400">
                     Este campo es requerido
                   </span>
@@ -137,10 +157,10 @@ function EditConvenio({agreementId, open, setOpen}) {
               id="description"
               className="border-2 ml-7 border-neutral-hover outline-none p-2 rounded-md h-[120px]"
               placeholder="Descripción..."
-              {...register("descripcion", { required: true })}
+              {...register("description", { required: true })}
             />
 
-            {errors.descripcion && (
+            {errors.description && (
               <span className="text-sm text-red-400">
                 Este campo es requerido
               </span>
@@ -161,10 +181,11 @@ function EditConvenio({agreementId, open, setOpen}) {
   );
 }
 
-EditConvenio.propTypes = {
+EditAgreement.propTypes = {
     agreementId: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
+    setUpdated: PropTypes.func.isRequired
 };
 
-export default EditConvenio;
+export default EditAgreement;

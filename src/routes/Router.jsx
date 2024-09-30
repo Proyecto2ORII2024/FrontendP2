@@ -3,12 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/loginPage/Login";
 import MainAdmin from "../pages/mainAdminPage/MainAdmin";
 import MainUser from "../pages/mainUserPage/MainUser";
-import StatisticsPage from "../pages/statisticsPage/StatisticsPage";
 import FormPage from "../pages/formPage/FormPage";
-import ConvenioAdminPage from "../pages/convenioAdminPage/ConvenioAdminPage";
-import CreateConvenioPage from "../pages/createConvenioPage/CreateConvenioPage";
-import ConvenioUserPage from "../pages/convenioUserPage/ConvenioUserPage";
-import MainUserPage from "../pages/mainUserPage/MainUser";
+import AgreementAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
+import CreateAgreementPage from "../pages/createAgreementPage/CreateAgreementPage";
+import AgreementUserPage from "../pages/agreementUserPage/AgreementUserPage";
+import ListaUsuarioPage from "../pages/ListaUsuarioPage/ListaUsuarioPage";
+import RegistrarUsuarioPage from "../pages/registrarUsuario/RegistrarUsuarioPage";
+import StatisticsPage from "../pages/statisticsPage/StatisticsPage";
 
 function Router() {
     return (
@@ -18,11 +19,13 @@ function Router() {
             <Route path="/admin" element={<MainAdmin />} />
             <Route path="/user" element={<MainUser />} />
             <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/user/registrar" element={<RegistrarUsuarioPage />} />
             <Route path="/form" element={<FormPage />} />
-            <Route path="/admin/convenio" element={<ConvenioAdminPage />} />
-            <Route path="/admin/convenio/create" element={<CreateConvenioPage />} />
-            <Route path="/user/convenio" element={<ConvenioUserPage />} />
-            <Route path="/main/user/page" element={<MainUserPage />} />
+            <Route path="/admin/agreement" element={<AgreementAdminPage />} />
+            <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
+            <Route path="/user/agreement" element={<AgreementUserPage />} />
+            <Route path="/estudiante" element={<ListaUsuarioPage />} />
+
         </Routes>
         </BrowserRouter>
     );
