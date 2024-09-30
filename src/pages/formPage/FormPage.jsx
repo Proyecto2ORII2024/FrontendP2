@@ -1,6 +1,6 @@
 import InfoBubble from "../../components/infoBubble/InfoBubble";
 import MainButton from "../../components/buttons/MainButton.jsx";
-import { Info, inputInfo } from "./Information.js";
+import { Info, inputInfo, createAgreementOptions, calcDays } from "./Information.js";
 import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
@@ -81,35 +81,9 @@ function FormPage() {
     });
   };
 
-  function calcDays(fechaInicio, fechaFin) {
-    const inicio = new Date(fechaInicio);
-    const fin = new Date(fechaFin);
-
-    const diferenciaMilisegundos = fin - inicio;
-
-    const milisegundosPorDia = 1000 * 60 * 60 * 24;
-    const diferenciaDias = diferenciaMilisegundos / milisegundosPorDia;
-
-    return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
-  }
-
-  /**Esta funcion la sacas  aotro archivo */
-  const createAgreementOptions = (agreements) => {
-    const options = [];
-
-    agreements.forEach((agreement) => {
-      options.push({
-        value: agreement.id,
-        text: agreement.agreementNumber,
-      });
-    });
-
-    setAgreements(options);
-  };
-
   useEffect(() => {
     getAgreements().then((res) => {
-      createAgreementOptions(res.data);
+      createAgreementOptions(res.data, setAgreements);
     }).catch((err) => {
       console.log(err.response.data);
     });

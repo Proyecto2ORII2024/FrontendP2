@@ -96,7 +96,7 @@ CustomSelect.propTypes = {
     text: PropTypes.string,
   }),
   options: PropTypes.array.isRequired,
-  value: PropTypes.string,      
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),      
   onChange: PropTypes.func,
   bblInfo: PropTypes.object,
 };

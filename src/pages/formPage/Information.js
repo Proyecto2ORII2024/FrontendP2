@@ -377,3 +377,28 @@ export const inputInfo = {
         required: true
     }
 }
+
+export const createAgreementOptions = (agreements, setAgreements) => {
+    const options = [];
+
+    agreements.forEach((agreement) => {
+      options.push({
+        value: agreement.id,
+        text: agreement.agreementNumber,
+      });
+    });
+
+    setAgreements(options);
+};
+
+export function calcDays(fechaInicio, fechaFin) {
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+
+    const diferenciaMilisegundos = fin - inicio;
+
+    const milisegundosPorDia = 1000 * 60 * 60 * 24;
+    const diferenciaDias = diferenciaMilisegundos / milisegundosPorDia;
+
+    return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
+}
