@@ -24,6 +24,7 @@ function Router() {
             <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
             <Route path="/user/agreement" element={<AgreementUserPage />} />
             <Route path="/estudiante" element={<ListaEstudiante />} />
+
         </Routes>
         </BrowserRouter>
     );
