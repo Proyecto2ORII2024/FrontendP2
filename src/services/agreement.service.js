@@ -4,7 +4,7 @@ import { apiUrl } from "./env.service.js";
 const url = `${apiUrl}/agreement`;
 
 export const getAgreements = async () => {
-    return await axios.get(`${url}/allAgreement`);
+    return await axios.get(`${url}/all`);
 }
 
 export const createAgreement = async (agreement) => {
@@ -23,24 +23,35 @@ export const getAgreement = async (agreementId) => {
     return await axios.get(`${url}/${agreementId}`);
 }
 
+/**
+ * 
+ * TODO: quitar esa vuelta del index
+ * !Si no se explota
+ */
+
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
-    agreements = agreements.data;
+    agreements = agreements.data.content;
+
+    
+    console.log(agreements)
 
     const agreementsData = {
         NATIONAL: [],
         INTERNATIONAL: [],
-        ALL: agreements
+        ALL: agreements.map((agreement, index) => ({...agreement, id: index +1}))
     }
 
-    agreements.forEach(agreement => {
+    agreements.forEach((agreement, index) => {
         if(agreement.scope === "NATIONAL") {
-            agreementsData.NATIONAL.push(agreement);
+            agreementsData.NATIONAL.push({...agreement, id: index +1});
         } else {
-            agreementsData.INTERNATIONAL.push(agreement);
+            agreementsData.INTERNATIONAL.push({...agreement, id: index +1 });
         }
     });
+
+    console.log(agreementsData)
 
     return agreementsData;
 }

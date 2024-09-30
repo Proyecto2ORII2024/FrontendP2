@@ -121,7 +121,7 @@ function AgreementAdminPage() {
         </h2>
         <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
           <MainButton
-            onClick={() => navigate("/admin/convenio/create")}
+            onClick={() => navigate("/admin/agreement/create")}
             text="Crear Convenio"
             bgColor="primary"
             hoverBg="primary-light"

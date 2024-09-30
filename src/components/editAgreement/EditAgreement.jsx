@@ -40,6 +40,9 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
           }else{
             setUpdated("error");
           }
+        }).catch((error) => {
+          console.log(error);
+          setUpdated("error");
         });
       };
 

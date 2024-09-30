@@ -15,7 +15,10 @@ function DeleteAgreement({ open, setOpen, agreementId, setDeleted }) {
         setDeleted('success');
       }else{
         setDeleted('error');}
-    });
+    }).catch((error) => {
+      console.log(error);
+      setDeleted('error');
+  });
   }
 
   useEffect(() => {

@@ -26,6 +26,12 @@ function CreateAgreementPage() {
         setOpen(true);
         reset();
       }
+    ).catch(
+      (error) => {
+        console.log(error);
+        setNotification("error");
+        setOpen(true);
+      }
     )
   };
 
