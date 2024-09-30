@@ -1,55 +1,54 @@
+import FloatingContainer from "../floatingContainer/FloatingContainer";
 import MainButton from "../../components/buttons/MainButton";
 import InfoBubble from "../../components/infoBubble/InfoBubble";
-import NotificationBox from "../../components/notificationBox/NotificationBox";
-
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
+import { getAgreement, updateAgreement } from "../../services/agreement.service.js";
 
-import { createAgreement } from "../../services/agreement.service";
-function CreateConvenioPage() {
-  const [open, setOpen] = useState(false);
-  const [notification, setNotification] = useState("");
-  
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+function EditConvenio({agreementId, open, setOpen, setUpdated}) {
+    const [isOpened, setIsOpened] = useState(false);
 
-  const onSubmit = (data) => {
+    const {
+      register,
+      handleSubmit,
+      setValue,
+      formState: { errors },
+    } = useForm();
 
-    createAgreement(data).then(
-      (response) => {
-        console.log(response);
-        setNotification(response.status === 201 ? "success" : "error");
-        setOpen(true);
-        reset();
+    useEffect(() => {
+      if (open) {
+        getAgreement(agreementId).then((response) => {
+          const { data } = response;
+          setValue("country", data.country);
+          setValue("agreementNumber", data.agreementNumber);
+          setValue("institution", data.institution);
+          setValue("startDate", data.startDate);
+          setValue("scope", data.scope);
+          setValue("description", data.description);
+        });
       }
-    )
-  };
+      setIsOpened(open);
+    }, [open, agreementId, setValue]);
+    
+      const onSubmit = (data) => {
+        updateAgreement(data, agreementId).then((res) => {
+          if (res.status === 200) {
+            setIsOpened(false);
+            setOpen(false);
+            setUpdated("success");
+          }else{
+            setUpdated("error");
+          }
+        });
+      };
 
   return (
-    <>
+    <FloatingContainer open={isOpened} setOpen={() => setOpen(false)}>
       <main>
-        <NotificationBox
-          type={notification}
-          title={notification === "success" ? "Convenio creado" : "Error al crear convenio"}
-          open={open}
-          setOpen={setOpen}
-        >
-          {notification === "success" ? (
-            <p>El convenio ha sido creado exitosamente</p>
-          ) : (
-            <p>Ha ocurrido un error al crear el convenio, por favor intente de nuevo</p>
-          )}
-        </NotificationBox>
-
         <h2 className="w-full mt-5 p-5 text-lg text-center">
-          A continuación podrá crear un convenio, por favor verifique que la
-          información ingresada es correcta e ingrese todos los campos.
+        A continuación edite los campos que considere prudente sin dejar campos vacios.
         </h2>
-
 
         <section className="w-full flex justify-center">
           <form
@@ -59,12 +58,11 @@ function CreateConvenioPage() {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "pais", shortInfo: "Pais"}} />
+                  <InfoBubble info={{ title: "pais", shortInfo: "Pais", longInfo: "" }} />
                   <p>Pais</p>
                 </div>
-                <input
-                  id="country"
-                  autoComplete="off"
+                <input id="country"
+                autoComplete="off"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
@@ -78,10 +76,10 @@ function CreateConvenioPage() {
               </label>
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo"}} />
+                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo", longInfo: "" }} />
                   <p>Codigo</p>
                 </div>
-                <input id="agreementNumber"
+                <input id="code"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Codigo"
@@ -97,11 +95,10 @@ function CreateConvenioPage() {
             <section className="flex">
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Institución", shortInfo: "Institución"}} />
+                  <InfoBubble info={{ title: "Institución", shortInfo: "Institución", longInfo: "" }} />
                   <p>Institución</p>
                 </div>
-                <input
-                  id="institution"
+                <input id="institution"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
@@ -117,11 +114,10 @@ function CreateConvenioPage() {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio"}} />
+                  <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio", longInfo: "" }} />
                   <p>Fecha de inicio</p>
                 </div>
-                <input
-                  id="startDate"
+                <input id="startDate"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="date"
                   {...register("startDate", { required: true })}
@@ -134,11 +130,10 @@ function CreateConvenioPage() {
               </label>
               <label className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito"}} />
+                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito", longInfo: "" }} />
                   <p>Ambito</p>
                 </div>
-                <select
-                  id="scope"
+                <select id="scope"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   {...register("scope", { required: true })}
                 >
@@ -153,8 +148,8 @@ function CreateConvenioPage() {
               </label>
             </section>
             <label htmlFor="description" className="flex flex-col w-full">
-            <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción"}} />
+            <div  className="flex gap-2 items-center">
+                  <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción", longInfo: "" }} />
                   <p>Descripción</p>
                 </div>
             </label>
@@ -173,18 +168,24 @@ function CreateConvenioPage() {
             <section className="flex justify-center">
               <MainButton
                 type="submit"
-                text="Crear Convenio"
+                text="Guardar"
                 bgColor="primary"
                 hoverBg="primary-light"
                 textColor="white"
               />
-
             </section>
           </form>
         </section>
       </main>
-    </>
+    </FloatingContainer>
   );
 }
 
-export default CreateConvenioPage;
+EditConvenio.propTypes = {
+    agreementId: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    setUpdated: PropTypes.func.isRequired
+};
+
+export default EditConvenio;

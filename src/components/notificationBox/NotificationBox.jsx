@@ -1,9 +1,21 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { colors, styles } from './BoxStyles';
+import { colors, styles } from './BoxStyles.js';
 
 const NotificationBox = ({type, title, children, open, setOpen}) => {
 
-    const color = colors[type];
+    useEffect(() => {
+        let timer;
+        if (open) {
+            timer = setTimeout(() => {
+                setOpen(false);
+            }, 10000);
+        }
+
+        return () => clearTimeout(timer);
+    }, [open, setOpen]);
+
+    const color = colors[type || 'info'];
 
     return(
         <article className={`${color.bgLight} ${styles.mainContainer} ${open === true ? 'translate-x-0 ml-6': '-translate-x-full'}`}>
@@ -22,7 +34,7 @@ const NotificationBox = ({type, title, children, open, setOpen}) => {
 export default NotificationBox;
 
 NotificationBox.propTypes = {
-    type: PropTypes.oneOf(['succcess', 'error', 'info', 'alert']).isRequired,
+    type: PropTypes.oneOf(['success', 'error', 'info', 'alert', '']).isRequired,
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     open: PropTypes.bool.isRequired,
