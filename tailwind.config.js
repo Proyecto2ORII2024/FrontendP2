@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.jsx"],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
       colors:{
@@ -42,10 +42,41 @@ export default {
           'light':'#E0E0FF',
           'dark': '#373D92',
           'text': '#1E257B'
+        },
+        'grays':{
+
+          DEFAULT: "#E4E1EC",
+          'light': "#FBF8FF",
+          'dark': "#928F9A",
+
         }
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function({addUtilities}){
+      const newUtilities = {
+        '.scrollbar-thin':{
+          scrollbarWidth: 'thin',
+          scrollbarcolor: 'rgb(31 29 29) white',
+        },
+        '.scrollbar-webkit':{
+          '&::-webkit-scrollbar': {
+            width: '8px'
+          },
+          '&::-webkit-scrollbar-track' :{
+            background: 'transparent'
+          },
+          '&::-webkit-scrollbar-thumb':{
+            backgroundColor: 'rgb(67 67 67)',
+            borderRadius: '10px',
+            border: '1px solid white'
+          }
+        }
+      }
+
+      addUtilities(newUtilities, ['responsive', 'hover'])
+    }
+  ],
 }
 
