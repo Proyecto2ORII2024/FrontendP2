@@ -10,6 +10,10 @@ import AgreementUserPage from "../pages/agreementUserPage/AgreementUserPage";
 import ListaUsuarioPage from "../pages/ListaUsuarioPage/ListaUsuarioPage";
 import RegistrarUsuarioPage from "../pages/registrarUsuario/RegistrarUsuarioPage";
 import StatisticsPage from "../pages/statisticsPage/StatisticsPage";
+import AsideUser from "../components/asideUser/AsideUser";
+import AsideAdmin from "../components/asideAdmin/AsideAdmin";
+import NavbarUser from "../components/navbarUser/NavbarUser";
+import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
 
 function Router() {
     return (
@@ -25,7 +29,10 @@ function Router() {
             <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
             <Route path="/user/agreement" element={<AgreementUserPage />} />
             <Route path="/estudiante" element={<ListaUsuarioPage />} />
-
+            <Route path="/navbarUser" element={<NavbarUser/>} />
+            <Route path="/navbarAdmin" element={<NavbarAdmin/>} />
+            <Route path="/asideUser" element={<AsideUser/>} />
+            <Route path="/asideAdmin" element={<AsideAdmin/>}/>
         </Routes>
         </BrowserRouter>
     );
