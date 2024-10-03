@@ -79,7 +79,7 @@ function CreateAgreementPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "El pais solo puede contener letras" }})}
+                  {...register("country", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "El pais solo puede contener numeros" }})}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
