@@ -23,35 +23,25 @@ export const getAgreement = async (agreementId) => {
     return await axios.get(`${url}/${agreementId}`);
 }
 
-/**
- * 
- * TODO: quitar esa vuelta del index
- * !Si no se explota
- */
 
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
     agreements = agreements.data.content;
 
-    
-    console.log(agreements)
-
     const agreementsData = {
         NATIONAL: [],
         INTERNATIONAL: [],
-        ALL: agreements.map((agreement, index) => ({...agreement, id: index +1}))
+        ALL: agreements.map((agreement) => (agreement))
     }
 
-    agreements.forEach((agreement, index) => {
+    agreements.forEach((agreement) => {
         if(agreement.scope === "NATIONAL") {
-            agreementsData.NATIONAL.push({...agreement, id: index +1});
+            agreementsData.NATIONAL.push(agreement);
         } else {
-            agreementsData.INTERNATIONAL.push({...agreement, id: index +1 });
+            agreementsData.INTERNATIONAL.push(agreement);
         }
     });
-
-    console.log(agreementsData)
 
     return agreementsData;
 }

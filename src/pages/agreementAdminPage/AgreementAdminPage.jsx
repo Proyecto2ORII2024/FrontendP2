@@ -23,6 +23,7 @@ function AgreementAdminPage() {
   const [agreementId, setAgreementId] = useState("");
   const [wasDeleted, setWasDeleted] = useState("");
   const [wasUpdated, setwasUpdated] = useState("");
+  const [agreementSelected, setAgreementSelected] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +68,7 @@ function AgreementAdminPage() {
         <EditAgreement
           open={open}
           setOpen={setOpen}
-          agreementId={agreementId}
+          agreement={agreementSelected}
           setUpdated={setwasUpdated}
         />
         <DeleteAgreement
@@ -148,6 +149,7 @@ function AgreementAdminPage() {
                   agreements={nationalAgreements}
                   setOpen={setOpen}
                   setAgreementId={setAgreementId}
+                  setAgreementSelected={setAgreementSelected}
                   setOpenDelete={setOpenDelete}
                 />
               </section>
@@ -158,6 +160,7 @@ function AgreementAdminPage() {
                   agreements={internationalAgreements}
                   setOpen={setOpen}
                   setAgreementId={setAgreementId}
+                  setAgreementSelected={setAgreementSelected}
                   setOpenDelete={setOpenDelete}
                 />
               </section>
@@ -169,6 +172,7 @@ function AgreementAdminPage() {
               agreements={searchAgreement}
               setOpen={setOpen}
               setAgreementId={setAgreementId}
+              setAgreementSelected={setAgreementSelected}
               setOpenDelete={setOpenDelete}
             />
           </section>

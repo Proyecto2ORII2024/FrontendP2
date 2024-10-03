@@ -9,7 +9,8 @@ function DeleteAgreement({ open, setOpen, agreementId, setDeleted }) {
 
   const onSubmit = () => {
     deleteAgreement(agreementId).then((res) => {
-      if (res.status === 200){
+      console.log(res)
+      if (res.status === 204){
         setIsOpened(false);
         setOpen(false);
         setDeleted('success');

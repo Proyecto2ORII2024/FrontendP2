@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { createAgreement } from "../../services/agreement.service";
+
+import { formatDateToDDMMYYYY } from "../../utils/Date.js";
+
 function CreateAgreementPage() {
   const [open, setOpen] = useState(false);
   const [notification, setNotification] = useState("");
@@ -18,6 +21,8 @@ function CreateAgreementPage() {
   } = useForm();
 
   const onSubmit = (data) => {
+
+    data.startDate = formatDateToDDMMYYYY(data.startDate);
 
     createAgreement(data).then(
       (response) => {
@@ -74,11 +79,11 @@ function CreateAgreementPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true})}
+                  {...register("country", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "El pais solo puede contener letras" }})}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
-                    Este campo es requerido
+                    {errors.country.message}
                   </span>
                 )}
               </label>
@@ -91,11 +96,14 @@ function CreateAgreementPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Codigo"
-                  {...register("agreementNumber", { required: true })}
+                  {...register("agreementNumber", { required: true, pattern: { value: /^[0-9.-]+$/, message: "El codigo solo puede contener numeros y (. -)" }, minLength: {
+                    value: 4,
+                    message: "El codigo debe tener al menos 4 caracteres"
+                  }})}
                 />
                 {errors.agreementNumber && (
                   <span className="text-sm text-red-400">
-                    Este campo es requerido
+                    {errors.agreementNumber.message}
                   </span>
                 )}
               </label>
@@ -111,11 +119,11 @@ function CreateAgreementPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
-                  {...register("institution", { required: true })}
+                  {...register("institution", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "la institución solo puede contener letras" } })}
                 />
                 {errors.institution && (
                   <span className="text-sm text-red-400">
-                    Este campo es requerido
+                    {errors.institution.message}
                   </span>
                 )}
               </label>
