@@ -21,11 +21,11 @@ const NotificationBox = ({type, title, children, open, setOpen}) => {
         <article className={`${color.bgLight} ${styles.mainContainer} ${open === true ? 'translate-x-0 ml-6': '-translate-x-full'}`}>
             <div className={`${color.bgDark} ${styles.border}`}></div>
             <section className={`${color.text} ${styles.textContainer}`}>
-                <h1 className={`${color.txtDark} font-bold text-base sm:text-lg`}>{title}</h1>
+                <h1 className={`${color.txtDark} font-bold text-base`}>{title}</h1>
                 {children}
             </section>
             <button className={`${styles.button}`} onClick={() => setOpen(false)}>
-                <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="24px" className={`${color.txtDark} fill-current`}><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="24px" className={`text-${color.dark} fill-current`}><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
             </button>
         </article>
     );
