@@ -9,6 +9,7 @@ import EditAgreement from "../../components/editAgreement/EditAgreement.jsx";
 import DeleteAgreement from "../../components/deleteAgreement/DeleteAgreement.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AgreementTable from "../../components/agreementTable/AgreementTable.jsx";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 import { obtainAgreements } from "../../services/agreement.service.js";
 
@@ -63,7 +64,7 @@ function AgreementAdminPage() {
   };
 
   return (
-    <>
+    <AdminLayout>
       <main>
         <EditAgreement
           open={open}
@@ -178,7 +179,7 @@ function AgreementAdminPage() {
           </section>
         )}
       </main>
-    </>
+    </AdminLayout>
   );
 }
 

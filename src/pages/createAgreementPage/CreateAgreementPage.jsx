@@ -1,6 +1,7 @@
 import MainButton from "../../components/buttons/MainButton";
 import InfoBubble from "../../components/infoBubble/InfoBubble";
 import NotificationBox from "../../components/notificationBox/NotificationBox";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -41,7 +42,7 @@ function CreateAgreementPage() {
   };
 
   return (
-    <>
+    <AdminLayout>
       <main>
         <NotificationBox
           type={notification}
@@ -197,7 +198,7 @@ function CreateAgreementPage() {
           </form>
         </section>
       </main>
-    </>
+    </AdminLayout>
   );
 }
 
