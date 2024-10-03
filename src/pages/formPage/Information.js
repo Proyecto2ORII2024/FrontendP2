@@ -54,7 +54,7 @@ export const Info = {
     },
     apellidos:{
         title: 'Apellidos',
-        shortInfo: 'Escriba los nombres de la persona, conforme está escrito en el documento de identificación.'
+        shortInfo: 'Escriba los apellidos de la persona, conforme está escrito en el documento de identificación.'
     },
     genero:{
         title: 'Género',

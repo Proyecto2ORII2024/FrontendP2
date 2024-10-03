@@ -78,6 +78,8 @@ function FormPage() {
       setNotiOpen(true);
     }).catch((err) => {
       console.log(err.response.data);
+      setNotification("error");
+      setNotiOpen(true);
     });
   };
 
@@ -100,14 +102,14 @@ function FormPage() {
       <main className="flex flex-col gap-32">
         <NotificationBox
           type={notification}
-          title={notification === "success" ? "Formulario diligenciado correctamente" : "Error al crear el formulario"}
+          title={notification === "success" ? "Enviado con éxito" : "Error al enviar el formulario"}
           open={notiOpen}
           setOpen={setNotiOpen}
         >
           {notification === "success" ? (
-            <p>El formulario ha sido creado <span className="font-semibold">éxitosamente</span></p>
+            <p>El formulario ha sido enviado <span className="font-semibold">éxitosamente</span></p>
           ) : (
-            <p>Ha ocurrido un error al crear el convenio, por favor intente de nuevo</p>
+            <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
