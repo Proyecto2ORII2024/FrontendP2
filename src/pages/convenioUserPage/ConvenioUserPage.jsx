@@ -4,7 +4,7 @@ import search from "../../assets/icons/searchIcon.svg";
 
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 
-import styles from "../convenioAdminPage/styles.js";
+import styles from "../agreementAdminPage/styles.js";
 
 function ConvenioUserPage() {
   const [isSearching, setIsSearching] = useState(false);

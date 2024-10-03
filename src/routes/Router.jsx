@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/loginPage/Login";
 import MainAdmin from "../pages/mainAdminPage/MainAdmin";
 import MainUser from "../pages/mainUserPage/MainUser";
-import ConvenioAdminPage from "../pages/convenioAdminPage/ConvenioAdminPage";
+import ConvenioAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
 import ListaEstudiante from "../pages/listaUsuarioPage/ListaUsuarioPage.jsx";
 import FormPage from "../pages/formPage/formPage";
-import CreateConvenioPage from "../pages/createConvenioPage/CreateConvenioPage";
+import CreateConvenioPage from "../pages/createAgreementPage/CreateAgreementPage";
 import RegistrarUsuarioPage from "../pages/registrarUsuario/RegistrarUsuarioPage";
 
 import ConvenioUserPage from "../pages/convenioUserPage/ConvenioUserPage";
