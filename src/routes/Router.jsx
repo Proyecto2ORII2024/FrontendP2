@@ -16,6 +16,7 @@ import NavbarUser from "../components/navbarUser/NavbarUser";
 import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
 import Movilidad from "../pages/movilidad/Movilidad";
 import UpdateForm from "../pages/updateForm/UpdateForm";
+import ListaUsuarioPage from "../pages/listaUsuarioPage/ListaUsuarioPage";
 
 
 function Router() {
@@ -25,12 +26,12 @@ function Router() {
             <Route path="/" element={<Login />} />
             <Route path="/admin" element={<MainAdmin />} />
             <Route path="/user" element={<MainUser />} />
-            {/*<Route path="/estudiante" element={<ListaEstudiante />} />*/}
+            <Route path="/estudiante" element={<ListaUsuarioPage />} />
             <Route path="/statistics" element={<StatisticsPage />} />
             <Route path="/user/registrar" element={<RegistrarUsuarioPage />} />
             <Route path="/form" element={<FormPage />} />
             <Route path="/form/update/:elementId" element={<UpdateForm />} />
-            <Route path="/show" element={<ShowMovPage />} />
+            <Route path="/show/:formId" element={<ShowMovPage />} />
             <Route path="/admin/agreement" element={<AgreementAdminPage />} />
             <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
             <Route path="/user/agreement" element={<AgreementUserPage />} />

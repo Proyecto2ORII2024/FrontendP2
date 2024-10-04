@@ -19,7 +19,7 @@ function AsideAdmin({open, setOpen}) {
       {title: "Cerrar Sesión", src:logout}
     ]
     return (
-      <div className={`flex fixed h-full w-screen lg:hidden bg-black/50 backdrop-blur-sm top-0 right-0 
+      <div className={`flex fixed h-full z-30 w-screen lg:hidden bg-black/50 backdrop-blur-sm top-0 right-0 
         -translate-x-full ${!open && "translate-x-0"} transition-all`}>
           <section className={`w-72
           duration-300

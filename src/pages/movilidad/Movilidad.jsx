@@ -170,7 +170,7 @@ const Movilidad = () => {
                                 <td className="px-4 py-2">{item.d_usuario}</td>
                                 <td className="px-4 py-2">
                                     <div className="flex justify-center space-x-2">
-                                        <button className="text-gray-500 hover:text-blue-500">
+                                        <button onClick={() => navigate(`/show/${item.id_convenio}`)} className="text-gray-500 hover:text-blue-500">
                                             <span className="material-symbols-outlined">visibility</span>
                                         </button>
                                         <button onClick={() => navigate(`/form/update/${item.id_convenio}`)} className="text-gray-500 hover:text-green-500">
