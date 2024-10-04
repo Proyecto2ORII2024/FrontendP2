@@ -57,15 +57,17 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
       </button>
       {isMenuOpen && (
         <div className="absolute z-10 w-full mt-1 bg-white border-2 rounded-lg shadow-lg border-primary-dark ml-7">
-          <input
-            type="text"
-            autoComplete="off"
-            className="w-full p-2 border-b-2 rounded-t-lg outline-none"
-            placeholder="Buscar..."
-            value={searchValue}
-            name="search"
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
+          <label htmlFor="search">
+            <input
+              id='search'
+              type="text"
+              autoComplete="off"
+              className="w-full p-2 border-b-2 rounded-t-lg outline-none"
+              placeholder="Buscar..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+          </label>
           <div className="flex flex-col overflow-y-auto rounded-b-lg max-h-40 scrollbar-webkit">
             {options
               .filter((option) =>
@@ -80,7 +82,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
                     setIsMenuOpen(false);
                   }}
                 >
-                  {option.text}
+                  {option.text ? option.text : "Ups, no se hallaron items"}
                 </button>
               ))}
           </div>

@@ -23,18 +23,19 @@ export const getAgreement = async (agreementId) => {
     return await axios.get(`${url}/${agreementId}`);
 }
 
+
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
-    agreements = agreements.data;
+    agreements = agreements.data.content;
 
     const agreementsData = {
         NATIONAL: [],
         INTERNATIONAL: [],
-        ALL: agreements
+        ALL: agreements.map((agreement) => (agreement))
     }
 
-    agreements.forEach(agreement => {
+    agreements.forEach((agreement) => {
         if(agreement.scope === "NATIONAL") {
             agreementsData.NATIONAL.push(agreement);
         } else {

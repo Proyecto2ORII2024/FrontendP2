@@ -1,7 +1,14 @@
 import { useState } from "react";
 import logoUnicauca from "../../assets/Logo_Unicauca.png"
 import AsideAdmin from "../asideAdmin/AsideAdmin";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import initNav from "../../assets/initNav.svg";
+import agreementsNav from "../../assets/agreementsNav.svg";
+import formsNav from "../../assets/formsNav.svg";
+import statisticsNav from "../../assets/statisticsNav.svg";
+import regNav from "../../assets/regNav.svg";
+import logoutNav from "../../assets/logoutNav.svg";
+import menuNavbar from "../../assets/menuNavbar.svg";
 
 function NavbarAdmin() {
     const [open, setOpen] = useState(true);
@@ -10,12 +17,12 @@ function NavbarAdmin() {
     };
     const navigate = useNavigate();
     const Menus = [
-        {title: "Inicio", src:"initNav", Link:"/admin"},
-        {title: "Convenios", src:"agreementsNav" ,Link:"/admin/agreement"},
-        {title: "Movilidad", src:"formsNav", Link:"/form"},
-        {title: "Estadísticas", src:"statisticsNav", Link:"/statistics"},
-        {title: "Registrar Usuarios", src:"regNav"},
-        {title: "Cerrar Sesión", src:"logoutNav"}
+        {title: "Inicio", src:initNav, Link:"/admin"},
+        {title: "Convenios", src:agreementsNav ,Link:"/admin/agreement"},
+        {title: "Movilidad", src:formsNav, Link:"/form"},
+        {title: "Estadísticas", src:statisticsNav, Link:"/statistics"},
+        {title: "Registrar Usuarios", src:regNav},
+        {title: "Cerrar Sesión", src:logoutNav}
     ]
         return (
         <div>
@@ -33,14 +40,14 @@ function NavbarAdmin() {
                     <li key={index} className="hidden lg:block text-white text-sm font-bold items-center gap-x-1 p-1
                     hover:text-primary-light rounded-md cursor-pointer">
                     <button className="flex gap-x-2" onClick={() => navigate(menu.Link)}>
-                        <img src={`./src/assets/${menu.src}.svg`} className="w-5"/>
+                        <img src={menu.src} className="w-5"/>
                         {menu.title}
                     </button>
                     </li>
                 ))} 
             </div>
             <img 
-                src="./src/assets/menuNavbar.svg" 
+                src={menuNavbar}
                 className={`absolute cursor-pointer right-3 top-7 w-7 lg:hidden`} 
                 onClick={manejarClick} 
                 />

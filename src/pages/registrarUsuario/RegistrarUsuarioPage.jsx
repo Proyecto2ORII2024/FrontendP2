@@ -3,7 +3,6 @@ import GoogleIcon from "../../assets/icons/googleIcon.svg";
 import loginIcon from "../../assets/icons/loginIcon.svg";
 import ORIIIcon from "../../assets/Images/ORII.webp";
 
-//
 function RegistrarUsuarioPage() {
 
     const options = [
@@ -39,6 +38,9 @@ function RegistrarUsuarioPage() {
                         </select>
                     </div>
                 </form>
+
+                <button className="bg-white hover:bg-grays rounded-full py-1 px-5 text-black flex items-center gap-2">Registrar</button>
+
             </div>
         </div>
     );
