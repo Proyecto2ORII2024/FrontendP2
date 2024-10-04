@@ -82,7 +82,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
                     setIsMenuOpen(false);
                   }}
                 >
-                  {option.text}
+                  {option.text ? option.text : "Ups, no se hallaron items"}
                 </button>
               ))}
           </div>

@@ -4,7 +4,7 @@ import { apiUrl } from "./env.service.js";
 const url = `${apiUrl}/form`;
 
 export const getForms = async () => {
-    return await axios.get(`${url}/allForm`);
+    return await axios.get(`${url}/allForms`);
 }
 
 export const createForm = async (form) => {

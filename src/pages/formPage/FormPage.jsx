@@ -1,6 +1,12 @@
 import InfoBubble from "../../components/infoBubble/InfoBubble";
 import MainButton from "../../components/buttons/MainButton.jsx";
-import { Info, inputInfo, createAgreementOptions, calcDays } from "./Information.js";
+import {
+  Info,
+  inputInfo,
+  createAgreementOptions,
+  calcDays,
+  checkDirection,
+} from "./Information.js";
 import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
@@ -16,9 +22,9 @@ function FormPage() {
   const [agreements, setAgreements] = useState([]);
   const [yes, setYes] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
+  const [isInOrOut, setIsInOrOut] = useState("");
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
-
 
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
@@ -65,30 +71,34 @@ function FormPage() {
       },
     };
 
-    if(yes){
-      formData = {...formData, agreementId: data.agreementId}
+    if (yes) {
+      formData = { ...formData, agreementId: data.agreementId };
     }
-    if(isStudent){
-      formData = {...formData, teacher: data.teacher,}
+    if (isStudent) {
+      formData = { ...formData, teacher: data.teacher };
     }
 
-    createForm(formData).then((res) => {
-      console.log(res);
-      setNotification(res.status === 201 ? "success" : "error");
-      setNotiOpen(true);
-    }).catch((err) => {
-      console.log(err.response.data);
-      setNotification("error");
-      setNotiOpen(true);
-    });
+    createForm(formData)
+      .then((res) => {
+        console.log(res);
+        setNotification(res.status === 201 ? "success" : "error");
+        setNotiOpen(true);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setNotification("error");
+        setNotiOpen(true);
+      });
   };
 
   useEffect(() => {
-    getAgreements().then((res) => {
-      createAgreementOptions(res.data, setAgreements);
-    }).catch((err) => {
-      console.log(err.response.data);
-    });
+    getAgreements()
+      .then((res) => {
+        createAgreementOptions(res.data.content, setAgreements);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -102,12 +112,19 @@ function FormPage() {
       <main className="flex flex-col gap-32">
         <NotificationBox
           type={notification}
-          title={notification === "success" ? "Enviado con éxito" : "Error al enviar el formulario"}
+          title={
+            notification === "success"
+              ? "Enviado con éxito"
+              : "Error al enviar el formulario"
+          }
           open={notiOpen}
           setOpen={setNotiOpen}
         >
           {notification === "success" ? (
-            <p>El formulario ha sido enviado <span className="font-semibold">éxitosamente</span></p>
+            <p>
+              El formulario ha sido enviado{" "}
+              <span className="font-semibold">éxitosamente</span>
+            </p>
           ) : (
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
@@ -119,7 +136,10 @@ function FormPage() {
                 name={inputInfo.sentido.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.sentido.required }}
+                rules={{
+                  required: inputInfo.sentido.required,
+                  onChange: (e) => setIsInOrOut(checkDirection(e.target.value)),
+                }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.sentido}
@@ -142,7 +162,10 @@ function FormPage() {
                 name={inputInfo.tipo.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.tipo.required, onChange: (e) => setIsStudent(e.target.value === "STUDENT") }}
+                rules={{
+                  required: inputInfo.tipo.required,
+                  onChange: (e) => setIsStudent(e.target.value === "STUDENT"),
+                }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.tipo}
@@ -182,14 +205,14 @@ function FormPage() {
                 </span>
               )}
             </div>
-
+            
             <CustomInput
               bubbleInf={Info.numID}
               inputInf={inputInfo.numID}
               register={register}
               errors={errors}
             />
-
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.nombre}
               inputInf={inputInfo.nombre}
@@ -197,7 +220,7 @@ function FormPage() {
               errors={errors}
             />
 
-
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.apellidos}
               inputInf={inputInfo.apellidos}
@@ -228,50 +251,117 @@ function FormPage() {
               )}
             </div>
 
-            <label className="flex flex-col w-full">
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.fechaSalida} />
-                <p>Fecha de salida</p>
-              </div>
-              <input
-                id="exitDate"
-                autoComplete="off"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                type="date"
-                placeholder="Fecha de salida"
-                {...register("exitDate", {
-                  required: true,
-                  onChange: updateExitDate,
-                })}
-              />
-              {errors.exitDate && (
-                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                  Este campo es requerido
-                </span>
-              )}
-            </label>
-            <label className="flex flex-col w-full">
-              <div className="flex items-center gap-2">
-                <InfoBubble info={Info.fechaEntrada} />
-                <p>Fecha de entrada</p>
-              </div>
-              <input
-                id="entryDate"
-                autoComplete="off"
-                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                type="date"
-                placeholder="Fecha de entrada"
-                {...register("entryDate", {
-                  required: true,
-                  onChange: updateEntryDate,
-                })}
-              />
-              {errors.entryDate && (
-                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                  Este campo es requerido
-                </span>
-              )}
-            </label>
+            {isInOrOut === "OUT" && (
+              <label
+                className={`flex flex-col w-full ${
+                  isInOrOut === "" ? "opacity-40 -z-50" : ""
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <InfoBubble info={Info.fechaSalida} />
+                  <p>Fecha de salida</p>
+                </div>
+                <input
+                  id="exitDate"
+                  autoComplete="off"
+                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                  type="date"
+                  placeholder="Fecha de salida"
+                  {...register("exitDate", {
+                    required: true,
+                    onChange: updateExitDate,
+                  })}
+                />
+                {errors.exitDate && (
+                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </label>
+            )}
+
+            {isInOrOut === "OUT" && (
+              <label className={`flex flex-col w-full`}>
+                <div className="flex items-center gap-2">
+                  <InfoBubble info={Info.fechaEntrada} />
+                  <p>Fecha de entrada</p>
+                </div>
+                <input
+                  id="entryDate"
+                  autoComplete="off"
+                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                  type="date"
+                  placeholder="Fecha de entrada"
+                  {...register("entryDate", {
+                    required: true,
+                    onChange: updateEntryDate,
+                  })}
+                />
+                {errors.entryDate && (
+                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </label>
+            )}
+
+            {(isInOrOut === "" || isInOrOut === "IN") && (
+              <label
+                className={`flex flex-col w-full ${
+                  isInOrOut === "" ? "opacity-40 -z-50" : ""
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <InfoBubble info={Info.fechaEntrada} />
+                  <p>Fecha de entrada</p>
+                </div>
+                <input
+                  id="entryDate"
+                  autoComplete="off"
+                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                  type="date"
+                  placeholder="Fecha de entrada"
+                  {...register("entryDate", {
+                    required: true,
+                    onChange: updateEntryDate,
+                  })}
+                />
+                {errors.entryDate && (
+                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </label>
+            )}
+
+            {(isInOrOut === "" || isInOrOut === "IN") && (
+              <label
+                className={`flex flex-col w-full ${
+                  isInOrOut === "" ? "opacity-40 -z-50" : ""
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <InfoBubble info={Info.fechaSalida} />
+                  <p>Fecha de salida</p>
+                </div>
+                <input
+                  id="exitDate"
+                  autoComplete="off"
+                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                  type="date"
+                  placeholder="Fecha de salida"
+                  {...register("exitDate", {
+                    required: true,
+                    onChange: updateExitDate,
+                  })}
+                />
+                {errors.exitDate && (
+                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </label>
+            )}
 
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
@@ -279,7 +369,7 @@ function FormPage() {
                 <p>Días de estancia</p>
               </div>
               <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                {days ? days : "Días de estancia"}
+                {days === 0 ? 0 : days}
               </p>
             </label>
             <label className="flex flex-col w-full">
@@ -292,12 +382,16 @@ function FormPage() {
                 {/**Verificar la forma de enviarlo al backend */}
               </p>
             </label>
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.uniOrigen}
               inputInf={inputInfo.uniOrigen}
               errors={errors}
               register={register}
             />
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.uniDestino}
               inputInf={inputInfo.uniDestino}
@@ -310,7 +404,10 @@ function FormPage() {
                 name={inputInfo.convenio.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.convenio.required, onChange: (e) => setYes(e.target.value === "Y") }}
+                rules={{
+                  required: inputInfo.convenio.required,
+                  onChange: (e) => setYes(e.target.value === "Y"),
+                }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.convenio}
@@ -328,7 +425,7 @@ function FormPage() {
               )}
             </div>
 
-            <div className={`${yes ? "": "opacity-40 -z-50"}`}>
+            <div className={`${yes ? "" : "opacity-40 -z-50"}`}>
               <Controller
                 name={inputInfo.numConvenio.id}
                 control={control}
@@ -379,31 +476,41 @@ function FormPage() {
               errors={errors}
               register={register}
             />
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.programaOrigen}
               inputInf={inputInfo.programaOrigen}
               errors={errors}
               register={register}
             />
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.programaAcogida}
               inputInf={inputInfo.programaAcogida}
               errors={errors}
               register={register}
             />
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.ciudad}
               inputInf={inputInfo.ciudad}
               errors={errors}
               register={register}
             />
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.pais}
               inputInf={inputInfo.pais}
               errors={errors}
               register={register}
             />
-            <div className={`${isStudent ? '' : 'opacity-40 -z-50'}`}>
+
+            {/*TODO: Sólo letras*/}
+            <div className={`${isStudent ? "" : "opacity-40 -z-50"}`}>
               <CustomInput
                 bubbleInf={Info.profPres}
                 inputInf={inputInfo.profPres}
@@ -411,19 +518,23 @@ function FormPage() {
                 register={register}
               />
             </div>
-            
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.facultad}
               inputInf={inputInfo.facultad}
               errors={errors}
               register={register}
             />
+
+            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.financiacion}
               inputInf={inputInfo.financiacion}
               errors={errors}
               register={register}
             />
+
             <CustomInput
               bubbleInf={Info.fuenteFinanciacion}
               inputInf={inputInfo.fuenteFinanciacion}

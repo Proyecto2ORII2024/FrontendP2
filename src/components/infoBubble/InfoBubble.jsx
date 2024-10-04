@@ -11,8 +11,6 @@ function InfoBubble ({ info }) {
         info.longInfo.list = Object.fromEntries(sortedList)
     }
 
-    console.log('Por la burbuja: '+ isFloating);
-
     return(
         <section className='relative w-fit' onMouseEnter={() => setIsHovered(true)} onMouseLeave={()=> setIsHovered(false)}>
             <button type='button' onClick={() => { if(info.longInfo){ setIsHovered(false); setIsFloating(true)} }}>
