@@ -409,7 +409,7 @@ export const createAgreementOptions = (agreements, setAgreements) => {
 
     agreements.forEach((agreement) => {
       options.push({
-        value: agreement.id,
+        value: agreement.agreementId,
         text: agreement.agreementNumber,
       });
     });

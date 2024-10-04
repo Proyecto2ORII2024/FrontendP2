@@ -4,9 +4,11 @@ import InfoBubble from "../infoBubble/InfoBubble.jsx";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
-import { getAgreement, updateAgreement } from "../../services/agreement.service.js";
+import { updateAgreement } from "../../services/agreement.service.js";
 
-function EditAgreement({agreementId, open, setOpen, setUpdated}) {
+import { formatDateToYYYYMMDD, formatDateToDDMMYYYY } from "../../utils/Date.js";
+
+function EditAgreement({agreement, open, setOpen, setUpdated}) {
     const [isOpened, setIsOpened] = useState(false);
 
     const {
@@ -18,21 +20,19 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
 
     useEffect(() => {
       if (open) {
-        getAgreement(agreementId).then((response) => {
-          const { data } = response;
-          setValue("country", data.country);
-          setValue("agreementNumber", data.agreementNumber);
-          setValue("institution", data.institution);
-          setValue("startDate", data.startDate);
-          setValue("scope", data.scope);
-          setValue("description", data.description);
-        });
+        setValue("country", agreement.country);
+        setValue("agreementNumber", agreement.agreementNumber);
+        setValue("institution", agreement.institution);
+        setValue("startDate", formatDateToYYYYMMDD(agreement.startDate));
+        setValue("scope", agreement.scope);
+        setValue("description", agreement.description);
       }
       setIsOpened(open);
-    }, [open, agreementId, setValue]);
+    }, [open, setValue, agreement]);
     
       const onSubmit = (data) => {
-        updateAgreement(data, agreementId).then((res) => {
+        data.startDate = formatDateToDDMMYYYY(data.startDate);
+        updateAgreement(data, agreement.agreementId).then((res) => {
           if (res.status === 200) {
             setIsOpened(false);
             setOpen(false);
@@ -40,6 +40,9 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
           }else{
             setUpdated("error");
           }
+        }).catch((error) => {
+          console.log(error);
+          setUpdated("error");
         });
       };
 
@@ -66,11 +69,11 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true })}
+                  {...register("country", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "El pais solo puede contener letras" } })}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
-                    Este campo es requerido
+                    {errors.country.message}
                   </span>
                 )}
               </label>
@@ -83,11 +86,14 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Codigo"
-                  {...register("agreementNumber", { required: true })}
+                  {...register("agreementNumber", { required: true, pattern: { value: /^[0-9.-]+$/, message: "El codigo solo puede contener numeros y (. -)" }, minLength: {
+                    value: 4,
+                    message: "El codigo debe tener al menos 4 caracteres"
+                  } })}
                 />
                 {errors.agreementNumber && (
                   <span className="text-sm text-red-400">
-                    Este campo es requerido
+                    {errors.agreementNumber.message}
                   </span>
                 )}
               </label>
@@ -102,11 +108,11 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
-                  {...register("institution", { required: true })}
+                  {...register("institution", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "la institución solo puede contener letras" }  })}
                 />
                 {errors.institution && (
                   <span className="text-sm text-red-400">
-                    Este campo es requerido
+                    {errors.institution.message}
                   </span>
                 )}
               </label>
@@ -182,7 +188,7 @@ function EditAgreement({agreementId, open, setOpen, setUpdated}) {
 }
 
 EditAgreement.propTypes = {
-    agreementId: PropTypes.string.isRequired,
+    agreement: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
     setUpdated: PropTypes.func.isRequired

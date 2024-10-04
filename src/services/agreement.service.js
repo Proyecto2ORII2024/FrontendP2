@@ -4,7 +4,7 @@ import { apiUrl } from "./env.service.js";
 const url = `${apiUrl}/agreement`;
 
 export const getAgreements = async () => {
-    return await axios.get(`${url}/allAgreement`);
+    return await axios.get(`${url}/all`);
 }
 
 export const createAgreement = async (agreement) => {
@@ -23,18 +23,19 @@ export const getAgreement = async (agreementId) => {
     return await axios.get(`${url}/${agreementId}`);
 }
 
+
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
-    agreements = agreements.data;
+    agreements = agreements.data.content;
 
     const agreementsData = {
         NATIONAL: [],
         INTERNATIONAL: [],
-        ALL: agreements
+        ALL: agreements.map((agreement) => (agreement))
     }
 
-    agreements.forEach(agreement => {
+    agreements.forEach((agreement) => {
         if(agreement.scope === "NATIONAL") {
             agreementsData.NATIONAL.push(agreement);
         } else {

@@ -14,6 +14,7 @@ import NotificationBox from "../../components/notificationBox/NotificationBox.js
 import { useState, useEffect } from "react";
 import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -38,6 +39,7 @@ function FormPage() {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -46,7 +48,7 @@ function FormPage() {
       orii: true,
       direction: data.direction,
       gender: data.gender,
-      cta: 0,
+      cta: 1,
       entryDate: data.entryDate,
       exitDate: data.exitDate,
       originProgram: data.originProgram,
@@ -58,6 +60,7 @@ function FormPage() {
       fundingSource: data.fundingSource,
       destination: data.destination,
       origin: data.origin,
+      agreementId : yes ? data.agreementId : 1,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -80,7 +83,10 @@ function FormPage() {
 
     createForm(formData)
       .then((res) => {
-        console.log(res);
+        if(res.status === 201) {
+          setDays(0)
+          reset()
+        };
         setNotification(res.status === 201 ? "success" : "error");
         setNotiOpen(true);
       })
@@ -108,7 +114,7 @@ function FormPage() {
   }, [entryDate, exitDate]);
 
   return (
-    <>
+    <AdminLayout>
       <main className="flex flex-col gap-32">
         <NotificationBox
           type={notification}
@@ -369,7 +375,7 @@ function FormPage() {
                 <p>Días de estancia</p>
               </div>
               <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                {days === 0 ? 0 : days}
+                {days}
               </p>
             </label>
             <label className="flex flex-col w-full">
@@ -553,7 +559,7 @@ function FormPage() {
           </div>
         </form>
       </main>
-    </>
+    </AdminLayout>
   );
 }
 

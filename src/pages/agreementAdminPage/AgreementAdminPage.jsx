@@ -9,6 +9,7 @@ import EditAgreement from "../../components/editAgreement/EditAgreement.jsx";
 import DeleteAgreement from "../../components/deleteAgreement/DeleteAgreement.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AgreementTable from "../../components/agreementTable/AgreementTable.jsx";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 import { obtainAgreements } from "../../services/agreement.service.js";
 
@@ -23,6 +24,7 @@ function AgreementAdminPage() {
   const [agreementId, setAgreementId] = useState("");
   const [wasDeleted, setWasDeleted] = useState("");
   const [wasUpdated, setwasUpdated] = useState("");
+  const [agreementSelected, setAgreementSelected] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,12 +64,12 @@ function AgreementAdminPage() {
   };
 
   return (
-    <>
+    <AdminLayout>
       <main>
         <EditAgreement
           open={open}
           setOpen={setOpen}
-          agreementId={agreementId}
+          agreement={agreementSelected}
           setUpdated={setwasUpdated}
         />
         <DeleteAgreement
@@ -121,7 +123,7 @@ function AgreementAdminPage() {
         </h2>
         <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
           <MainButton
-            onClick={() => navigate("/admin/convenio/create")}
+            onClick={() => navigate("/admin/agreement/create")}
             text="Crear Convenio"
             bgColor="primary"
             hoverBg="primary-light"
@@ -148,6 +150,7 @@ function AgreementAdminPage() {
                   agreements={nationalAgreements}
                   setOpen={setOpen}
                   setAgreementId={setAgreementId}
+                  setAgreementSelected={setAgreementSelected}
                   setOpenDelete={setOpenDelete}
                 />
               </section>
@@ -158,6 +161,7 @@ function AgreementAdminPage() {
                   agreements={internationalAgreements}
                   setOpen={setOpen}
                   setAgreementId={setAgreementId}
+                  setAgreementSelected={setAgreementSelected}
                   setOpenDelete={setOpenDelete}
                 />
               </section>
@@ -169,12 +173,13 @@ function AgreementAdminPage() {
               agreements={searchAgreement}
               setOpen={setOpen}
               setAgreementId={setAgreementId}
+              setAgreementSelected={setAgreementSelected}
               setOpenDelete={setOpenDelete}
             />
           </section>
         )}
       </main>
-    </>
+    </AdminLayout>
   );
 }
 
