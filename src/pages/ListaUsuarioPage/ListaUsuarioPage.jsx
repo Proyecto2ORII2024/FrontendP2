@@ -2,12 +2,15 @@ import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import editIcon from "../../assets/icons/editIcon.svg";
 import checkIcon from "../../assets/icons/checkIcon.svg";
 import search from "../../assets/icons/searchIcon.svg";
+
 import NotificationBox from "../../components/notificationBox/NotificationBox";
+
 import { useState } from "react";
 
 import { styles } from "./styles.js";
 
 function ListaUsuarioPage() {
+
     const [open, setOpen] = useState(false);
     const [notification, setNotification] = useState("");
     const [isEditing, setIsEditing] = useState({ state: false, index: -1 });
@@ -16,12 +19,15 @@ function ListaUsuarioPage() {
     const [searchStudent, setSearchStudent] = useState([]);
     const [estudiantes, setEstudiantes] = useState([
         {
+
             Id: 1,
+
             Correo: "ORI@UNICAUCA.EDU.CO",
             Rol: "Admin",
             Active: false
         },
         {
+
             Id: 2,
             Correo: "INGENIERIA@UNICAUCA.EDU.CO",
             Rol: "Usuario",
@@ -47,11 +53,13 @@ function ListaUsuarioPage() {
         },
         {
             Id: 6,
+
             Correo: "jorgevelasco@UNICAUCA.EDU.CO",
             Rol: "Admin",
             Active: true
         }
     ]);
+
 
 
     const role = [
@@ -73,10 +81,12 @@ function ListaUsuarioPage() {
         } else {
             setNotification("alert");
             setOpen(true);
+
         }
     };
 
     const handleSaveClick = (e) => {
+
 
         const id = parseInt(e.target.id);
         if (esCorreoValido(values.correo) && role.includes(values.rol)) {
@@ -106,6 +116,7 @@ function ListaUsuarioPage() {
         setOpen(true);
     };
 
+
     const handleSearch = (e) => {
         if (e.target.value === "") {
             setIsSearching(false);
@@ -133,6 +144,7 @@ function ListaUsuarioPage() {
     return (
         <>
             <main>
+
                 <NotificationBox
                     type={notification}
                     title={notification === "success" ? "Datos actualizados" : notification === "error" ? "Datos invalidos" : notification === "alert" ? "Accion invalida" : "Datos Eliminados"}
@@ -153,6 +165,7 @@ function ListaUsuarioPage() {
                         )
                     )}
                 </NotificationBox>
+
                 <section className="flex justify-between">
                     <h2 className="w-full mt-5 p-5 text-lg text-center">
                         A continuación se presenta una tabla con los usuarios registrados actualmente..
@@ -184,6 +197,7 @@ function ListaUsuarioPage() {
                                 </thead>
                                 <tbody>
                                     {estudiantes.map((estudiante, index) => (
+
                                         console.log(index, index % 2),
                                         <tr className={`${index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
                                             <td className={`${styles.tdIn}`}>
@@ -230,14 +244,17 @@ function ListaUsuarioPage() {
                                                     </button>
                                                     <button>
                                                         <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
+
                                                     </button>
                                                 </div>
                                             </td>
                                             <td className={styles.tdOut}>
+
                                                 <div className="flex content-center justify-center space-x-1">
                                                     <span className="md:hidden font-bold">Habilitar: </span>
                                                     <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
                                                 </div>
+
                                             </td>
                                         </tr>
                                     ))}
@@ -262,9 +279,11 @@ function ListaUsuarioPage() {
                                         <tr className={`md:${index % 2 != 0 ? "bg-[#E4E1EC]" : "bg-[#FBF8FF]"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
                                             <td className={`${styles.tdIn} h-[100px]`}>
                                                 <span className="md:hidden font-bold">Correo: </span>
+
                                                 {isEditing.state && isEditing.index === estudiante.Id ? (
                                                     <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
                                                 ) : (
+
                                                     estudiante.Correo
                                                 )}
                                             </td>
@@ -272,11 +291,13 @@ function ListaUsuarioPage() {
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-around px-10">
                                                     <button className="">
+
                                                         {isEditing.state && isEditing.index === estudiante.Id ? (
                                                             <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
 
                                                         ) : (
                                                             <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
+
                                                         )}
                                                     </button>
                                                     <button>
