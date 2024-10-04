@@ -4,7 +4,7 @@ import { apiUrl } from "./env.service.js";
 const url = `${apiUrl}/agreement`;
 
 export const getAgreements = async () => {
-    return await axios.get(`${url}/allAgreement`);
+    return await axios.get(`${url}/all`);
 }
 
 export const createAgreement = async (agreement) => {

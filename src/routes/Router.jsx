@@ -14,6 +14,8 @@ import AsideUser from "../components/asideUser/AsideUser";
 import AsideAdmin from "../components/asideAdmin/AsideAdmin";
 import NavbarUser from "../components/navbarUser/NavbarUser";
 import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
+import Movilidad from "../pages/movilidad/Movilidad";
+import UpdateForm from "../pages/updateForm/UpdateForm";
 
 function Router() {
     return (
@@ -25,6 +27,7 @@ function Router() {
             <Route path="/statistics" element={<StatisticsPage />} />
             <Route path="/user/registrar" element={<RegistrarUsuarioPage />} />
             <Route path="/form" element={<FormPage />} />
+            <Route path="/form/update/:elementId" element={<UpdateForm />} />
             <Route path="/admin/agreement" element={<AgreementAdminPage />} />
             <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
             <Route path="/user/agreement" element={<AgreementUserPage />} />
@@ -33,6 +36,7 @@ function Router() {
             <Route path="/navbarAdmin" element={<NavbarAdmin/>} />
             <Route path="/asideUser" element={<AsideUser/>} />
             <Route path="/asideAdmin" element={<AsideAdmin/>}/>
+            <Route path="/admin/movilidad" element={<Movilidad />} />
         </Routes>
         </BrowserRouter>
     );
