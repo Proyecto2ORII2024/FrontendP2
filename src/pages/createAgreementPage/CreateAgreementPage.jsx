@@ -13,7 +13,7 @@ import { formatDateToDDMMYYYY } from "../../utils/Date.js";
 function CreateAgreementPage() {
   const [open, setOpen] = useState(false);
   const [notification, setNotification] = useState("");
-  
+
   const {
     register,
     handleSubmit,
@@ -22,23 +22,20 @@ function CreateAgreementPage() {
   } = useForm();
 
   const onSubmit = (data) => {
-
     data.startDate = formatDateToDDMMYYYY(data.startDate);
 
-    createAgreement(data).then(
-      (response) => {
+    createAgreement(data)
+      .then((response) => {
         console.log(response);
         setNotification(response.status === 201 ? "success" : "error");
         setOpen(true);
         reset();
-      }
-    ).catch(
-      (error) => {
+      })
+      .catch((error) => {
         console.log(error);
         setNotification("error");
         setOpen(true);
-      }
-    )
+      });
   };
 
   return (
@@ -46,14 +43,21 @@ function CreateAgreementPage() {
       <main>
         <NotificationBox
           type={notification}
-          title={notification === "success" ? "Convenio creado" : "Error al crear convenio"}
+          title={
+            notification === "success"
+              ? "Convenio creado"
+              : "Error al crear convenio"
+          }
           open={open}
           setOpen={setOpen}
         >
           {notification === "success" ? (
             <p>El convenio ha sido creado exitosamente</p>
           ) : (
-            <p>Ha ocurrido un error al crear el convenio, por favor intente de nuevo</p>
+            <p>
+              Ha ocurrido un error al crear el convenio, por favor intente de
+              nuevo
+            </p>
           )}
         </NotificationBox>
 
@@ -61,7 +65,6 @@ function CreateAgreementPage() {
           A continuación podrá crear un convenio, por favor verifique que la
           información ingresada es correcta e ingrese todos los campos.
         </h2>
-
 
         <section className="w-full flex justify-center">
           <form
@@ -71,7 +74,7 @@ function CreateAgreementPage() {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "pais", shortInfo: "Pais"}} />
+                  <InfoBubble info={{ title: "pais", shortInfo: "Pais" }} />
                   <p>Pais</p>
                 </div>
                 <input
@@ -80,7 +83,13 @@ function CreateAgreementPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "El pais solo puede contener numeros" }})}
+                  {...register("country", {
+                    required: true,
+                    pattern: {
+                      value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/,
+                      message: "El pais solo puede contener numeros",
+                    },
+                  })}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
@@ -88,19 +97,28 @@ function CreateAgreementPage() {
                   </span>
                 )}
               </label>
+
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo"}} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo" }} />
                   <p>Codigo</p>
                 </div>
-                <input id="agreementNumber"
+                <input
+                  id="agreementNumber"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Codigo"
-                  {...register("agreementNumber", { required: true, pattern: { value: /^[0-9.-]+$/, message: "El codigo solo puede contener numeros y (. -)" }, minLength: {
-                    value: 4,
-                    message: "El codigo debe tener al menos 4 caracteres"
-                  }})}
+                  {...register("agreementNumber", {
+                    required: true,
+                    pattern: {
+                      value: /^[0-9.-]+$/,
+                      message: "El codigo solo puede contener numeros y (. -)",
+                    },
+                    minLength: {
+                      value: 4,
+                      message: "El codigo debe tener al menos 4 caracteres",
+                    },
+                  })}
                 />
                 {errors.agreementNumber && (
                   <span className="text-sm text-red-400">
@@ -111,8 +129,10 @@ function CreateAgreementPage() {
             </section>
             <section className="flex">
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Institución", shortInfo: "Institución"}} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble
+                    info={{ title: "Institución", shortInfo: "Institución" }}
+                  />
                   <p>Institución</p>
                 </div>
                 <input
@@ -120,7 +140,13 @@ function CreateAgreementPage() {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
-                  {...register("institution", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "la institución solo puede contener letras" } })}
+                  {...register("institution", {
+                    required: true,
+                    pattern: {
+                      value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/,
+                      message: "la institución solo puede contener letras",
+                    },
+                  })}
                 />
                 {errors.institution && (
                   <span className="text-sm text-red-400">
@@ -131,8 +157,13 @@ function CreateAgreementPage() {
             </section>
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio"}} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble
+                    info={{
+                      title: "Fecha de inicio",
+                      shortInfo: "Fecha de inicio",
+                    }}
+                  />
                   <p>Fecha de inicio</p>
                 </div>
                 <input
@@ -148,8 +179,8 @@ function CreateAgreementPage() {
                 )}
               </label>
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito"}} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito" }} />
                   <p>Ambito</p>
                 </div>
                 <select
@@ -168,10 +199,12 @@ function CreateAgreementPage() {
               </label>
             </section>
             <label htmlFor="description" className="flex flex-col w-full">
-            <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción"}} />
-                  <p>Descripción</p>
-                </div>
+              <div className="flex gap-2 items-center">
+                <InfoBubble
+                  info={{ title: "Descripción", shortInfo: "Descripción" }}
+                />
+                <p>Descripción</p>
+              </div>
             </label>
             <textarea
               id="description"
@@ -193,7 +226,6 @@ function CreateAgreementPage() {
                 hoverBg="primary-light"
                 textColor="white"
               />
-
             </section>
           </form>
         </section>
