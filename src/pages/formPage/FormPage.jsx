@@ -43,6 +43,25 @@ function FormPage() {
     formState: { errors },
   } = useForm();
 
+  const saveLocalStorage = (object) =>{
+    // Verifica si ya existe el valor en sessionStorage
+    const existingData = sessionStorage.getItem('movility');
+
+    // Si no existe, crea un nuevo array con el nuevo valor
+    if (!existingData) {
+      sessionStorage.setItem('movility', JSON.stringify([object]));
+    } else {
+      // Si existe, obtiene el array, le hace push al nuevo valor y lo guarda de nuevo
+      const dataArray = JSON.parse(existingData);
+      dataArray.push(object);
+      sessionStorage.setItem('movility', JSON.stringify(dataArray));
+    }
+  }
+
+  const returnMov = () =>{
+    return JSON.parse(sessionStorage.getItem('movility')) || [];
+  }
+
   const onSubmit = (data) => {
     let formData = {
       orii: true,
@@ -84,8 +103,9 @@ function FormPage() {
     createForm(formData)
       .then((res) => {
         if(res.status === 201) {
-          setDays(0)
-          reset()
+          saveLocalStorage(formData)
+          setDays(0);
+          reset();
         };
         setNotification(res.status === 201 ? "success" : "error");
         setNotiOpen(true);
@@ -115,7 +135,7 @@ function FormPage() {
 
   return (
     <AdminLayout>
-      <main className="flex flex-col gap-32">
+      <main className="flex flex-col gap-10 pb-10">
         <NotificationBox
           type={notification}
           title={
@@ -548,7 +568,7 @@ function FormPage() {
               register={register}
             />
           </section>
-          <div className="mx-auto my-10">
+          <div className="mx-auto mt-10">
             <MainButton
               text={"Confirmar"}
               bgColor={"primary-dark"}
@@ -558,6 +578,37 @@ function FormPage() {
             />
           </div>
         </form>
+        {returnMov().length > 0 && (
+          <table className="w-5/6 mx-auto mb-10 text-center text-primary-dark">
+            <thead className="bg-neutral">
+              <tr className="rounded-t-xl">
+                <th className="w-1/5 px-4 py-3 font-semibold text-center text-primary-dark" >
+                  Facultad
+                </th>
+                <th className="w-1/5 px-4 py-3 font-semibold text-center text-primary-dark" >
+                  Codigo de Convenio
+                </th>
+                <th className="px-4 py-3 font-semibold text-center text-primary-dark w-[15%]" >
+                  Tipo de Documento
+                </th>
+                <th className="w-1/4 px-4 py-3 font-semibold text-center text-primary-dark">
+                  Documento Usuario 
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-primary-dark">
+                {returnMov().map((item, index) => (
+                  <tr key={index} className="">
+                    <td className="px-4 py-2">{item.faculty}</td>
+                    <td className="px-4 py-2">{item.agreementId || "N/A" }</td>
+                    <td className="px-4 py-2">{item.person.identificationType}</td>
+                    <td className="px-4 py-2">{item.person.identification}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
+        
       </main>
     </AdminLayout>
   );
