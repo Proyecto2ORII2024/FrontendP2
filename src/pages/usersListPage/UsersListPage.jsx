@@ -2,7 +2,7 @@ import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import editIcon from "../../assets/icons/editIcon.svg";
 import checkIcon from "../../assets/icons/checkIcon.svg";
 import search from "../../assets/icons/searchIcon.svg";
-import NotificationBox from "../../components/notificationBox/NotificationBox";
+import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import { useState } from "react";
 
 import { styles } from "./styles.js";
@@ -85,7 +85,7 @@ function ListaUsuarioPage() {
             setValues({ correo: "Test", rol: "Usuario" })
             setNotification("success");
             setOpen(true);
-        }else{
+        } else {
             setNotification("error");
             setOpen(true);
         }
@@ -153,11 +153,12 @@ function ListaUsuarioPage() {
                         )
                     )}
                 </NotificationBox>
-                <section className="flex justify-between">
-                    <h2 className="w-full mt-5 p-5 text-lg text-center">
-                        A continuación se presenta una tabla con los usuarios registrados actualmente..
+                <section className="flex justify-between items-center flex-col md:flex-row">
+                    <h2 className="w-full md:m-5 p-5 text-lg text-center">
+                        A continuación se presenta una tabla con los usuarios registrados
+                        actualmente..
                     </h2>
-                    <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
+                    <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:flex-row justify-between items-center">
                         <article className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
                             <input
                                 id="search"
