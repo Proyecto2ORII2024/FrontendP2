@@ -19,9 +19,9 @@ function NavbarAdmin() {
     const Menus = [
         {title: "Inicio", src:initNav, Link:"/admin"},
         {title: "Convenios", src:agreementsNav ,Link:"/admin/agreement"},
-        {title: "Movilidad", src:formsNav, Link:"/form"},
+        {title: "Movilidad", src:formsNav, Link:"/admin/movilidad"},
         {title: "Estadísticas", src:statisticsNav, Link:"/statistics"},
-        {title: "Registrar Usuarios", src:regNav},
+        {title: "Registrar Usuarios", src:regNav, Link:"/usuarios"},
         {title: "Cerrar Sesión", src:logoutNav}
     ]
         return (

@@ -1,6 +1,7 @@
 export const Info = {
     sentido: {
         title: 'Sentido',
+        shortInfo: 'Seleccione entre (SALIENTE PRESENCIAL, ENTRANTE PRESENCIAL, SALIENTE VIRTUAL, ENTRANTE VIRTUAL)',
         longInfo: {
             text: ['Seleccione uno de los siguientes items:'],
             list: {

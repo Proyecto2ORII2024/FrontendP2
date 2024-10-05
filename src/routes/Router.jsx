@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "../pages/loginPage/Login";
 import MainAdmin from "../pages/mainAdminPage/MainAdmin";
-import MainUser from "../pages/mainUserPage/MainUser";
 import FormPage from "../pages/formPage/FormPage";
 import ShowMovPage from "../pages/showMovPage/ShowMovPage";
 import AgreementAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
@@ -14,9 +13,9 @@ import AsideUser from "../components/asideUser/AsideUser";
 import AsideAdmin from "../components/asideAdmin/AsideAdmin";
 import NavbarUser from "../components/navbarUser/NavbarUser";
 import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
-import Movilidad from "../pages/movilidad/Movilidad";
+import Movility from "../pages/movility/Movility";
 import UpdateForm from "../pages/updateForm/UpdateForm";
-import ListaUsuarioPage from "../pages/listaUsuarioPage/ListaUsuarioPage";
+import UsersListPage from "../pages/usersListPage/UsersListPage";
 
 
 function Router() {
@@ -25,8 +24,7 @@ function Router() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/admin" element={<MainAdmin />} />
-            <Route path="/user" element={<MainUser />} />
-            <Route path="/estudiante" element={<ListaUsuarioPage />} />
+            <Route path="/usuarios" element={<UsersListPage />} />
             <Route path="/statistics" element={<StatisticsPage />} />
             <Route path="/user/registrar" element={<RegistrarUsuarioPage />} />
             <Route path="/form" element={<FormPage />} />
@@ -39,7 +37,7 @@ function Router() {
             <Route path="/navbarAdmin" element={<NavbarAdmin/>} />
             <Route path="/asideUser" element={<AsideUser/>} />
             <Route path="/asideAdmin" element={<AsideAdmin/>}/>
-            <Route path="/admin/movilidad" element={<Movilidad />} />
+            <Route path="/admin/movilidad" element={<Movility />} />
         </Routes>
         </BrowserRouter>
     );
