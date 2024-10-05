@@ -3,7 +3,7 @@ import arrow from "../../assets/icons/arrowIcon.svg";
 import { useState, useRef, useEffect } from "react";
 import InfoBubble from "../infoBubble/InfoBubble";
 
-function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
+function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -38,9 +38,10 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
         <p>{inputInf.text}</p>
       </div>
       <button
-      type="button"
+        type="button"
         className="w-full border-b-2 ml-7"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
+        disabled={isDisable}
       >
         <div className="flex items-center justify-between w-full p-1 rounded-lg">
           <label className={`cursor-pointer ${selectedOption ? 'text-black' : 'text-gray-400'} `}>
@@ -101,6 +102,7 @@ CustomSelect.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),      
   onChange: PropTypes.func,
   bblInfo: PropTypes.object,
+  isDisable: PropTypes.bool,
 };
 
 export default CustomSelect;

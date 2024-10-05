@@ -15,6 +15,8 @@ import { useState, useEffect } from "react";
 import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import { formatDateToDDMMYYYY } from "../../utils/Date.js";
+
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -68,8 +70,8 @@ function FormPage() {
       direction: data.direction,
       gender: data.gender,
       cta: 1,
-      entryDate: data.entryDate,
-      exitDate: data.exitDate,
+      entryDate: formatDateToDDMMYYYY(data.entryDate),
+      exitDate: formatDateToDDMMYYYY(data.exitDate),
       originProgram: data.originProgram,
       destinationProgram: data.destinationProgram,
       city: data.city,
@@ -238,7 +240,7 @@ function FormPage() {
               register={register}
               errors={errors}
             />
-            {/*TODO: Sólo letras*/}
+
             <CustomInput
               bubbleInf={Info.nombre}
               inputInf={inputInfo.nombre}
@@ -246,7 +248,6 @@ function FormPage() {
               errors={errors}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.apellidos}
               inputInf={inputInfo.apellidos}
@@ -344,6 +345,7 @@ function FormPage() {
                 <input
                   id="entryDate"
                   autoComplete="off"
+                  disabled={isInOrOut === ""}
                   className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                   type="date"
                   placeholder="Fecha de entrada"
@@ -373,6 +375,7 @@ function FormPage() {
                 <input
                   id="exitDate"
                   autoComplete="off"
+                  disabled={isInOrOut === ""}
                   className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
                   type="date"
                   placeholder="Fecha de salida"
@@ -409,7 +412,6 @@ function FormPage() {
               </p>
             </label>
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.uniOrigen}
               inputInf={inputInfo.uniOrigen}
@@ -417,7 +419,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.uniDestino}
               inputInf={inputInfo.uniDestino}
@@ -464,6 +465,7 @@ function FormPage() {
                     value={field.value}
                     onChange={field.onChange}
                     bblInfo={Info.numConvenio}
+                    isDisable={!yes}
                   />
                 )}
               />
@@ -503,7 +505,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.programaOrigen}
               inputInf={inputInfo.programaOrigen}
@@ -511,7 +512,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.programaAcogida}
               inputInf={inputInfo.programaAcogida}
@@ -519,7 +519,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.ciudad}
               inputInf={inputInfo.ciudad}
@@ -527,7 +526,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.pais}
               inputInf={inputInfo.pais}
@@ -535,17 +533,16 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <div className={`${isStudent ? "" : "opacity-40 -z-50"}`}>
               <CustomInput
                 bubbleInf={Info.profPres}
                 inputInf={inputInfo.profPres}
                 errors={errors}
                 register={register}
+                isDisable={!isStudent}
               />
             </div>
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.facultad}
               inputInf={inputInfo.facultad}
@@ -553,7 +550,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.financiacion}
               inputInf={inputInfo.financiacion}
@@ -579,8 +575,8 @@ function FormPage() {
           </div>
         </form>
         {returnMov().length > 0 && (
-          <table className="w-5/6 mx-auto mb-10 text-center text-primary-dark">
-            <thead className="bg-neutral">
+          <table className="w-5/6 mx-auto mb-10 text-center border-collapse table-auto text-primary-dark md:table">
+            <thead className="hidden bg-neutral md:table-header-group">
               <tr className="rounded-t-xl">
                 <th className="w-1/5 px-4 py-3 font-semibold text-center text-primary-dark" >
                   Facultad
@@ -598,11 +594,11 @@ function FormPage() {
             </thead>
             <tbody className="text-primary-dark">
                 {returnMov().map((item, index) => (
-                  <tr key={index} className="">
-                    <td className="px-4 py-2">{item.faculty}</td>
-                    <td className="px-4 py-2">{item.agreementId || "N/A" }</td>
-                    <td className="px-4 py-2">{item.person.identificationType}</td>
-                    <td className="px-4 py-2">{item.person.identification}</td>
+                  <tr key={index} className="flex flex-col border-b md:table-row">
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Facultad: </span>{item.faculty}</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Código de convenio: </span>{item.agreementId || "N/A" }</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Tipo de ID: </span>{item.person.identificationType}</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Número de ID: </span>{item.person.identification}</td>
                   </tr>
                 ))}
             </tbody>
