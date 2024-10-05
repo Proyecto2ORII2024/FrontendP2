@@ -13,9 +13,9 @@ function AsideAdmin({open, setOpen}) {
     const Menus = [
       {title: "Inicio", src:init, Link:"/admin"},
       {title: "Convenios", src:agreements ,Link:"/admin/agreement"},
-      {title: "Movilidad", src:forms, Link:"/form"},
+      {title: "Movilidad", src:forms, Link:"/admin/movilidad"},
       {title: "Estadísticas", src:statistics, Link:"/statistics"},
-      {title: "Registrar Usuarios", src:reg, gap: true},
+      {title: "Registrar Usuarios", src:reg, gap: true, Link:"/usuarios"},
       {title: "Cerrar Sesión", src:logout}
     ]
     return (

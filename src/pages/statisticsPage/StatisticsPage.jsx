@@ -4,10 +4,11 @@ import LineChartMobilityTrend from "../../components/statistics/lineGraphs/LineC
 import BarChartMobilityByDepartment from "../../components/statistics/barGraphs/BarChartMobilityByDepartment";
 import BarChartMobilityByCountries from "../../components/statistics/barGraphs/BarChartMobilityByCountries";
 import BarChartMobilitiesPerYear from "../../components/statistics/barGraphs/BarChartMobilitiesPerYear";
+import AdminLayout from "../../layouts/AdminLayout";
 
 const StatisticsPage = () => {
   return (
-    <div>
+    <AdminLayout>
       <div className="mx-10 my-5 text-2xl font-semibold">
         <h1>Estadísticas de movilidad</h1>
       </div>
@@ -59,7 +60,7 @@ const StatisticsPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

@@ -3,13 +3,14 @@ import editIcon from "../../assets/icons/editIcon.svg";
 import checkIcon from "../../assets/icons/checkIcon.svg";
 import search from "../../assets/icons/searchIcon.svg";
 
-import NotificationBox from "../../components/notificationBox/NotificationBox";
+import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 import { useState } from "react";
 
 import { styles } from "./styles.js";
 
-function ListaUsuarioPage() {
+function UsersListPage() {
 
     const [open, setOpen] = useState(false);
     const [notification, setNotification] = useState("");
@@ -142,7 +143,7 @@ function ListaUsuarioPage() {
     }
 
     return (
-        <>
+        <AdminLayout>
             <main>
 
                 <NotificationBox
@@ -318,8 +319,8 @@ function ListaUsuarioPage() {
                 )}
 
             </main>
-        </>
+        </AdminLayout>
     );
 
 }
-export default ListaUsuarioPage;
+export default UsersListPage;

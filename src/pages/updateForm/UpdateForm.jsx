@@ -6,10 +6,10 @@ import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import { useState, useEffect } from "react";
-import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
 import { updateForm, getId } from "../../services/movilidad.service.js";
 import { useParams } from "react-router-dom";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 function UpdateForm() {
     const [days, setDays] = useState(0);
@@ -120,7 +120,7 @@ function UpdateForm() {
         }).catch((err) => {
             console.log(err.response.data);
         });
-    }, []);
+    }, [elementId, setValue]);
 
     useEffect(() => {
         if (entryDate && exitDate) {
@@ -129,7 +129,7 @@ function UpdateForm() {
     }, [entryDate, exitDate]);
 
     return (
-        <>
+        <AdminLayout>
             <main className="flex flex-col gap-32">
                 <NotificationBox
                     type={notification}
@@ -473,7 +473,7 @@ function UpdateForm() {
                     </div>
                 </form>
             </main>
-        </>
+        </AdminLayout>
     );
 }
 
