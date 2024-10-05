@@ -4,12 +4,12 @@ import Login from "../pages/loginPage/Login";
 import MainAdmin from "../pages/mainAdminPage/MainAdmin";
 import MainUser from "../pages/mainUserPage/MainUser";
 import ConvenioAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
+import ConvenioUserPage from "../pages/agreementUserPage/AgreementUserPage";
 import UserList from "../pages/usersListPage/UsersListPage.jsx";
 import FormPage from "../pages/formPage/formPage";
 import CreateConvenioPage from "../pages/createAgreementPage/CreateAgreementPage";
 import UserRegisterPage from "../pages/userRegisterPage/UserRegisterPage.jsx";
 
-import ConvenioUserPage from "../pages/convenioUserPage/ConvenioUserPage";
 
 function Router() {
     return (

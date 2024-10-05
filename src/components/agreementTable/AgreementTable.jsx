@@ -8,7 +8,8 @@ function AgreementTable({
   setOpen,
   setAgreementId,
   setOpenDelete,
-  agreements
+  agreements,
+  setAgreementSelected,
 }) {
   return (
     <table className="w-full text-left table-auto border-collapse md:table">
@@ -28,7 +29,7 @@ function AgreementTable({
             className={`${
               index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
             } flex flex-col md:table-row border-b`}
-            key={agreement.id}
+            key={agreement.agreementId}
           >
             <td className={styles.tdIn}>
               <span className="md:hidden font-bold">Pais: </span>
@@ -57,7 +58,7 @@ function AgreementTable({
                   <button
                     onClick={() => {
                       setOpen(true);
-                      setAgreementId(agreement.id.toString());
+                      setAgreementSelected(agreement);
                     }}
                   >
                     <img
@@ -69,7 +70,7 @@ function AgreementTable({
                   <button
                     onClick={() => {
                       setOpenDelete(true);
-                      setAgreementId(agreement.id.toString());
+                      setAgreementId(agreement.agreementId.toString());
                     }}
                   >
                     <img
@@ -93,6 +94,7 @@ AgreementTable.propTypes = {
   setOpen: PropTypes.func,
   setAgreementId: PropTypes.func,
   setOpenDelete: PropTypes.func,
+  setAgreementSelected: PropTypes.func,
 };
 
 export default AgreementTable;
