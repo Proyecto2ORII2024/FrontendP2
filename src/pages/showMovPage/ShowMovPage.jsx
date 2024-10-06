@@ -5,6 +5,7 @@ import { getId } from "../../services/movilidad.service.js";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import { FormDict } from "../../utils/FormDict.js";
 
 function ShowMovPage() {
   const [data, setData] = useState({
@@ -66,12 +67,12 @@ function ShowMovPage() {
       <main className="grid grid-cols-1 mx-8 mt-10 mb-16 sm:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
         <ShowMovilityField
           title="Sentido"
-          data={data.direction}
+          data={FormDict[data.direction]}
           bblInf={MoveInfo.sentido}
         />
         <ShowMovilityField
           title="Tipo"
-          data={data.person.personType}
+          data={FormDict[data.person.personType]}
           bblInf={MoveInfo.tipo}
         />
         <ShowMovilityField
@@ -96,7 +97,7 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Género"
-          data={data.gender}
+          data={FormDict[data.gender]}
           bblInf={MoveInfo.genero}
         />
         <ShowMovilityField
@@ -127,12 +128,12 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Número de convenio"
-          data={data.agreementId}
+          data={data.agreementId || 'N.A.'}
           bblInf={MoveInfo.numConvenio}
         />
         <ShowMovilityField
           title="Tipo de evento"
-          data={data.event.eventType.eventTypeId}
+          data={FormDict[data.event.eventType.eventTypeId]}
           bblInf={MoveInfo.tipoEvento}
         />
         <ShowMovilityField

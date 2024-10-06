@@ -15,6 +15,8 @@ import { useState, useEffect } from "react";
 import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import { formatDateToDDMMYYYY } from "../../utils/Date.js";
+
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -58,9 +60,10 @@ function FormPage() {
     }
   }
 
-  const returnMov = () =>{
-    return JSON.parse(sessionStorage.getItem('movility')) || [];
-  }
+  const returnMov = () => {
+    const mov = JSON.parse(sessionStorage.getItem('movility'));
+    return Array.isArray(mov) ? mov : [];
+  };
 
   const onSubmit = (data) => {
     let formData = {
@@ -68,8 +71,8 @@ function FormPage() {
       direction: data.direction,
       gender: data.gender,
       cta: 1,
-      entryDate: data.entryDate,
-      exitDate: data.exitDate,
+      entryDate: formatDateToDDMMYYYY(data.entryDate),
+      exitDate: formatDateToDDMMYYYY(data.exitDate),
       originProgram: data.originProgram,
       destinationProgram: data.destinationProgram,
       city: data.city,
@@ -238,7 +241,7 @@ function FormPage() {
               register={register}
               errors={errors}
             />
-            {/*TODO: Sólo letras*/}
+
             <CustomInput
               bubbleInf={Info.nombre}
               inputInf={inputInfo.nombre}
@@ -246,7 +249,6 @@ function FormPage() {
               errors={errors}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.apellidos}
               inputInf={inputInfo.apellidos}
@@ -277,117 +279,61 @@ function FormPage() {
               )}
             </div>
 
-            {isInOrOut === "OUT" && (
-              <label
-                className={`flex flex-col w-full ${
-                  isInOrOut === "" ? "opacity-40 -z-50" : ""
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <InfoBubble info={Info.fechaSalida} />
-                  <p>Fecha de salida</p>
-                </div>
-                <input
-                  id="exitDate"
-                  autoComplete="off"
-                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                  type="date"
-                  placeholder="Fecha de salida"
-                  {...register("exitDate", {
-                    required: true,
-                    onChange: updateExitDate,
-                  })}
+            <label
+              className={`flex flex-col w-full ${isInOrOut === "" ? "opacity-40 -z-50" : ""}`}
+            >
+              <div className="flex items-center gap-2">
+                <InfoBubble 
+                  info={isInOrOut === "IN" || isInOrOut === "" ? Info.fechaEntrada : Info.fechaSalida} 
                 />
-                {errors.exitDate && (
-                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              </label>
-            )}
+                <p>{isInOrOut === "IN" || isInOrOut === "" ? 'Fecha de entrada' : 'Fecha de salida'}</p>
+              </div>
+              <input
+                id={isInOrOut === "IN" || isInOrOut === "" ? 'entryDate' : 'exitDate'}
+                autoComplete="off"
+                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                type="date"
+                disabled={isInOrOut === ""}
+                placeholder={isInOrOut === "IN" || isInOrOut === "" ? "Fecha de entrada" : "Fecha de salida"}
+                {...register(isInOrOut === "IN" || isInOrOut === "" ? "entryDate" : "exitDate", {
+                  required: true,
+                  onChange: isInOrOut === "IN" || isInOrOut === "" ? updateEntryDate : updateExitDate,
+                })}
+              />
+              {errors[isInOrOut === "IN" || isInOrOut === "" ? "entryDate" : "exitDate"] && (
+                <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </label>
 
-            {isInOrOut === "OUT" && (
-              <label className={`flex flex-col w-full`}>
-                <div className="flex items-center gap-2">
-                  <InfoBubble info={Info.fechaEntrada} />
-                  <p>Fecha de entrada</p>
-                </div>
-                <input
-                  id="entryDate"
-                  autoComplete="off"
-                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                  type="date"
-                  placeholder="Fecha de entrada"
-                  {...register("entryDate", {
-                    required: true,
-                    onChange: updateEntryDate,
-                  })}
+            <label
+              className={`flex flex-col w-full ${isInOrOut === "" ? "opacity-40 -z-50" : ""}`}
+            >
+              <div className="flex items-center gap-2">
+                <InfoBubble 
+                  info={isInOrOut === "IN" || isInOrOut === "" ? Info.fechaSalida : Info.fechaEntrada} 
                 />
-                {errors.entryDate && (
-                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              </label>
-            )}
-
-            {(isInOrOut === "" || isInOrOut === "IN") && (
-              <label
-                className={`flex flex-col w-full ${
-                  isInOrOut === "" ? "opacity-40 -z-50" : ""
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <InfoBubble info={Info.fechaEntrada} />
-                  <p>Fecha de entrada</p>
-                </div>
-                <input
-                  id="entryDate"
-                  autoComplete="off"
-                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                  type="date"
-                  placeholder="Fecha de entrada"
-                  {...register("entryDate", {
-                    required: true,
-                    onChange: updateEntryDate,
-                  })}
-                />
-                {errors.entryDate && (
-                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              </label>
-            )}
-
-            {(isInOrOut === "" || isInOrOut === "IN") && (
-              <label
-                className={`flex flex-col w-full ${
-                  isInOrOut === "" ? "opacity-40 -z-50" : ""
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <InfoBubble info={Info.fechaSalida} />
-                  <p>Fecha de salida</p>
-                </div>
-                <input
-                  id="exitDate"
-                  autoComplete="off"
-                  className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                  type="date"
-                  placeholder="Fecha de salida"
-                  {...register("exitDate", {
-                    required: true,
-                    onChange: updateExitDate,
-                  })}
-                />
-                {errors.exitDate && (
-                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              </label>
-            )}
+                <p>{isInOrOut === "IN" || isInOrOut === "" ? 'Fecha de salida' : 'Fecha de entrada'}</p>
+              </div>
+              <input
+                id={isInOrOut === "IN" || isInOrOut === "" ? 'exitDate' : 'entryDate'}
+                autoComplete="off"
+                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                type="date"
+                disabled={isInOrOut === ""}
+                placeholder={isInOrOut === "IN" || isInOrOut === "" ? "Fecha de salida" : "Fecha de entrada"}
+                {...register(isInOrOut === "IN" || isInOrOut === "" ? "exitDate" : "entryDate", {
+                  required: true,
+                  onChange: isInOrOut === "IN" || isInOrOut === "" ? updateExitDate : updateEntryDate,
+                })}
+              />
+              {errors[isInOrOut === "IN" || isInOrOut === "" ? "exitDate" : "entryDate"] && (
+                <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </label>
 
             <label className="flex flex-col w-full">
               <div className="flex items-center gap-2">
@@ -409,7 +355,6 @@ function FormPage() {
               </p>
             </label>
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.uniOrigen}
               inputInf={inputInfo.uniOrigen}
@@ -417,7 +362,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.uniDestino}
               inputInf={inputInfo.uniDestino}
@@ -464,6 +408,7 @@ function FormPage() {
                     value={field.value}
                     onChange={field.onChange}
                     bblInfo={Info.numConvenio}
+                    isDisable={!yes}
                   />
                 )}
               />
@@ -503,7 +448,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.programaOrigen}
               inputInf={inputInfo.programaOrigen}
@@ -511,7 +455,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.programaAcogida}
               inputInf={inputInfo.programaAcogida}
@@ -519,7 +462,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.ciudad}
               inputInf={inputInfo.ciudad}
@@ -527,7 +469,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.pais}
               inputInf={inputInfo.pais}
@@ -535,17 +476,16 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <div className={`${isStudent ? "" : "opacity-40 -z-50"}`}>
               <CustomInput
                 bubbleInf={Info.profPres}
                 inputInf={inputInfo.profPres}
                 errors={errors}
                 register={register}
+                isDisable={!isStudent}
               />
             </div>
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.facultad}
               inputInf={inputInfo.facultad}
@@ -553,7 +493,6 @@ function FormPage() {
               register={register}
             />
 
-            {/*TODO: Sólo letras*/}
             <CustomInput
               bubbleInf={Info.financiacion}
               inputInf={inputInfo.financiacion}
@@ -579,36 +518,35 @@ function FormPage() {
           </div>
         </form>
         {returnMov().length > 0 && (
-          <table className="w-5/6 mx-auto mb-10 text-center text-primary-dark">
-            <thead className="bg-neutral">
-              <tr className="rounded-t-xl">
+          <table className="w-5/6 mx-auto mb-10 text-center border-collapse table-auto text-primary-dark md:table">
+            <thead className="hidden bg-neutral md:table-header-group">
+                <tr className="rounded-t-xl">
                 <th className="w-1/5 px-4 py-3 font-semibold text-center text-primary-dark" >
-                  Facultad
+                    Facultad
                 </th>
                 <th className="w-1/5 px-4 py-3 font-semibold text-center text-primary-dark" >
-                  Codigo de Convenio
+                    Código de Convenio
                 </th>
                 <th className="px-4 py-3 font-semibold text-center text-primary-dark w-[15%]" >
-                  Tipo de Documento
+                    Tipo de Documento
                 </th>
                 <th className="w-1/4 px-4 py-3 font-semibold text-center text-primary-dark">
-                  Documento Usuario 
+                    Documento Usuario 
                 </th>
-              </tr>
+                </tr>
             </thead>
             <tbody className="text-primary-dark">
                 {returnMov().map((item, index) => (
-                  <tr key={index} className="">
-                    <td className="px-4 py-2">{item.faculty}</td>
-                    <td className="px-4 py-2">{item.agreementId || "N/A" }</td>
-                    <td className="px-4 py-2">{item.person.identificationType}</td>
-                    <td className="px-4 py-2">{item.person.identification}</td>
-                  </tr>
+                    <tr key={index} className="flex flex-col border-b md:table-row">
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Facultad: </span>{item.faculty}</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Código de convenio: </span>{item.agreementId || "N/A" }</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Tipo de ID: </span>{item.person.identificationType}</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Número de ID: </span>{item.person.identification}</td>
+                    </tr>
                 ))}
             </tbody>
-          </table>
+        </table>
         )}
-        
       </main>
     </AdminLayout>
   );
