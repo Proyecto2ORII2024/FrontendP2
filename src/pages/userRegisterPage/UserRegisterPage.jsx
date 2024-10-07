@@ -1,5 +1,7 @@
 import LoginImage from "../../assets/Images/Login.webp";
 import ORIIIcon from "../../assets/Images/ORII.webp";
+import MainButton from "../../components/buttons/MainButton.jsx";
+import { useNavigate } from "react-router-dom";
 
 function RegistrarUsuarioPage() {
 
@@ -7,6 +9,8 @@ function RegistrarUsuarioPage() {
         { value: 'admin', label: 'Admin' },
         { value: 'usuario', label: 'Usuario' }
     ];
+
+    const navigate = useNavigate();
 
     return (
         <div
@@ -36,9 +40,14 @@ function RegistrarUsuarioPage() {
                         </select>
                     </div>
                 </form>
-
-                <button className="bg-white hover:bg-grays rounded-full py-1 px-5 text-black flex items-center gap-2">Registrar</button>
-
+                <MainButton
+                    onClick={() => navigate("/user/list")}
+                    text="Crear Convenio"
+                    bgColor="primary"
+                    hoverBg="primary-light"
+                    textColor="white"
+                    className=""
+                />
             </div>
         </div>
     );
