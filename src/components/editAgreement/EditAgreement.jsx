@@ -69,7 +69,7 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "El pais solo puede contener letras" } })}
+                  {...register("country", { required: true, pattern: { value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/, message: "El pais solo puede contener letras" } })}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
@@ -108,7 +108,7 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
-                  {...register("institution", { required: true, pattern: { value: /^[A-Za-z ]+$/, message: "la institución solo puede contener letras" }  })}
+                  {...register("institution", { required: true, pattern: { value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/, message: "la institución solo puede contener letras" }  })}
                 />
                 {errors.institution && (
                   <span className="text-sm text-red-400">

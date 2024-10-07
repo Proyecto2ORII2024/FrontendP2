@@ -2,13 +2,20 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "../pages/loginPage/Login";
 import MainAdmin from "../pages/mainAdminPage/MainAdmin";
-import MainUser from "../pages/mainUserPage/MainUser";
-import ConvenioAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
-import ConvenioUserPage from "../pages/agreementUserPage/AgreementUserPage";
-import UserList from "../pages/usersListPage/UsersListPage.jsx";
-import FormPage from "../pages/formPage/formPage";
-import CreateConvenioPage from "../pages/createAgreementPage/CreateAgreementPage";
-import UserRegisterPage from "../pages/userRegisterPage/UserRegisterPage.jsx";
+import FormPage from "../pages/formPage/FormPage";
+import ShowMovPage from "../pages/showMovPage/ShowMovPage";
+import AgreementAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
+import CreateAgreementPage from "../pages/createAgreementPage/CreateAgreementPage";
+import AgreementUserPage from "../pages/agreementUserPage/AgreementUserPage";
+import RegistrarUsuarioPage from "../pages/registrarUsuario/RegistrarUsuarioPage";
+import StatisticsPage from "../pages/statisticsPage/StatisticsPage";
+import AsideUser from "../components/asideUser/AsideUser";
+import AsideAdmin from "../components/asideAdmin/AsideAdmin";
+import NavbarUser from "../components/navbarUser/NavbarUser";
+import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
+import Movility from "../pages/movility/Movility";
+import UpdateForm from "../pages/updateForm/UpdateForm";
+import UsersListPage from "../pages/usersListPage/UsersListPage";
 
 
 function Router() {
@@ -17,13 +24,20 @@ function Router() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/admin" element={<MainAdmin />} />
-            <Route path="/user" element={<MainUser />} />
-            <Route path="/user/register" element={<UserRegisterPage />} />
+            <Route path="/usuarios" element={<UsersListPage />} />
+            <Route path="/statistics" element={<StatisticsPage />} />
+            <Route path="/user/registrar" element={<RegistrarUsuarioPage />} />
             <Route path="/form" element={<FormPage />} />
-            <Route path="/admin/convenio" element={<ConvenioAdminPage />} />
-            <Route path="/user/list" element={<UserList />} />
-            <Route path="/admin/convenio/create" element={<CreateConvenioPage />} />
-            <Route path="/user/convenio" element={<ConvenioUserPage />} />
+            <Route path="/form/update/:elementId" element={<UpdateForm />} />
+            <Route path="/show/:formId" element={<ShowMovPage />} />
+            <Route path="/admin/agreement" element={<AgreementAdminPage />} />
+            <Route path="/admin/agreement/create" element={<CreateAgreementPage />} />
+            <Route path="/user/agreement" element={<AgreementUserPage />} />
+            <Route path="/navbarUser" element={<NavbarUser/>} />
+            <Route path="/navbarAdmin" element={<NavbarAdmin/>} />
+            <Route path="/asideUser" element={<AsideUser/>} />
+            <Route path="/asideAdmin" element={<AsideAdmin/>}/>
+            <Route path="/admin/movilidad" element={<Movility />} />
         </Routes>
         </BrowserRouter>
     );

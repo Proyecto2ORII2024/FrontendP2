@@ -1,7 +1,6 @@
 export const Info = {
     sentido: {
         title: 'Sentido',
-        shortInfo: 'Seleccione entre (SALIENTE PRESENCIAL, ENTRANTE PRESENCIAL, SALIENTE VIRTUAL, ENTRANTE VIRTUAL)',
         longInfo: {
             text: ['Seleccione uno de los siguientes items:'],
             list: {
@@ -51,11 +50,11 @@ export const Info = {
     },
     nombre:{
         title: 'Nombre(s)',
-        shortInfo: 'Escriba el o los nombres de la persona, conforme está escrito en el documento de identificación.',
+        shortInfo: 'Escriba el o los nombres de la persona, conforme está escrito en el documento de identificación.'
     },
     apellidos:{
         title: 'Apellidos',
-        shortInfo: 'Escriba los apellidos de la persona, conforme está escrito en el documento de identificación.'
+        shortInfo: 'Escriba los nombres de la persona, conforme está escrito en el documento de identificación.'
     },
     genero:{
         title: 'Género',
@@ -71,7 +70,7 @@ export const Info = {
     },
     diasEstancia: {
         title: 'Número de días de estancia',
-        shortInfo: 'Este campo se llena automáticamente una vez se haya ingresado la fecha de entrada y la de salida.'
+        shortInfo: 'Este campo se llena automáticamente una vez se haya ingresado la fecha de salida y la de entrada.'
     },
     anio:{
         title: 'Año (Preguntar por automatización)',
@@ -246,25 +245,19 @@ export const inputInfo = {
         id: 'personId',
         text: 'Número de identificación',
         type: 'number',
-        required: true,
-        pattern: /^[0-9]+$/,
-        message: 'El número de identificación no puede ser negativo'
+        required: true
     },
     nombre:{
         id: 'firstName',
         text: 'Nombre(s)',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     apellidos:{
         id: 'lastName',
         text: 'Apellidos',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     genero:{
       id: 'gender',
@@ -280,17 +273,13 @@ export const inputInfo = {
         id: 'origin',
         text: 'Universidad de origen',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     uniDestino:{
         id: 'destination',
         text: 'Universidad de destino',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     convenio:{
         id: 'hasAgreement',
@@ -343,65 +332,49 @@ export const inputInfo = {
         id: 'originProgram',
         text: 'Programa de origen',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     programaAcogida:{
         id: 'destinationProgram',
         text: 'Programa de acogida',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     ciudad:{
         id: 'city',
         text: 'Ciudad',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     pais:{
         id: 'country',
         text: 'País',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     profPres:{
         id: 'teacher',
         text: 'Profesor presenta',
         type: 'text',
-        required: false,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: false
     },
     facultad:{
         id: 'faculty',
         text: 'Facultad',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'Este campo sólo acepta letras'
+        required: true
     },
     financiacion:{
         id: 'funding',
         text: 'Financiación',
         type: 'number',
-        required: true,
-        pattern: /^[0-9]+$/,
-        message: 'La financiación no puede ser negativa'
+        required: true
     },
     fuenteFinanciacion:{
         id: 'fundingSource',
         text: 'Fuente de la financiación',
         type: 'text',
-        required: true,
-        pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-        message: 'El nombre de la fuente de financiación solo puede contener letras y espacios'
+        required: true
     }
 }
 
@@ -428,12 +401,4 @@ export function calcDays(fechaInicio, fechaFin) {
     const diferenciaDias = diferenciaMilisegundos / milisegundosPorDia;
 
     return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
-}
-
-export function checkDirection(value) {
-    if (value === 'INCOMING_VIRTUAL' || value === 'INCOMING_IN_PERSON') {
-        return 'IN';
-    } else {
-        return 'OUT';
-    }
 }
