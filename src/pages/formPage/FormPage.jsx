@@ -7,7 +7,7 @@ import {
   calcDays,
   checkDirection,
 } from "./Information.js";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller} from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
@@ -35,6 +35,11 @@ function FormPage() {
 
   const updateExitDate = (e) => {
     setExitDate(e.target.value);
+  };
+
+  const getAgreementTextById = (id, agreements) => {
+    const agreement = agreements.find((ag) => ag.value === id);
+    return agreement ? agreement.text : "N/A";  // Si no se encuentra, muestra "N/A"
   };
 
   const {
@@ -82,7 +87,8 @@ function FormPage() {
       fundingSource: data.fundingSource,
       destination: data.destination,
       origin: data.origin,
-      agreementId : yes ? data.agreementId : 1,
+      agreementId : yes ? data.agreementId : null,
+      teacher: (isStudent && data.teacher) ? data.teacher : null,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -96,18 +102,14 @@ function FormPage() {
       },
     };
 
-    if (yes) {
-      formData = { ...formData, agreementId: data.agreementId };
-    }
-    if (isStudent) {
-      formData = { ...formData, teacher: data.teacher };
-    }
-
     createForm(formData)
       .then((res) => {
         if(res.status === 201) {
           saveLocalStorage(formData)
           setDays(0);
+          setYes(false);
+          setIsInOrOut("")
+          setIsStudent(false)
           reset();
         };
         setNotification(res.status === 201 ? "success" : "error");
@@ -539,7 +541,7 @@ function FormPage() {
                 {returnMov().map((item, index) => (
                     <tr key={index} className="flex flex-col border-b md:table-row">
                     <td className="px-4 py-2"><span className="font-bold md:hidden">Facultad: </span>{item.faculty}</td>
-                    <td className="px-4 py-2"><span className="font-bold md:hidden">Código de convenio: </span>{item.agreementId || "N/A" }</td>
+                    <td className="px-4 py-2"><span className="font-bold md:hidden">Código de convenio: </span>{getAgreementTextById(item.agreementId, agreements)}</td>
                     <td className="px-4 py-2"><span className="font-bold md:hidden">Tipo de ID: </span>{item.person.identificationType}</td>
                     <td className="px-4 py-2"><span className="font-bold md:hidden">Número de ID: </span>{item.person.identification}</td>
                     </tr>
