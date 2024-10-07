@@ -1,6 +1,4 @@
 import LoginImage from "../../assets/Images/Login.webp";
-import GoogleIcon from "../../assets/icons/googleIcon.svg";
-import loginIcon from "../../assets/icons/loginIcon.svg";
 import ORIIIcon from "../../assets/Images/ORII.webp";
 
 function RegistrarUsuarioPage() {
