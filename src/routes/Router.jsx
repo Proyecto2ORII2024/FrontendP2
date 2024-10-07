@@ -7,7 +7,7 @@ import ShowMovPage from "../pages/showMovPage/ShowMovPage";
 import AgreementAdminPage from "../pages/agreementAdminPage/AgreementAdminPage";
 import CreateAgreementPage from "../pages/createAgreementPage/CreateAgreementPage";
 import AgreementUserPage from "../pages/agreementUserPage/AgreementUserPage";
-import RegistrarUsuarioPage from "../pages/registrarUsuario/RegistrarUsuarioPage";
+import UserRegisterPage from "../pages/userRegisterPage/UserRegisterPage";
 import StatisticsPage from "../pages/statisticsPage/StatisticsPage";
 import AsideUser from "../components/asideUser/AsideUser";
 import AsideAdmin from "../components/asideAdmin/AsideAdmin";
@@ -24,9 +24,9 @@ function Router() {
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/admin" element={<MainAdmin />} />
-            <Route path="/usuarios" element={<UsersListPage />} />
+            <Route path="/user/list" element={<UsersListPage />} />
             <Route path="/statistics" element={<StatisticsPage />} />
-            <Route path="/user/registrar" element={<RegistrarUsuarioPage />} />
+            <Route path="/user/register" element={<UserRegisterPage />} />
             <Route path="/form" element={<FormPage />} />
             <Route path="/form/update/:elementId" element={<UpdateForm />} />
             <Route path="/show/:formId" element={<ShowMovPage />} />
