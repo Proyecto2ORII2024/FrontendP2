@@ -176,7 +176,7 @@ function UsersListPage() {
                         </h2>
                         <MainButton
                             onClick={() => navigate("/user/register")}
-                            text="Crear Convenio"
+                            text="Registrar usuario"
                             bgColor="primary"
                             hoverBg="primary-light"
                             textColor="white"

@@ -42,7 +42,7 @@ function RegistrarUsuarioPage() {
                 </form>
                 <MainButton
                     onClick={() => navigate("/user/list")}
-                    text="Crear Convenio"
+                    text="Registrar"
                     bgColor="primary"
                     hoverBg="primary-light"
                     textColor="white"
