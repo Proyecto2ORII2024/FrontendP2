@@ -29,6 +29,15 @@ function FormPage() {
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
 
+  const profPres = {
+      id: 'teacher',
+      text: 'Profesor presenta',
+      type: 'text',
+      required: isStudent && isInOrOut==='IN',
+      pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
+      message: 'Este campo sólo acepta letras'
+  }
+  
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
   };
@@ -88,7 +97,7 @@ function FormPage() {
       destination: data.destination,
       origin: data.origin,
       agreementId : yes ? data.agreementId : null,
-      teacher: (isStudent && data.teacher) ? data.teacher : null,
+      teacher: (isStudent && isInOrOut==='IN' && data.teacher) ? data.teacher : null,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -108,8 +117,10 @@ function FormPage() {
           saveLocalStorage(formData)
           setDays(0);
           setYes(false);
-          setIsInOrOut("")
-          setIsStudent(false)
+          setIsInOrOut("");
+          setIsStudent(false);
+          setEntryDate("");
+          setExitDate("");
           reset();
         };
         setNotification(res.status === 201 ? "success" : "error");
@@ -478,13 +489,13 @@ function FormPage() {
               register={register}
             />
 
-            <div className={`${isStudent ? "" : "opacity-40 -z-50"}`}>
+            <div className={`${isStudent && isInOrOut==='IN' ? "" : "opacity-40 -z-50"}`}>
               <CustomInput
                 bubbleInf={Info.profPres}
-                inputInf={inputInfo.profPres}
+                inputInf={profPres}
                 errors={errors}
                 register={register}
-                isDisable={!isStudent}
+                isDisable={!isStudent && (isInOrOut==='OUT' || isInOrOut==='')}
               />
             </div>
 

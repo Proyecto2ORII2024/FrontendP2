@@ -87,14 +87,14 @@ export const Info = {
     },
     convenio:{
         title: '¿Existe convenio con universidad o institución de origen o de destino?',
-        shortInfo: 'Puede verificar si existe convenio, en el siguiente enlace:  http://www.unicauca.edu.co/orii/es/convenios'
+        shortInfo: 'Puede verificar si existe convenio, en el apartado CONVENIOS de la página.'
     },
     numConvenio: {
         title: 'Número de convenio',
         longInfo:{
             text:[
-                'Si existe convenio con la institución de procedencia del experto invitado, o del estudiante que realiza movilidad entrante; o con la universidad de destino en la cual realizan movilidad los profesores, funcionarios administrativos o estudiantes de la Universidad del Cauca, escriba el número del convenio.  Preferentemente, el número del convenio específico.  Si no existe convenio específico, escriba el número del convenio marco.',
-                'En el siguiente enlace encuentre el convenio específico en documento PDF; el número está en la parte inferior de la primera hoja:  http://www.unicauca.edu.co/orii/es/convenios.',
+                'Si existe convenio con la institución de procedencia del experto invitado, o del estudiante que realiza movilidad entrante; o con la universidad de destino en la cual realizan movilidad los profesores, funcionarios administrativos o estudiantes de la Universidad del Cauca, seleccione el número del convenio.',
+                'En el apartado CONVENIOS en la barra de navegación puede consultar los convenios existentes',
                 'Si existe convenio, pero no tiene número, comuníquese con la ORII: relacionesinter@unicauca.edu.co.'
             ]
         }
@@ -178,7 +178,7 @@ export const Info = {
     },
     profPres:{
         title: 'Profesor presenta',
-        shortInfo: 'Únicamente cuando se trate de estudiantes en Movilidad académica entrante (pasantía o estancia de investigación o intercambio), escriba el nombre del profesor que ejerce como Tutor o Coordinador de dicha movilidad.'
+        shortInfo: 'Este campo únicamente se habilita cuando se trate de estudiantes en Movilidad académica ENTRANTE (pasantía o estancia de investigación o intercambio), escriba el nombre del profesor que ejerce como Tutor o Coordinador de dicha movilidad.'
     },
     facultad:{
         title: 'Facultad',
