@@ -21,7 +21,7 @@ function NavbarAdmin() {
         {title: "Convenios", src:agreementsNav ,Link:"/admin/agreement"},
         {title: "Movilidad", src:formsNav, Link:"/admin/movilidad"},
         {title: "Estadísticas", src:statisticsNav, Link:"/statistics"},
-        {title: "Registrar Usuarios", src:regNav, Link:"/usuarios"},
+        {title: "Registrar Usuarios", src:regNav, Link:"/user/list"},
         {title: "Cerrar Sesión", src:logoutNav}
     ]
         return (
