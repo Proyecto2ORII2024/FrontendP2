@@ -6,8 +6,14 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 import { FormDict } from "../../utils/FormDict.js";
+import { calcDays } from "../updateForm/Information.js";
+
 
 function ShowMovPage() {
+  
+  const [days, setDays] = useState(0);
+
+
   const [data, setData] = useState({
     id: "",
     orii: false,
@@ -58,6 +64,7 @@ function ShowMovPage() {
     getId(formId).then((res) => {
       console.log(res.data);
       console.log(res.data.person.identificationType);
+      setDays(calcDays(res.data.entryDate, res.data.exitDate));
       setData(res.data);
     });
   }, [formId]);
@@ -112,10 +119,10 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Días de estancia"
-          data={0}
+          data={days}
           bblInf={MoveInfo.diasEstancia}
         />
-        <ShowMovilityField title="Año" data={2024} bblInf={MoveInfo.anio} />
+        <ShowMovilityField title="Año" data={new Date().getFullYear()} bblInf={MoveInfo.anio} />
         <ShowMovilityField
           title="Universidad de origen"
           data={data.origin}
@@ -128,7 +135,7 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Número de convenio"
-          data={data.agreementId || 'N.A.'}
+          data={data.agreement.agreementNumber || 'N.A.'}
           bblInf={MoveInfo.numConvenio}
         />
         <ShowMovilityField
