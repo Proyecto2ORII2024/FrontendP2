@@ -60,9 +60,7 @@ function UpdateForm() {
             destination: data.destination,
             origin: data.origin,
             teacher: data.teacher ? data.teacher : "",
-            agreement: {
-                agreementId: yes ? data.agreementId : null,
-            },
+            agreementId: yes ? data.agreementId : null,
             event: {
                 eventTypeId: Number(data.eventType),
                 description: data.eventDescription,
