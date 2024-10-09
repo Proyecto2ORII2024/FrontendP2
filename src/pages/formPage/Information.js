@@ -427,7 +427,7 @@ export function calcDays(fechaInicio, fechaFin) {
     const milisegundosPorDia = 1000 * 60 * 60 * 24;
     const diferenciaDias = diferenciaMilisegundos / milisegundosPorDia;
 
-    return Math.abs(Math.floor(diferenciaDias)); // Redondear al número de días
+    return Math.floor(diferenciaDias); // Redondear al número de días
 }
 
 export function checkDirection(value) {
@@ -436,4 +436,16 @@ export function checkDirection(value) {
     } else {
         return 'OUT';
     }
+}
+
+export function checkDates(direction, entryDate, exitDate){
+    const entry = new Date(entryDate);
+    const exit = new Date(exitDate);
+    let aux = false;
+    if (direction === 'IN') {
+        aux = entry <= exit ;
+    } else {
+        aux = exit <=  entry ;
+    }
+    return aux
 }
