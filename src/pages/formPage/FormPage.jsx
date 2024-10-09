@@ -6,6 +6,7 @@ import {
   createAgreementOptions,
   calcDays,
   checkDirection,
+  checkDates
 } from "./Information.js";
 import { useForm, Controller} from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
@@ -23,6 +24,7 @@ function FormPage() {
   const [entryDate, setEntryDate] = useState("");
   const [exitDate, setExitDate] = useState("");
   const [agreements, setAgreements] = useState([]);
+  const [dateError, setDateError] = useState("");
   const [yes, setYes] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isInOrOut, setIsInOrOut] = useState("");
@@ -80,6 +82,15 @@ function FormPage() {
   };
 
   const onSubmit = (data) => {
+    const validDate = checkDates(isInOrOut, data.entryDate, data.exitDate);
+
+    if(!validDate){
+      setDateError(isInOrOut === 'IN' ? 'La fecha de salida no puede ser mayor a la de entrada': 'La fecha de entrada no puede ser mayor a la de salida');
+      setNotification('errorDate');
+      setNotiOpen(true);
+      return;
+    }
+    
     let formData = {
       orii: true,
       direction: data.direction,
@@ -121,6 +132,7 @@ function FormPage() {
           setIsStudent(false);
           setEntryDate("");
           setExitDate("");
+          setDateError("");
           reset();
         };
         setNotification(res.status === 201 ? "success" : "error");
@@ -153,7 +165,7 @@ function FormPage() {
     <AdminLayout>
       <main className="flex flex-col gap-10 pb-10">
         <NotificationBox
-          type={notification}
+          type={notification ==='errorDate' ? 'error': notification}
           title={
             notification === "success"
               ? "Enviado con éxito"
@@ -167,7 +179,8 @@ function FormPage() {
               El formulario ha sido enviado{" "}
               <span className="font-semibold">éxitosamente</span>
             </p>
-          ) : (
+          ) : notification === 'errorDate' ? 
+              (<p>{dateError}</p>) : (
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
@@ -180,7 +193,7 @@ function FormPage() {
                 defaultValue=""
                 rules={{
                   required: inputInfo.sentido.required,
-                  onChange: (e) => setIsInOrOut(checkDirection(e.target.value)),
+                  onChange: (e) => {setIsInOrOut(checkDirection(e.target.value)); },
                 }}
                 render={({ field }) => (
                   <CustomSelect
@@ -320,6 +333,7 @@ function FormPage() {
               )}
             </label>
 
+              {/**Fecha de salida por defecto */}
             <label
               className={`flex flex-col w-full ${isInOrOut === "" ? "opacity-40 -z-50" : ""}`}
             >
@@ -338,12 +352,16 @@ function FormPage() {
                 placeholder={isInOrOut === "IN" || isInOrOut === "" ? "Fecha de salida" : "Fecha de entrada"}
                 {...register(isInOrOut === "IN" || isInOrOut === "" ? "exitDate" : "entryDate", {
                   required: true,
-                  onChange: isInOrOut === "IN" || isInOrOut === "" ? updateExitDate : updateEntryDate,
+                  onChange: (e) => {isInOrOut === "IN" || isInOrOut === "" ? updateExitDate(e) : updateEntryDate(e); 
+                      setDateError("");
+                  }
                 })}
               />
-              {errors[isInOrOut === "IN" || isInOrOut === "" ? "exitDate" : "entryDate"] && (
+              {(dateError || errors[isInOrOut === "IN" || isInOrOut === "" ? "exitDate" : "entryDate"]) && (
                 <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                  Este campo es requerido
+                  {dateError
+                    ? dateError
+                    : "Este campo es requerido"}
                 </span>
               )}
             </label>
