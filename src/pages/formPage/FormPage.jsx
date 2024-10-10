@@ -7,7 +7,7 @@ import {
   calcDays,
   checkDirection,
   checkDates
-} from "./Information.js";
+} from "../../utils/FormInformation.js";
 import { useForm, Controller} from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
@@ -17,7 +17,6 @@ import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 import { formatDateToDDMMYYYY } from "../../utils/Date.js";
-
 
 function FormPage() {
   const [days, setDays] = useState(0);
