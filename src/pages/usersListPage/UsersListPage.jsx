@@ -144,6 +144,27 @@ function UsersListPage() {
         setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Active: !estudiante.Active } : estudiante));
     }
 
+    /*
+    
+                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
+                                        
+                                            <td className={styles.tdOut}>
+
+                                                <div className="flex content-center justify-center space-x-1">
+                                                    <span className="md:hidden font-bold">Habilitar: </span>
+                                                    <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
+                                                </div>
+
+                                            </td>
+
+                                            
+                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
+                                            <td className={styles.tdOut}>
+                                                <span className="md:hidden font-bold">Habilitar: </span>
+                                                <input className="h-[25px] w-[25px]" type="checkbox" />
+                                            </td>
+    
+    */
     return (
         <AdminLayout>
             <main>
@@ -205,7 +226,6 @@ function UsersListPage() {
                                         <th className={`${styles.thIn} w-[200px]`}>Correo</th>
                                         <th className={`${styles.thIn} w-[100px]`}>Rol</th>
                                         <th className={`${styles.thIn} w-[150px]`}>Acciones</th>
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -261,14 +281,6 @@ function UsersListPage() {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className={styles.tdOut}>
-
-                                                <div className="flex content-center justify-center space-x-1">
-                                                    <span className="md:hidden font-bold">Habilitar: </span>
-                                                    <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
-                                                </div>
-
-                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -284,7 +296,6 @@ function UsersListPage() {
                                         <th className={`${styles.thIn} w-[200px]`}>Correo</th>
                                         <th className={`${styles.thIn} w-[100px]`}>Rol</th>
                                         <th className={`${styles.thIn} w-[150px]`}>Acciones</th>
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -317,10 +328,6 @@ function UsersListPage() {
                                                         <img className={styles.buttonAction} src={deleteIcon} alt="deleteIcon" />
                                                     </button>
                                                 </div>
-                                            </td>
-                                            <td className={styles.tdOut}>
-                                                <span className="md:hidden font-bold">Habilitar: </span>
-                                                <input className="h-[25px] w-[25px]" type="checkbox" />
                                             </td>
                                         </tr>
                                     ))}
