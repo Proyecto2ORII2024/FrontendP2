@@ -29,15 +29,6 @@ function FormPage() {
   const [isInOrOut, setIsInOrOut] = useState("");
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
-
-  const profPres = {
-      id: 'teacher',
-      text: 'Profesor presenta',
-      type: 'text',
-      required: isStudent && isInOrOut==='IN',
-      pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-      message: 'Este campo sólo acepta letras'
-  }
   
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
@@ -509,7 +500,7 @@ function FormPage() {
             <div className={`${isStudent && isInOrOut==='IN' ? "" : "opacity-40 -z-50"}`}>
               <CustomInput
                 bubbleInf={Info.profPres}
-                inputInf={profPres}
+                inputInf={inputInfo.profPres}
                 errors={errors}
                 register={register}
                 isDisable={!isStudent && (isInOrOut==='OUT' || isInOrOut==='')}
