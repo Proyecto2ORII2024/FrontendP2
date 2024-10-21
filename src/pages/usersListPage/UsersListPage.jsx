@@ -7,59 +7,57 @@ import { useNavigate } from "react-router-dom";
 
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import EditUser from "../../components/editUser/EditUser.jsx";
 
 import { useState } from "react";
 
 import { styles } from "./styles.js";
 
 function UsersListPage() {
-
-    const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const [notification, setNotification] = useState("");
     const [isEditing, setIsEditing] = useState({ state: false, index: -1 });
     const [values, setValues] = useState({ correo: "Test", rol: "Usuario" });
     const [isSearching, setIsSearching] = useState(false);
     const [searchStudent, setSearchStudent] = useState([]);
+    const [wasUpdated, setwasUpdated] = useState("");
+    const [userSelected, setUserSelected] = useState({})
     const [estudiantes, setEstudiantes] = useState([
         {
-
             Id: 1,
-
             Correo: "ORI@UNICAUCA.EDU.CO",
             Rol: "Admin",
-            Active: false
+            Password: "123"
         },
         {
-
             Id: 2,
             Correo: "INGENIERIA@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: false
+            Password: "123"
         },
         {
             Id: 3,
             Correo: "jsotelop@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: true
+            Password: "123"
         },
         {
             Id: 4,
             Correo: "cgarcias@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: false
+            Password: "123"
         },
         {
             Id: 5,
             Correo: "jorejuelam@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: false
+            Password: "123"
         },
         {
             Id: 6,
-
             Correo: "jorgevelasco@UNICAUCA.EDU.CO",
             Rol: "Admin",
-            Active: true
+            Password: "123"
         }
     ]);
 
@@ -83,26 +81,30 @@ function UsersListPage() {
             setIsEditing({ state: true, index: id });
         } else {
             setNotification("alert");
-            setOpen(true);
 
         }
     };
 
-    const handleSaveClick = (e) => {
-
-
-        const id = parseInt(e.target.id);
-        if (esCorreoValido(values.correo) && role.includes(values.rol)) {
-            setIsEditing({ state: false, index: -1 });
-            setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Correo: values.correo, Rol: values.rol } : estudiante));
-            setValues({ correo: "Test", rol: "Usuario" })
-            setNotification("success");
-            setOpen(true);
-        } else {
-            setNotification("error");
-            setOpen(true);
-        }
+    const updateData = (id, data) => {
+        console.log(id, data)
+        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol, Password: data.password } : estudiante));
+        setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol, Password: data.password } : estudiante));
+        setNotification("success");
     };
+
+    const updatePassword = (id, data) => {
+        console.log(id, data)
+        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Password: data.password } : estudiante));
+        setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Password: data.password } : estudiante));
+        setNotification("success");
+    }
+
+    const updateRol = (id, data) => {
+        console.log(id, data)
+        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante));
+        setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante));
+        setNotification("success");
+    }
 
     const handleInputChange = (e) => {
         setValues({ correo: e.target.value, rol: values.rol });
@@ -116,7 +118,6 @@ function UsersListPage() {
         const id = parseInt(idToDelete);
         setEstudiantes(estudiantes.filter(estudiante => estudiante.Id !== id));
         setNotification("info");
-        setOpen(true);
     };
 
 
@@ -138,45 +139,52 @@ function UsersListPage() {
             );
         }
     };
-
-    const handleCheckboxChange = (e) => {
-        const id = parseInt(e.target.id);
-        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Active: !estudiante.Active } : estudiante));
-    }
-
     /*
+        const handleCheckboxChange = (e) => {
+            const id = parseInt(e.target.id);
+            setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Active: !estudiante.Active } : estudiante));
+        }
     
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
-                                        
-                                            <td className={styles.tdOut}>
-
-                                                <div className="flex content-center justify-center space-x-1">
-                                                    <span className="md:hidden font-bold">Habilitar: </span>
-                                                    <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
-                                                </div>
-
-                                            </td>
-
+        
+                                            <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
                                             
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
-                                            <td className={styles.tdOut}>
-                                                <span className="md:hidden font-bold">Habilitar: </span>
-                                                <input className="h-[25px] w-[25px]" type="checkbox" />
-                                            </td>
+                                                <td className={styles.tdOut}>
     
-    */
+                                                    <div className="flex content-center justify-center space-x-1">
+                                                        <span className="md:hidden font-bold">Habilitar: </span>
+                                                        <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
+                                                    </div>
+    
+                                                </td>
+    
+                                                
+                                            <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
+                                                <td className={styles.tdOut}>
+                                                    <span className="md:hidden font-bold">Habilitar: </span>
+                                                    <input className="h-[25px] w-[25px]" type="checkbox" />
+                                                </td>
+        
+        */
     return (
         <AdminLayout>
             <main>
-
+                <EditUser
+                    open={openEdit}
+                    setOpen={setOpenEdit}
+                    user={userSelected}
+                    setUpdated={setwasUpdated}
+                    updateData={updateData}
+                    updatePassword={updatePassword}
+                    updateRol={updateRol}
+                />
                 <NotificationBox
                     type={notification}
                     title={notification === "success" ? "Datos actualizados" : notification === "error" ? "Datos invalidos" : notification === "alert" ? "Accion invalida" : "Datos Eliminados"}
-                    open={open}
-                    setOpen={setOpen}
+                    open={wasUpdated === "success" || wasUpdated === "error" || wasUpdated === "alert" || wasUpdated === "info"}
+                    setOpen={() => { setwasUpdated("") }}
                 >
                     {notification === "success" ? (
-                        <p>Los datos han sido enviados.</p>
+                        <p>Los datos han sido actualizados con exito.</p>
                     ) : (
                         notification === "error" ? (
                             <p>Los datos ingresados no son validos.</p>
@@ -237,12 +245,7 @@ function UsersListPage() {
                                                 <span className="md:hidden font-bold">
                                                     Correo:
                                                 </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
-
-                                                ) : (
-                                                    estudiante.Correo
-                                                )}
+                                                {estudiante.Correo + " " + estudiante.Password}
                                             </td>
                                             <td className={styles.tdIn}>
                                                 <span className="md:hidden font-bold">
@@ -267,17 +270,15 @@ function UsersListPage() {
                                             </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
-                                                    <button className="">
-                                                        {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                            <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
-
-                                                        ) : (
-                                                            <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
-                                                        )}
+                                                    <button className=""
+                                                        onClick={() => {
+                                                            setOpenEdit(true);
+                                                            setUserSelected(estudiante);
+                                                        }}>
+                                                        <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} alt="editIcom" />
                                                     </button>
                                                     <button>
                                                         <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
-
                                                     </button>
                                                 </div>
                                             </td>
@@ -300,32 +301,47 @@ function UsersListPage() {
                                 </thead>
                                 <tbody>
                                     {searchStudent.map((estudiante, index) => (
-                                        <tr className={`md:${index % 2 != 0 ? "bg-[#E4E1EC]" : "bg-[#FBF8FF]"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
-                                            <td className={`${styles.tdIn} h-[100px]`}>
-                                                <span className="md:hidden font-bold">Correo: </span>
 
+                                        console.log(index, index % 2),
+                                        <tr className={`${index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
+                                            <td className={`${styles.tdIn}`}>
+                                                <span className="md:hidden font-bold">
+                                                    Correo:
+                                                </span>
+                                                {estudiante.Correo + " " + estudiante.Password}
+                                            </td>
+                                            <td className={styles.tdIn}>
+                                                <span className="md:hidden font-bold">
+                                                    Rol:
+                                                </span>
                                                 {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
+                                                    <select
+                                                        className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2"
+                                                        placeholder=""
+                                                        onChange={(e) => handleSelectChange(e)}
+                                                        value={values.rol}
+                                                    >
+                                                        {role.map((option) => (
+                                                            <option key={option} value={option}>
+                                                                {option}
+                                                            </option>
+                                                        ))}
+                                                    </select>
                                                 ) : (
-
-                                                    estudiante.Correo
+                                                    estudiante.Rol
                                                 )}
                                             </td>
-                                            <td className={styles.tdIn}><span className="md:hidden font-bold">Rol: </span>{estudiante.Rol}</td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
-                                                <div className="flex justify-around px-10">
-                                                    <button className="">
-
-                                                        {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                            <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
-
-                                                        ) : (
-                                                            <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
-
-                                                        )}
+                                                <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
+                                                    <button className=""
+                                                        onClick={() => {
+                                                            setOpenEdit(true);
+                                                            setUserSelected(estudiante);
+                                                        }}>
+                                                        <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} alt="editIcom" />
                                                     </button>
                                                     <button>
-                                                        <img className={styles.buttonAction} src={deleteIcon} alt="deleteIcon" />
+                                                        <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
                                                     </button>
                                                 </div>
                                             </td>
