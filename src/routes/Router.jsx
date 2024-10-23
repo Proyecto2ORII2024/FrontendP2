@@ -16,6 +16,7 @@ import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
 import Movility from "../pages/movility/Movility";
 import UpdateForm from "../pages/updateForm/UpdateForm";
 import UsersListPage from "../pages/usersListPage/UsersListPage";
+import PasswordRecoveryEmailPage from "../pages/passwordRecoveryEmailPage/PasswordRecoveyEmailPage";
 
 
 function Router() {
@@ -38,6 +39,7 @@ function Router() {
             <Route path="/asideUser" element={<AsideUser/>} />
             <Route path="/asideAdmin" element={<AsideAdmin/>}/>
             <Route path="/admin/movilidad" element={<Movility />} />
+            <Route path="/passwordRecovery" element={<PasswordRecoveryEmailPage />} />
         </Routes>
         </BrowserRouter>
     );

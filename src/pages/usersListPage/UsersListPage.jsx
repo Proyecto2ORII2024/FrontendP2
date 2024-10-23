@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 import EditUser from "../../components/editUser/EditUser.jsx";
+import DeleteUser from "../../components/deleteUser/DeleteUser.jsx";
+
 
 import { useState } from "react";
 
@@ -15,11 +17,11 @@ import { styles } from "./styles.js";
 
 function UsersListPage() {
     const [openEdit, setOpenEdit] = useState(false);
-    const [notification, setNotification] = useState("");
-    const [isEditing, setIsEditing] = useState({ state: false, index: -1 });
-    const [values, setValues] = useState({ correo: "Test", rol: "Usuario" });
+    const [openDelete, setOpenDelete] = useState(false);
+    const [userID, setUserId] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const [searchStudent, setSearchStudent] = useState([]);
+    const [wasDeleted, setWasDeleted] = useState("");
     const [wasUpdated, setwasUpdated] = useState("");
     const [userSelected, setUserSelected] = useState({})
     const [estudiantes, setEstudiantes] = useState([
@@ -68,56 +70,38 @@ function UsersListPage() {
         'Usuario'
     ];
 
-    const esCorreoValido = (correo) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(correo); // Retorna true si el correo es válido, false si no lo es
-    }
-
-    const handleEditClick = (e) => {
-        const id = parseInt(e.target.id);
-
-        if (isEditing.state === false, isEditing.index === -1) {
-            estudiantes.map(estudiante => estudiante.Id === id ? setValues({ correo: estudiante.Correo, rol: estudiante.Rol }) : null);
-            setIsEditing({ state: true, index: id });
-        } else {
-            setNotification("alert");
-
-        }
-    };
-
     const updateData = (id, data) => {
         console.log(id, data)
         setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol, Password: data.password } : estudiante));
         setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol, Password: data.password } : estudiante));
-        setNotification("success");
+        setwasUpdated("success");
     };
 
     const updatePassword = (id, data) => {
         console.log(id, data)
         setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Password: data.password } : estudiante));
         setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Password: data.password } : estudiante));
-        setNotification("success");
+        setwasUpdated("success");
     }
 
     const updateRol = (id, data) => {
         console.log(id, data)
         setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante));
         setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante));
-        setNotification("success");
+        setwasUpdated("success");
     }
 
-    const handleInputChange = (e) => {
-        setValues({ correo: e.target.value, rol: values.rol });
-    };
-
-    const handleSelectChange = (e) => {
-        setValues({ correo: values.correo, rol: e.target.value });
-    };
 
     const handleDelete = (idToDelete) => {
-        const id = parseInt(idToDelete);
+        console.log("idtodelete", idToDelete)
+        let id;
+        if (typeof idToDelete === "string") {
+            id = parseInt(idToDelete);
+        } else {
+            id = idToDelete;
+        }
         setEstudiantes(estudiantes.filter(estudiante => estudiante.Id !== id));
-        setNotification("info");
+        setWasDeleted("success");
     };
 
 
@@ -177,24 +161,49 @@ function UsersListPage() {
                     updatePassword={updatePassword}
                     updateRol={updateRol}
                 />
+                <DeleteUser
+                    open={openDelete}
+                    setOpen={setOpenDelete}
+                    userId={userID}
+                    setDeleted={setWasDeleted}
+                    handleDelete={handleDelete}
+                />
                 <NotificationBox
-                    type={notification}
-                    title={notification === "success" ? "Datos actualizados" : notification === "error" ? "Datos invalidos" : notification === "alert" ? "Accion invalida" : "Datos Eliminados"}
-                    open={wasUpdated === "success" || wasUpdated === "error" || wasUpdated === "alert" || wasUpdated === "info"}
-                    setOpen={() => { setwasUpdated("") }}
+                    type={wasDeleted}
+                    title={
+                        wasDeleted === "success"
+                            ? "Usuario eliminado"
+                            : "Error al eliminar usuario"
+                    }
+                    open={wasDeleted === "success" || wasDeleted === "error"}
+                    setOpen={() => setWasDeleted("")}
                 >
-                    {notification === "success" ? (
-                        <p>Los datos han sido actualizados con exito.</p>
+                    {wasDeleted === "success" ? (
+                        <p>El usuario ha sido eliminado exitosamente</p>
                     ) : (
-                        notification === "error" ? (
-                            <p>Los datos ingresados no son validos.</p>
-                        ) : (
-                            notification === "alert" ? (
-                                <p>Debes terminar la accion en curso.</p>
-                            ) : (
-                                <p>Los datos han sido eliminados.</p>
-                            )
-                        )
+                        <p>
+                            Ha ocurrido un error al eliminar el usuario, por favor intente de
+                            nuevo
+                        </p>
+                    )}
+                </NotificationBox>
+                <NotificationBox
+                    type={wasUpdated}
+                    title={
+                        wasUpdated === "success"
+                            ? "Usuario editado"
+                            : "Error al editar usuario"
+                    }
+                    open={wasUpdated === "success" || wasUpdated === "error"}
+                    setOpen={() => setwasUpdated("")}
+                >
+                    {wasUpdated === "success" ? (
+                        <p>El usuario ha sido editado exitosamente</p>
+                    ) : (
+                        <p>
+                            Ha ocurrido un error al editar el usuario, por favor intente de
+                            nuevo
+                        </p>
                     )}
                 </NotificationBox>
                 <section className="flex justify-between items-center flex-col md:flex-row">
@@ -251,22 +260,8 @@ function UsersListPage() {
                                                 <span className="md:hidden font-bold">
                                                     Rol:
                                                 </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <select
-                                                        className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2"
-                                                        placeholder=""
-                                                        onChange={(e) => handleSelectChange(e)}
-                                                        value={values.rol}
-                                                    >
-                                                        {role.map((option) => (
-                                                            <option key={option} value={option}>
-                                                                {option}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                ) : (
-                                                    estudiante.Rol
-                                                )}
+
+                                                estudiante.Rol
                                             </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
@@ -275,10 +270,14 @@ function UsersListPage() {
                                                             setOpenEdit(true);
                                                             setUserSelected(estudiante);
                                                         }}>
-                                                        <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} alt="editIcom" />
+                                                        <img className={styles.buttonAction} src={editIcon} alt="editIcom" />
                                                     </button>
-                                                    <button>
-                                                        <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
+                                                    <button id={estudiante.Id}
+                                                        onClick={() => {
+                                                            setOpenDelete(true);
+                                                            setUserId(estudiante.Id.toString());
+                                                        }}>
+                                                        <img className={styles.buttonAction} src={deleteIcon} alt="deleteIcon" />
                                                     </button>
                                                 </div>
                                             </td>
@@ -314,22 +313,7 @@ function UsersListPage() {
                                                 <span className="md:hidden font-bold">
                                                     Rol:
                                                 </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <select
-                                                        className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2"
-                                                        placeholder=""
-                                                        onChange={(e) => handleSelectChange(e)}
-                                                        value={values.rol}
-                                                    >
-                                                        {role.map((option) => (
-                                                            <option key={option} value={option}>
-                                                                {option}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                ) : (
-                                                    estudiante.Rol
-                                                )}
+                                                estudiante.Rol
                                             </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
