@@ -1,0 +1,180 @@
+import FloatingContainer from "../floatingContainer/FloatingContainer.jsx";
+import MainButton from "../buttons/MainButton.jsx";
+import InfoBubble from "../infoBubble/InfoBubble.jsx";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
+
+function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, updatePassword }) {
+    const [isOpened, setIsOpened] = useState(false);
+    const oriRol = user.rol;
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm();
+
+    const role = [
+        'Admin',
+        'Usuario'
+    ];
+
+    useEffect(() => {
+        if (open) {
+            setValue("correo", user.Correo);
+            setValue("rol", user.Rol);
+            setValue("password", "");
+            setValue("confirmPassword", "");
+        }
+        setIsOpened(open);
+    }, [open, setValue, user]);
+
+    const onSubmit = (data) => {
+        setIsOpened(false);
+        setOpen(false);
+        setUpdated("success");
+        if(data.rol!==oriRol && data.password !== ""){
+            updateData(user.Id, data);
+        }else if(data.rol!==oriRol && data.password === ""){
+            updateRol(user.Id, data)
+        }else if(data.rol===oriRol && data.password !== ""){
+            updatePassword(user.Id, data)
+        }
+        console.log(data);
+    };
+
+    const password = watch('password', '');
+
+    return (
+        <FloatingContainer open={isOpened} setOpen={() => setOpen(false)}>
+            <main>
+                <h2 className="w-full mt-5 p-5 text-lg text-center">
+                    Se puede modificar el correo o la contraseña o ambos.
+                </h2>
+
+                <section className="w-full flex justify-center">
+                    <form
+                        className="flex flex-col gap-3 w-[300px] md:w-[500px]"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <section className="grid grid-cols-2 gap-5">
+                            <label className="flex flex-col w-full">
+                                <div className="flex gap-2 items-center">
+                                    <InfoBubble info={{ title: "Correo", shortInfo: "Correo" }} />
+                                    <p>Correo</p>
+                                </div>
+                                <input id="correo"
+                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                                    type="text"
+                                    placeholder="Correo"
+                                    disabled
+                                    {...register("correo", {
+                                        required: true, pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: "Correo no valido",
+                                        },
+                                    })} />
+                                {errors.institution && (
+                                    <span className="text-sm text-red-400">
+                                        {errors.institution.message}
+                                    </span>
+                                )}
+                            </label>
+                            <label className="flex flex-col w-full">
+                                <div className="flex gap-2 items-center">
+                                    <InfoBubble info={{ title: "Correo", shortInfo: "Correo" }} />
+                                    <p>Rol</p>
+                                </div>
+                                <select id="rol"
+                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                                    type="text"
+                                    placeholder="Rol"
+                                    {...register("rol", {
+                                        required: true,
+                                    })}>
+                                        {role.map((role, index) => (
+                                            <option key={index} value={role}>{role}</option>
+                                        ))}
+                                </select>
+                                {errors.rol && (
+                                    <span className="text-sm text-red-400">
+                                        {errors.rol.message}
+                                    </span>
+                                    
+                                )}
+                            </label>
+                        </section>
+                        <section className="flex">
+                            <label className="flex flex-col w-full">
+                                <div className="flex gap-2 items-center">
+                                    <InfoBubble info={{ title: "Contraseña", shortInfo: "Minimo 8 caracteres, un numero y un caracter especial" }} />
+                                    <p>Contraseña</p>
+                                </div>
+                                <input id="password"
+                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                                    type="password"
+                                    placeholder="Constraseña"
+                                    {...register("password", {
+                                        minLength: {
+                                            value: 8,
+                                            message: "Password must be at least 8 characters"
+                                        },
+                                        pattern: {
+                                            value: /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
+                                            message: "Password must contain at least one number and one special character"
+                                        }
+                                    })} />
+                                {errors.password && (
+                                    <span className="text-sm text-red-400">
+                                        {errors.password.message}
+                                    </span>
+                                )}
+                            </label>
+                        </section>
+                        <section className="flex">
+                            <label className="flex flex-col w-full">
+                                <div className="flex gap-2 items-center">
+                                    <InfoBubble info={{ title: "Contraseña", shortInfo: "Minimo 8 caracteres, un numero y un caracter especial" }} />
+                                    <p>Confirmar contraseña</p>
+                                </div>
+                                <input id="confirmPassword"
+                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                                    placeholder="Institución"
+                                    type="password"
+                                    {...register("confirmPassword", {
+                                        validate: value => value === password || "Las contraseñas son diferentes"
+                                    })} />
+                                {errors.confirmPassword && (
+                                    <span className="text-sm text-red-400">
+                                        {errors.confirmPassword.message}
+                                    </span>
+                                )}
+                            </label>
+                        </section>
+                        <section className="flex justify-center">
+                            <MainButton
+                                type="submit"
+                                text="Guardar"
+                                bgColor="primary"
+                                hoverBg="primary-light"
+                                textColor="white"
+                            />
+                        </section>
+                    </form>
+                </section>
+            </main>
+        </FloatingContainer>
+    );
+}
+
+EditUser.propTypes = {
+    user: PropTypes.object.isRequired,
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    setUpdated: PropTypes.func.isRequired
+};
+
+export default EditUser;

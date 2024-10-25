@@ -7,59 +7,59 @@ import { useNavigate } from "react-router-dom";
 
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import EditUser from "../../components/editUser/EditUser.jsx";
+import DeleteUser from "../../components/deleteUser/DeleteUser.jsx";
+
 
 import { useState } from "react";
 
 import { styles } from "./styles.js";
 
 function UsersListPage() {
-
-    const [open, setOpen] = useState(false);
-    const [notification, setNotification] = useState("");
-    const [isEditing, setIsEditing] = useState({ state: false, index: -1 });
-    const [values, setValues] = useState({ correo: "Test", rol: "Usuario" });
+    const [openEdit, setOpenEdit] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [userID, setUserId] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const [searchStudent, setSearchStudent] = useState([]);
+    const [wasDeleted, setWasDeleted] = useState("");
+    const [wasUpdated, setwasUpdated] = useState("");
+    const [userSelected, setUserSelected] = useState({})
     const [estudiantes, setEstudiantes] = useState([
         {
-
             Id: 1,
-
             Correo: "ORI@UNICAUCA.EDU.CO",
             Rol: "Admin",
-            Active: false
+            Password: "123"
         },
         {
-
             Id: 2,
             Correo: "INGENIERIA@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: false
+            Password: "123"
         },
         {
             Id: 3,
             Correo: "jsotelop@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: true
+            Password: "123"
         },
         {
             Id: 4,
             Correo: "cgarcias@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: false
+            Password: "123"
         },
         {
             Id: 5,
             Correo: "jorejuelam@UNICAUCA.EDU.CO",
             Rol: "Usuario",
-            Active: false
+            Password: "123"
         },
         {
             Id: 6,
-
             Correo: "jorgevelasco@UNICAUCA.EDU.CO",
             Rol: "Admin",
-            Active: true
+            Password: "123"
         }
     ]);
 
@@ -70,53 +70,38 @@ function UsersListPage() {
         'Usuario'
     ];
 
-    const esCorreoValido = (correo) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(correo); // Retorna true si el correo es válido, false si no lo es
+    const updateData = (id, data) => {
+        console.log(id, data)
+        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol, Password: data.password } : estudiante));
+        setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol, Password: data.password } : estudiante));
+        setwasUpdated("success");
+    };
+
+    const updatePassword = (id, data) => {
+        console.log(id, data)
+        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Password: data.password } : estudiante));
+        setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Password: data.password } : estudiante));
+        setwasUpdated("success");
     }
 
-    const handleEditClick = (e) => {
-        const id = parseInt(e.target.id);
+    const updateRol = (id, data) => {
+        console.log(id, data)
+        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante));
+        setSearchStudent(searchStudent.map(estudiante => estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante));
+        setwasUpdated("success");
+    }
 
-        if (isEditing.state === false, isEditing.index === -1) {
-            estudiantes.map(estudiante => estudiante.Id === id ? setValues({ correo: estudiante.Correo, rol: estudiante.Rol }) : null);
-            setIsEditing({ state: true, index: id });
-        } else {
-            setNotification("alert");
-            setOpen(true);
-
-        }
-    };
-
-    const handleSaveClick = (e) => {
-
-
-        const id = parseInt(e.target.id);
-        if (esCorreoValido(values.correo) && role.includes(values.rol)) {
-            setIsEditing({ state: false, index: -1 });
-            setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Correo: values.correo, Rol: values.rol } : estudiante));
-            setValues({ correo: "Test", rol: "Usuario" })
-            setNotification("success");
-            setOpen(true);
-        } else {
-            setNotification("error");
-            setOpen(true);
-        }
-    };
-
-    const handleInputChange = (e) => {
-        setValues({ correo: e.target.value, rol: values.rol });
-    };
-
-    const handleSelectChange = (e) => {
-        setValues({ correo: values.correo, rol: e.target.value });
-    };
 
     const handleDelete = (idToDelete) => {
-        const id = parseInt(idToDelete);
+        console.log("idtodelete", idToDelete)
+        let id;
+        if (typeof idToDelete === "string") {
+            id = parseInt(idToDelete);
+        } else {
+            id = idToDelete;
+        }
         setEstudiantes(estudiantes.filter(estudiante => estudiante.Id !== id));
-        setNotification("info");
-        setOpen(true);
+        setWasDeleted("success");
     };
 
 
@@ -138,55 +123,87 @@ function UsersListPage() {
             );
         }
     };
-
-    const handleCheckboxChange = (e) => {
-        const id = parseInt(e.target.id);
-        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Active: !estudiante.Active } : estudiante));
-    }
-
     /*
+        const handleCheckboxChange = (e) => {
+            const id = parseInt(e.target.id);
+            setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Active: !estudiante.Active } : estudiante));
+        }
     
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
-                                        
-                                            <td className={styles.tdOut}>
-
-                                                <div className="flex content-center justify-center space-x-1">
-                                                    <span className="md:hidden font-bold">Habilitar: </span>
-                                                    <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
-                                                </div>
-
-                                            </td>
-
+        
+                                            <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
                                             
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
-                                            <td className={styles.tdOut}>
-                                                <span className="md:hidden font-bold">Habilitar: </span>
-                                                <input className="h-[25px] w-[25px]" type="checkbox" />
-                                            </td>
+                                                <td className={styles.tdOut}>
     
-    */
+                                                    <div className="flex content-center justify-center space-x-1">
+                                                        <span className="md:hidden font-bold">Habilitar: </span>
+                                                        <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
+                                                    </div>
+    
+                                                </td>
+    
+                                                
+                                            <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
+                                                <td className={styles.tdOut}>
+                                                    <span className="md:hidden font-bold">Habilitar: </span>
+                                                    <input className="h-[25px] w-[25px]" type="checkbox" />
+                                                </td>
+        
+        */
     return (
         <AdminLayout>
             <main>
-
+                <EditUser
+                    open={openEdit}
+                    setOpen={setOpenEdit}
+                    user={userSelected}
+                    setUpdated={setwasUpdated}
+                    updateData={updateData}
+                    updatePassword={updatePassword}
+                    updateRol={updateRol}
+                />
+                <DeleteUser
+                    open={openDelete}
+                    setOpen={setOpenDelete}
+                    userId={userID}
+                    setDeleted={setWasDeleted}
+                    handleDelete={handleDelete}
+                />
                 <NotificationBox
-                    type={notification}
-                    title={notification === "success" ? "Datos actualizados" : notification === "error" ? "Datos invalidos" : notification === "alert" ? "Accion invalida" : "Datos Eliminados"}
-                    open={open}
-                    setOpen={setOpen}
+                    type={wasDeleted}
+                    title={
+                        wasDeleted === "success"
+                            ? "Usuario eliminado"
+                            : "Error al eliminar usuario"
+                    }
+                    open={wasDeleted === "success" || wasDeleted === "error"}
+                    setOpen={() => setWasDeleted("")}
                 >
-                    {notification === "success" ? (
-                        <p>Los datos han sido enviados.</p>
+                    {wasDeleted === "success" ? (
+                        <p>El usuario ha sido eliminado exitosamente</p>
                     ) : (
-                        notification === "error" ? (
-                            <p>Los datos ingresados no son validos.</p>
-                        ) : (
-                            notification === "alert" ? (
-                                <p>Debes terminar la accion en curso.</p>
-                            ) : (
-                                <p>Los datos han sido eliminados.</p>
-                            )
-                        )
+                        <p>
+                            Ha ocurrido un error al eliminar el usuario, por favor intente de
+                            nuevo
+                        </p>
+                    )}
+                </NotificationBox>
+                <NotificationBox
+                    type={wasUpdated}
+                    title={
+                        wasUpdated === "success"
+                            ? "Usuario editado"
+                            : "Error al editar usuario"
+                    }
+                    open={wasUpdated === "success" || wasUpdated === "error"}
+                    setOpen={() => setwasUpdated("")}
+                >
+                    {wasUpdated === "success" ? (
+                        <p>El usuario ha sido editado exitosamente</p>
+                    ) : (
+                        <p>
+                            Ha ocurrido un error al editar el usuario, por favor intente de
+                            nuevo
+                        </p>
                     )}
                 </NotificationBox>
                 <section className="flex justify-between items-center flex-col md:flex-row">
@@ -237,47 +254,30 @@ function UsersListPage() {
                                                 <span className="md:hidden font-bold">
                                                     Correo:
                                                 </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
-
-                                                ) : (
-                                                    estudiante.Correo
-                                                )}
+                                                {estudiante.Correo + " " + estudiante.Password}
                                             </td>
                                             <td className={styles.tdIn}>
                                                 <span className="md:hidden font-bold">
                                                     Rol:
                                                 </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <select
-                                                        className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2"
-                                                        placeholder=""
-                                                        onChange={(e) => handleSelectChange(e)}
-                                                        value={values.rol}
-                                                    >
-                                                        {role.map((option) => (
-                                                            <option key={option} value={option}>
-                                                                {option}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                ) : (
-                                                    estudiante.Rol
-                                                )}
+
+                                                estudiante.Rol
                                             </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
-                                                    <button className="">
-                                                        {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                            <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
-
-                                                        ) : (
-                                                            <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
-                                                        )}
+                                                    <button className=""
+                                                        onClick={() => {
+                                                            setOpenEdit(true);
+                                                            setUserSelected(estudiante);
+                                                        }}>
+                                                        <img className={styles.buttonAction} src={editIcon} alt="editIcom" />
                                                     </button>
-                                                    <button>
-                                                        <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
-
+                                                    <button id={estudiante.Id}
+                                                        onClick={() => {
+                                                            setOpenDelete(true);
+                                                            setUserId(estudiante.Id.toString());
+                                                        }}>
+                                                        <img className={styles.buttonAction} src={deleteIcon} alt="deleteIcon" />
                                                     </button>
                                                 </div>
                                             </td>
@@ -300,32 +300,32 @@ function UsersListPage() {
                                 </thead>
                                 <tbody>
                                     {searchStudent.map((estudiante, index) => (
-                                        <tr className={`md:${index % 2 != 0 ? "bg-[#E4E1EC]" : "bg-[#FBF8FF]"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
-                                            <td className={`${styles.tdIn} h-[100px]`}>
-                                                <span className="md:hidden font-bold">Correo: </span>
 
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
-                                                ) : (
-
-                                                    estudiante.Correo
-                                                )}
+                                        console.log(index, index % 2),
+                                        <tr className={`${index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
+                                            <td className={`${styles.tdIn}`}>
+                                                <span className="md:hidden font-bold">
+                                                    Correo:
+                                                </span>
+                                                {estudiante.Correo + " " + estudiante.Password}
                                             </td>
-                                            <td className={styles.tdIn}><span className="md:hidden font-bold">Rol: </span>{estudiante.Rol}</td>
+                                            <td className={styles.tdIn}>
+                                                <span className="md:hidden font-bold">
+                                                    Rol:
+                                                </span>
+                                                estudiante.Rol
+                                            </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
-                                                <div className="flex justify-around px-10">
-                                                    <button className="">
-
-                                                        {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                            <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
-
-                                                        ) : (
-                                                            <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
-
-                                                        )}
+                                                <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
+                                                    <button className=""
+                                                        onClick={() => {
+                                                            setOpenEdit(true);
+                                                            setUserSelected(estudiante);
+                                                        }}>
+                                                        <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} alt="editIcom" />
                                                     </button>
                                                     <button>
-                                                        <img className={styles.buttonAction} src={deleteIcon} alt="deleteIcon" />
+                                                        <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
                                                     </button>
                                                 </div>
                                             </td>
