@@ -14,6 +14,7 @@ function NavbarUser() {
     {title: "Convenios", src:"agreementsNav", Link:"/user/agreement"},
     {title: "Formularios", src:"formsNav"},
     {title: "Registrar Usuarios", src:"regNav", Link:"/user/registrar"},
+    {title: "Cambiar Contraseña", src:"changePasswordNav", Link:"/changePassword"},
     {title: "Cerrar Sesión", src:"logoutNav"},
   ]
     return (

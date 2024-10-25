@@ -9,6 +9,7 @@ function AsideUser({open, setOpen}) {
       {title: "Convenios", src:"agreements", Link:"/user/agreement"},
       {title: "Formularios", src:"forms"},
       {title: "Registra Usuarios", src:"reg", gap: true, Link:"/user/registrar"},
+      {title: "Cambiar Contraseña", src:"changePassword", Link:"/changePassword"},
       {title: "Cerrar Sesión", src:"logout"},
     ]
     return (
