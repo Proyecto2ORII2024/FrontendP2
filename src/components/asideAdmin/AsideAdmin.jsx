@@ -7,6 +7,7 @@ import statistics from "../../assets/statistics.svg";
 import reg from "../../assets/reg.svg";
 import logout from "../../assets/logout.svg";
 import asideLeft from "../../assets/asideLeft.svg";
+import changePassword from "../../assets/changePassword.svg"
 
 function AsideAdmin({open, setOpen}) {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ function AsideAdmin({open, setOpen}) {
       {title: "Movilidad", src:forms, Link:"/admin/movilidad"},
       {title: "Estadísticas", src:statistics, Link:"/statistics"},
       {title: "Registrar Usuarios", src:reg, gap: true, Link:"/usuarios"},
+      {title: "Cambiar Contraseña", src:changePassword, Link:"/changePassword"},
       {title: "Cerrar Sesión", src:logout}
     ]
     return (

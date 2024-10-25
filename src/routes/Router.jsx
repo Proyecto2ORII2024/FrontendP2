@@ -17,6 +17,7 @@ import Movility from "../pages/movility/Movility";
 import UpdateForm from "../pages/updateForm/UpdateForm";
 import UsersListPage from "../pages/usersListPage/UsersListPage";
 import PasswordRecoveryEmailPage from "../pages/passwordRecoveryEmailPage/PasswordRecoveyEmailPage";
+import ChangePassword from "../pages/changePassword/ChangePassword";
 
 
 function Router() {
@@ -40,6 +41,7 @@ function Router() {
             <Route path="/asideAdmin" element={<AsideAdmin/>}/>
             <Route path="/admin/movilidad" element={<Movility />} />
             <Route path="/passwordRecovery" element={<PasswordRecoveryEmailPage />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
         </Routes>
         </BrowserRouter>
     );

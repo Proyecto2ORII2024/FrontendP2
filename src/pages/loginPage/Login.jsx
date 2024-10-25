@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./styles.js";
 
-//
 function Login() {
 
   const navigate = useNavigate();
