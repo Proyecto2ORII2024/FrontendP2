@@ -4,6 +4,8 @@ import { getForms, deleteForm } from "../../services/movilidad.service";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
 
+import search from "../../assets/icons/searchIcon.svg";
+
 const Movility = () => {
   const [movilidad, setdMovilidad] = useState([]);
   const [seElimino, setseElimino] = useState(false);
@@ -108,154 +110,165 @@ const Movility = () => {
 
   return (
     <AdminLayout>
-    <div className="overflow-x-auto p-10">
-      <div className="flex flex-col md:flex-row mb-4 justify-between pb-10">
-        <div className="flex gap-x-10">
-          <div className="relative border px-5 py-2 rounded-full flex items-center gap-x-20 bg-neutral">
-            <input
-              type="text"
-              placeholder="Buscar dependencia"
-              value={searchTerm}
-              onChange={handleSearch}
-              className="bg-neutral outline-none"
+      <div className="overflow-x-auto p-10">
+        <div className="flex flex-col md:flex-row justify-between">
+          <div className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
+            <MainButton
+              onClick={() => navigate("/form")}
+              bgColor="primary-dark"
+              textColor="white"
+              text="Crear"
+              className="xl:ml-48 lg:ml-32 md:ml-20 mx-5"
             />
-            <span className="material-symbols-outlined">search</span>
-          </div>
 
-          <MainButton onClick={() => navigate("/form")} bgColor="primary-dark" textColor="white" text="Crear" />
-        </div>
-        <div className="flex gap-x-5 items-center">
-          <div className="relative">
-            <button
-              className="flex items-center px-4 py-2 bg-neutral rounded-md hover:bg-gray-200"
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
-            >
-              <span className="material-symbols-outlined">filter_alt</span>
-            </button>
-            {isFilterOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-                <select
-                  className="block w-full px-4 py-2 text-left cursor-pointer focus:outline-none"
-                  value={filterStatus}
-                  onChange={handleFilterChange}
+            <div className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
+              <input
+                type="text"
+                placeholder="Buscar dependencia"
+                value={searchTerm}
+                onChange={handleSearch}
+                className="bg-transparent w-[90%] outline-none"
+              />
+              <img src={search} alt="search icon" />
+            </div>
+            <div className="flex gap-x-5 justify-end md:items-center w-full md:w-fit">
+              <div className="relative">
+                <button
+                  className="flex items-center px-4 py-2 bg-neutral rounded-md hover:bg-gray-200"
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
                 >
-                  <option value="">Todas las dependencias</option>
-                  {[...new Set(movilidad.map((item) => item.dependencia))].map(
-                    (dep, index) => (
-                      <option key={index} value={dep}>
-                        {dep}
-                      </option>
-                    )
-                  )}
-                </select>
+                  <span className="material-symbols-outlined">filter_alt</span>
+                </button>
+                {isFilterOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+                    <select
+                      className="block w-full px-4 py-2 text-left cursor-pointer focus:outline-none"
+                      value={filterStatus}
+                      onChange={handleFilterChange}
+                    >
+                      <option value="">Todas las dependencias</option>
+                      {[
+                        ...new Set(movilidad.map((item) => item.dependencia)),
+                      ].map((dep, index) => (
+                        <option key={index} value={dep}>
+                          {dep}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <table className="w-full bg-white text-center text-primary-dark">
-        <thead className="bg-neutral">
-          <tr className="bg-azulClaro bg-opacity-20 text-left">
-            <th
-              className="px-4 py-3 text-azulOscuro font-semibold text-center rounded-tl-xl cursor-pointer"
-              style={{ width: "20%" }}
-              onClick={() => handleSort("dependencia")}
-            >
-              <div className="inline-flex items-center justify-center">
-                Dependencia {renderSortIcons("dependencia")}
-              </div>
-            </th>
-            <th
-              className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
-              style={{ width: "20%" }}
-              onClick={() => handleSort("c_convenio")}
-            >
-              <div className="inline-flex items-center justify-center">
-                Codigo de Convenio {renderSortIcons("c_convenio")}
-              </div>
-            </th>
-            <th
-              className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
-              style={{ width: "15%" }}
-              onClick={() => handleSort("t_documento")}
-            >
-              <div className="inline-flex items-center justify-center">
-                Tipo de Documento {renderSortIcons("t_documento")}
-              </div>
-            </th>
-            <th
-              className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
-              style={{ width: "25%" }}
-              onClick={() => handleSort("d_usuario")}
-            >
-              <div className="inline-flex items-center justify-center">
-                Documento Usuario {renderSortIcons("d_usuario")}
-              </div>
-            </th>
-            <th
-              className="px-4 py-3 text-azulOscuro font-semibold text-center rounded-tr-xl"
-              style={{ width: "20%" }}
-            >
-              Acciones
-            </th>
-          </tr>
-        </thead>
-        <tbody className="text-azulOscuro rounded-b-lg">
-          {sortedMovilidad.length > 0 ? (
-            sortedMovilidad.map((item, index) => (
-              <tr
-                key={index}
-                className="border-t even:bg-azulClaro even:bg-opacity-10"
+        <table className="w-full bg-white text-center text-primary-dark">
+          <thead className="bg-neutral">
+            <tr className="bg-azulClaro bg-opacity-20 text-left">
+              <th
+                className="px-4 py-3 text-azulOscuro font-semibold text-center rounded-tl-xl cursor-pointer"
+                style={{ width: "20%" }}
+                onClick={() => handleSort("dependencia")}
               >
-                <td className="px-4 py-2">{item.dependencia}</td>
-                <td className="px-4 py-2">{item.c_convenio}</td>
-                <td className="px-4 py-2">{item.t_documento}</td>
-                <td className="px-4 py-2">{item.d_usuario}</td>
-                <td className="px-4 py-2">
-                  <div className="flex justify-center space-x-2">
-                    <button
-                      onClick={() => navigate(`/show/${item.id_convenio}`)}
-                      className="text-gray-500 hover:text-blue-500"
-                    >
-                      <span className="material-symbols-outlined">
-                        visibility
-                      </span>
-                    </button>
-                    <button
-                      onClick={() =>
-                        navigate(`/form/update/${item.id_convenio}`)
-                      }
-                      className="text-gray-500 hover:text-green-500"
-                    >
-                      <span className="material-symbols-outlined">edit</span>
-                    </button>
-                    <button
-                      onClick={() => Delete(item.id_convenio)}
-                      className="text-gray-500 hover:text-red-500"
-                    >
-                      <span className="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
+                <div className="inline-flex items-center justify-center">
+                  Dependencia {renderSortIcons("dependencia")}
+                </div>
+              </th>
+              <th
+                className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
+                style={{ width: "20%" }}
+                onClick={() => handleSort("c_convenio")}
+              >
+                <div className="inline-flex items-center justify-center">
+                  Codigo de Convenio {renderSortIcons("c_convenio")}
+                </div>
+              </th>
+              <th
+                className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
+                style={{ width: "15%" }}
+                onClick={() => handleSort("t_documento")}
+              >
+                <div className="inline-flex items-center justify-center">
+                  Tipo de Documento {renderSortIcons("t_documento")}
+                </div>
+              </th>
+              <th
+                className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
+                style={{ width: "25%" }}
+                onClick={() => handleSort("d_usuario")}
+              >
+                <div className="inline-flex items-center justify-center">
+                  Documento Usuario {renderSortIcons("d_usuario")}
+                </div>
+              </th>
+              <th
+                className="px-4 py-3 text-azulOscuro font-semibold text-center rounded-tr-xl"
+                style={{ width: "20%" }}
+              >
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody className="text-azulOscuro rounded-b-lg">
+            {sortedMovilidad.length > 0 ? (
+              sortedMovilidad.map((item, index) => (
+                <tr
+                  key={index}
+                  className="border-t even:bg-azulClaro even:bg-opacity-10"
+                >
+                  <td className="px-4 py-2">{item.dependencia}</td>
+                  <td className="px-4 py-2">{item.c_convenio}</td>
+                  <td className="px-4 py-2">{item.t_documento}</td>
+                  <td className="px-4 py-2">{item.d_usuario}</td>
+                  <td className="px-4 py-2">
+                    <div className="flex justify-center space-x-2">
+                      <button
+                        title="Ver movimiento"
+                        onClick={() => navigate(`/show/${item.id_convenio}`)}
+                        className="text-gray-500 hover:text-blue-500"
+                      >
+                        <span className="material-symbols-outlined">
+                          visibility
+                        </span>
+                      </button>
+                      <button
+                        title="Editar movimiento"
+                        onClick={() =>
+                          navigate(`/form/update/${item.id_convenio}`)
+                        }
+                        className="text-gray-500 hover:text-green-500"
+                      >
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                      <button
+                        title="Eliminar movimiento"
+                        onClick={() => Delete(item.id_convenio)}
+                        className="text-gray-500 hover:text-red-500"
+                      >
+                        <span className="material-symbols-outlined">
+                          delete
+                        </span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="px-4 py-2 text-center text-gray-500">
+                  No se encontraron resultados
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" className="px-4 py-2 text-center text-gray-500">
-                No se encontraron resultados
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <MainButton
-        bgColor="primary-dark"
-        textColor="white"
-        text="Guardar"
-        className="fixed bottom-10 right-10"
-      />
-    </div>
+            )}
+          </tbody>
+        </table>
+        <MainButton
+          bgColor="primary-dark"
+          textColor="white"
+          text="Guardar"
+          className="fixed bottom-10 right-10"
+        />
+      </div>
     </AdminLayout>
   );
 };

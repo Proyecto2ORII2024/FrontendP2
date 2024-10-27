@@ -1,7 +1,7 @@
 import InfoBubble from "../infoBubble/InfoBubble";
 import PropTypes from "prop-types";
 
-function CustomInput({ bubbleInf, inputInf, register, errors }) {
+function CustomInput({ bubbleInf, inputInf, register, errors, isDisable = false }) {
 
   return (
     <label className={`"flex flex-col`}>
@@ -12,6 +12,7 @@ function CustomInput({ bubbleInf, inputInf, register, errors }) {
       <input
         id={inputInf.id}
         autoComplete="off"
+        disabled = {isDisable}
         className="w-11/12 py-1 border-b-2 outline-none ml-7 border-neutral-hover"
         type={inputInf.type}
         placeholder={inputInf.text}
@@ -48,4 +49,5 @@ CustomInput.propTypes = {
   }).isRequired,
   register: PropTypes.func.isRequired, // register como prop
   errors: PropTypes.object.isRequired, // errores como prop
+  isDisable: PropTypes.bool,
 };

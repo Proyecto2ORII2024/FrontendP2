@@ -1,6 +1,6 @@
 export const styles = {
     blueButton: "px-5 py-1 rounded-[20px] bg-darkbluebutton font-semibold text-white text-lg  hover:bg-[#5056AC] duration-200",
-    thIn: "border-r-2 py-3 text-xl text-center",
+    thIn: "px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer w-[20%]",
     thOut: "py-3 text-xl text-center",
     tdIn: "text-center border-white p-2 border-r-2",
     tdOut: "text-center border-white p-2", 

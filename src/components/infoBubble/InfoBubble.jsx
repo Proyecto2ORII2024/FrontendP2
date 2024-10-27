@@ -34,7 +34,7 @@ function InfoBubble({ info }) {
         >
           <h1 className="text-sm font-semibold text-center">{info.title}</h1>
           {info.shortInfo && (
-            <p className="text-xs break-words text-center mb-2">{info.shortInfo}</p>
+            <p className="mb-2 text-xs break-words">{info.shortInfo}</p>
           )}
           {info.longInfo && (
             <>

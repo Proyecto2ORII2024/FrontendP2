@@ -7,8 +7,9 @@ import agreementsNav from "../../assets/agreementsNav.svg";
 import formsNav from "../../assets/formsNav.svg";
 import statisticsNav from "../../assets/statisticsNav.svg";
 import regNav from "../../assets/regNav.svg";
-import logoutNav from "../../assets/logoutNav.svg";
 import menuNavbar from "../../assets/menuNavbar.svg";
+
+import USerDropdown from "../userDropDown/UserDropDown";
 
 function NavbarAdmin() {
     const [open, setOpen] = useState(true);
@@ -21,8 +22,7 @@ function NavbarAdmin() {
         {title: "Convenios", src:agreementsNav ,Link:"/admin/agreement"},
         {title: "Movilidad", src:formsNav, Link:"/admin/movilidad"},
         {title: "Estadísticas", src:statisticsNav, Link:"/statistics"},
-        {title: "Registrar Usuarios", src:regNav, Link:"/usuarios"},
-        {title: "Cerrar Sesión", src:logoutNav}
+        {title: "Registrar Usuarios", src:regNav, Link:"/user/list"},
     ]
         return (
         <div>
@@ -45,6 +45,7 @@ function NavbarAdmin() {
                     </button>
                     </li>
                 ))} 
+                <USerDropdown onChangePassword={() => navigate("/changePassword")}/>
             </div>
             <img 
                 src={menuNavbar}

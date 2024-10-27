@@ -11,7 +11,7 @@ const Accordeon = ({title, children}) =>{
 
     return(
         <article className={`${open ? "mb-2": ""} px-5 lg:px-20 `}>
-            <button className={`flex bg-[#928F9A] justify-between items-center text-lg w-full hover:bg-[#838286] duration-150 p-3 border-b-2`} onClick={handleOpen} aria-expanded={open} aria-controls="accordion-contenido">
+            <button className={`flex bg-neutral-200 justify-between items-center text-lg w-full hover:bg-neutral-300 duration-150 p-3 border-b-2`} onClick={handleOpen} aria-expanded={open} aria-controls="accordion-contenido">
                 <h2 className="font-bold">{title}</h2>
                 <img src={arrow} alt="arrow" className={`md:text-lg transition-all duration-300 ${open ? 'rotate-180':''}`}/>
             </button>

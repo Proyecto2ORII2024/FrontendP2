@@ -10,6 +10,7 @@ import { getAgreements } from "../../services/agreement.service.js";
 import { updateForm, getId } from "../../services/movilidad.service.js";
 import { useParams } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import { useNavigate } from "react-router-dom";
 
 function UpdateForm() {
     const [days, setDays] = useState(0);
@@ -20,6 +21,7 @@ function UpdateForm() {
     const [isStudent, setIsStudent] = useState(false);
     const [notification, setNotification] = useState("");
     const [notiOpen, setNotiOpen] = useState(false);
+    const navigate = useNavigate();
 
 
     const updateEntryDate = (e) => {
@@ -57,11 +59,13 @@ function UpdateForm() {
             fundingSource: data.fundingSource,
             destination: data.destination,
             origin: data.origin,
-            agreementId: yes ? data.agreementId : 1,
+            teacher: data.teacher ? data.teacher : "",
+            agreementId: yes ? data.agreementId : null,
             event: {
+                eventTypeId: Number(data.eventType),
                 description: data.eventDescription,
-                eventTypeId: data.eventType,
             },
+            
             person: {
                 identificationType: data.identificationType,
                 personType: data.personType,
@@ -71,20 +75,25 @@ function UpdateForm() {
             },
         };
 
-        if (isStudent) {
-            formData = { ...formData, teacher: data.teacher, }
-        }
-
+        console.log(formData);
         updateForm(formData, elementId).then((res) => {
             console.log(res);
             setNotification(res.status === 200 ? "success" : "error");
             setNotiOpen(true);
+            if (res.status === 200) {
+                setTimeout(() => {
+                    navigate("/admin/movilidad");
+                }, 2000);
+            }
         }).catch((err) => {
             console.log(err.response.data);
         });
+
+
     };
 
     useEffect(() => {
+        
         getAgreements().then((res) => {
             createAgreementOptions(res.data.content, setAgreements);
         }).catch((err) => {
@@ -93,7 +102,9 @@ function UpdateForm() {
     }, []);
 
     useEffect(() => {
+        
         getId(elementId).then((res) => {
+            console.log(res.data.agreement);  
             setValue("direction", res.data.direction);
             setValue("personType", res.data.person.personType);
             setValue("identificationType", res.data.person.identificationType);
@@ -105,18 +116,19 @@ function UpdateForm() {
             setValue("entryDate", res.data.entryDate);
             setValue("origin", res.data.origin);
             setValue("destination", res.data.destination);
-            //setValue("hasAgreement", res.data.hasAgreement);
-            setValue("agreementId", res.data.agreement.agreementId);
-            setValue("eventType", res.data.event.eventType.eventTypeId);
+            setValue("hasAgreement", res.data.agreement ? "Y" : "N");
+            setValue("agreementId", res.data.agreement ? res.data.agreement.agreementId : "");
+            setValue("eventType", Number(res.data.event.eventType.eventTypeId));
             setValue("eventDescription", res.data.event.description);
             setValue("originProgram", res.data.originProgram);
             setValue("destinationProgram", res.data.destinationProgram);
             setValue("city", res.data.city);
             setValue("country", res.data.country);
-            setValue("teacher", res.data.teacher);
+            setValue("teacher", res.data.teacher ? res.data.teacher : ""); 
             setValue("faculty", res.data.faculty);
             setValue("funding", res.data.funding);
             setValue("fundingSource", res.data.fundingSource);
+            setYes(res.data.agreement.agreementId ? true : false);
         }).catch((err) => {
             console.log(err.response.data);
         });

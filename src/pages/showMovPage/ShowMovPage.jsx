@@ -5,8 +5,15 @@ import { getId } from "../../services/movilidad.service.js";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import { FormDict } from "../../utils/FormDict.js";
+import { calcDays } from "../updateForm/Information.js";
+
 
 function ShowMovPage() {
+  
+  const [days, setDays] = useState(0);
+
+
   const [data, setData] = useState({
     id: "",
     orii: false,
@@ -55,8 +62,7 @@ function ShowMovPage() {
 
   useEffect(() => {
     getId(formId).then((res) => {
-      console.log(res.data);
-      console.log(res.data.person.identificationType);
+      setDays(calcDays(res.data.entryDate, res.data.exitDate));
       setData(res.data);
     });
   }, [formId]);
@@ -66,12 +72,12 @@ function ShowMovPage() {
       <main className="grid grid-cols-1 mx-8 mt-10 mb-16 sm:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
         <ShowMovilityField
           title="Sentido"
-          data={data.direction}
+          data={FormDict[data.direction]}
           bblInf={MoveInfo.sentido}
         />
         <ShowMovilityField
           title="Tipo"
-          data={data.person.personType}
+          data={FormDict[data.person.personType]}
           bblInf={MoveInfo.tipo}
         />
         <ShowMovilityField
@@ -96,7 +102,7 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Género"
-          data={data.gender}
+          data={FormDict[data.gender]}
           bblInf={MoveInfo.genero}
         />
         <ShowMovilityField
@@ -111,10 +117,10 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Días de estancia"
-          data={0}
+          data={days}
           bblInf={MoveInfo.diasEstancia}
         />
-        <ShowMovilityField title="Año" data={2024} bblInf={MoveInfo.anio} />
+        <ShowMovilityField title="Año" data={new Date().getFullYear()} bblInf={MoveInfo.anio} />
         <ShowMovilityField
           title="Universidad de origen"
           data={data.origin}
@@ -127,12 +133,12 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Número de convenio"
-          data={data.agreementId}
+          data={data.agreement && data.agreement.agreementNumber || 'N.A.'}
           bblInf={MoveInfo.numConvenio}
         />
         <ShowMovilityField
           title="Tipo de evento"
-          data={data.event.eventType.eventTypeId}
+          data={FormDict[data.event.eventType.eventTypeId]}
           bblInf={MoveInfo.tipoEvento}
         />
         <ShowMovilityField
