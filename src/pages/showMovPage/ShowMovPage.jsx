@@ -62,8 +62,6 @@ function ShowMovPage() {
 
   useEffect(() => {
     getId(formId).then((res) => {
-      console.log(res.data);
-      console.log(res.data.person.identificationType);
       setDays(calcDays(res.data.entryDate, res.data.exitDate));
       setData(res.data);
     });
@@ -135,7 +133,7 @@ function ShowMovPage() {
         />
         <ShowMovilityField
           title="Número de convenio"
-          data={data.agreement.agreementNumber || 'N.A.'}
+          data={data.agreement && data.agreement.agreementNumber || 'N.A.'}
           bblInf={MoveInfo.numConvenio}
         />
         <ShowMovilityField

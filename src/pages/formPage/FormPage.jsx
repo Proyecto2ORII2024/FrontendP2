@@ -148,7 +148,7 @@ function FormPage() {
   useEffect(() => {
     getAgreements()
       .then((res) => {
-        createAgreementOptions(res.data.content, setAgreements);
+        createAgreementOptions(res.data, setAgreements);
       })
       .catch((err) => {
         console.log(err.response.data);
