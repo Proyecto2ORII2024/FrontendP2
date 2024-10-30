@@ -9,6 +9,7 @@ import statisticsNav from "../../assets/statisticsNav.svg";
 import regNav from "../../assets/regNav.svg";
 import logoutNav from "../../assets/logoutNav.svg";
 import menuNavbar from "../../assets/menuNavbar.svg";
+import changePassword from "../../assets/changePasswordNav.svg"
 
 function NavbarAdmin() {
     const [open, setOpen] = useState(true);
@@ -22,6 +23,7 @@ function NavbarAdmin() {
         {title: "Movilidad", src:formsNav, Link:"/admin/movilidad"},
         {title: "Estadísticas", src:statisticsNav, Link:"/statistics"},
         {title: "Registrar Usuarios", src:regNav, Link:"/user/list"},
+        {title: "Cambiar Contraseña", src:changePassword, Link:"/changePassword"},
         {title: "Cerrar Sesión", src:logoutNav}
     ]
         return (

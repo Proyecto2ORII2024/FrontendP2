@@ -9,7 +9,6 @@ import { AuthContext } from "../../context/LoginContext.jsx";
 import { useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 
-//
 function Login() {
 
   const navigate = useNavigate();
