@@ -3,10 +3,9 @@ import arrow from "../../assets/icons/arrowIcon.svg";
 import { useState, useRef, useEffect } from "react";
 import InfoBubble from "../infoBubble/InfoBubble";
 
-function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
+function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
   const selectRef = useRef(null); // Referencia al select
 
   options = options.sort((a, b) => a.text.localeCompare(b.text));
@@ -25,11 +24,8 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
     };
   }, []);
 
-  useEffect(() => {
-    const selected = options.find((option) => option.value === value);
-    if(selected) {setSelectedOption(selected.text || "")}
-  }, [value, options]);
-
+  // Encontrar el texto de la opción seleccionada en base al `value`
+  const selectedOptionText = options.find((option) => option.value === value)?.text || "";
 
   return (
     <div ref={selectRef} className="relative w-11/12">
@@ -38,20 +34,19 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
         <p>{inputInf.text}</p>
       </div>
       <button
-      type="button"
+        type="button"
         className="w-full border-b-2 ml-7"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
+        disabled={isDisable}
       >
         <div className="flex items-center justify-between w-full p-1 rounded-lg">
-          <label className={`cursor-pointer ${selectedOption ? 'text-black' : 'text-gray-400'} `}>
-            {selectedOption || inputInf.text}
+          <label className={`cursor-pointer ${selectedOptionText ? 'text-black' : 'text-gray-400'} `}>
+            {selectedOptionText || inputInf.text}
           </label>
           <img
             src={arrow}
             alt="arrow"
-            className={`size-5 transform duration-300 ${
-              isMenuOpen ? "rotate-180" : ""
-            }`}
+            className={`size-5 transform duration-300 ${isMenuOpen ? "rotate-180" : ""}`}
           />
         </div>
       </button>
@@ -59,7 +54,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
         <div className="absolute z-10 w-full mt-1 bg-white border-2 rounded-lg shadow-lg border-primary-dark ml-7">
           <label htmlFor="search">
             <input
-              id='search'
+              id="search"
               type="text"
               autoComplete="off"
               className="w-full p-2 border-b-2 rounded-t-lg outline-none"
@@ -76,13 +71,15 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
               .map((option) => (
                 <button
                   key={option.value}
-                  className={`p-2 text-left hover:bg-gray-200 ${selectedOption === option.text ? 'bg-grays-dark' : 'bg-white'}`}
+                  className={`p-2 text-left hover:bg-gray-200 ${
+                    selectedOptionText === option.text ? 'bg-grays-dark' : 'bg-white'
+                  }`}
                   onClick={() => {
                     onChange(option.value); // Actualizamos el valor en el formulario
-                    setIsMenuOpen(false);
+                    setIsMenuOpen(false); // Cierra el menú después de seleccionar
                   }}
                 >
-                  {option.text ? option.text : "Ups, no se hallaron items"}
+                  {option.text || "Ups, no se hallaron items"}
                 </button>
               ))}
           </div>
@@ -91,6 +88,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo }) {
     </div>
   );
 }
+
 
 CustomSelect.propTypes = {
   inputInf: PropTypes.shape({
@@ -101,6 +99,7 @@ CustomSelect.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),      
   onChange: PropTypes.func,
   bblInfo: PropTypes.object,
+  isDisable: PropTypes.bool,
 };
 
 export default CustomSelect;
