@@ -4,22 +4,33 @@ import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./styles.js";
+import { login } from "../../services/login.service.js";
+import { AuthContext } from "../../context/LoginContext.jsx";
+import { useContext } from "react";
+import { jwtDecode } from "jwt-decode";
 
 //
 function Login() {
 
   const navigate = useNavigate();
 
+  const {setUser} = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 
   const handleLogin = (data) => {
-    navigate("/admin")
-    console.log(data)
+    login(data).then(
+      res => {
+        console.log(res.data)
+        setUser(jwtDecode(res.data.accessToken))
+        console.log(jwtDecode(res.data.accessToken))
+      });
+    //navigate("/admin")
+    console.log("data",data)
   };
 
   return (

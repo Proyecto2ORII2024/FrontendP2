@@ -261,7 +261,7 @@ function UsersListPage() {
                                                     Rol:
                                                 </span>
 
-                                                estudiante.Rol
+                                                {estudiante.Rol}
                                             </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
@@ -313,7 +313,7 @@ function UsersListPage() {
                                                 <span className="md:hidden font-bold">
                                                     Rol:
                                                 </span>
-                                                estudiante.Rol
+                                                {estudiante.Rol}
                                             </td>
                                             <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
                                                 <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
