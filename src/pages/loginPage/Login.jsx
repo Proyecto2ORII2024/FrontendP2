@@ -4,16 +4,29 @@ import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styles from "./styles.js";
-import { login } from "../../services/login.service.js";
 import { AuthContext } from "../../context/LoginContext.jsx";
-import { useContext } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useContext, useEffect } from "react";
 
 function Login() {
 
   const navigate = useNavigate();
 
-  const {setUser} = useContext(AuthContext);
+  const { singin, user, loginError } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.role === "ADMIN") {
+      navigate("/admin");
+      return;
+    }
+
+    if (user.role === "USER") {
+      navigate("/form");
+      return;
+    }
+  }, [user, navigate]);
+
 
   const {
     register,
@@ -21,15 +34,10 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const handleLogin = (data) => {
-    login(data).then(
-      res => {
-        console.log(res.data)
-        setUser(jwtDecode(res.data.accessToken))
-        console.log(jwtDecode(res.data.accessToken))
-      });
+  const handleLogin = async (data) => {
+    await singin(data)
     //navigate("/admin")
-    console.log("data",data)
+    console.log("data", data)
   };
 
   return (
@@ -40,6 +48,9 @@ function Login() {
       <div className="flex flex-col items-center bg-primary/50 rounded-3xl gap-3 w-[90%] md:w-[50%] lg:w-[25%] md:py-10 py-5 justify-center">
         <img src={ORIIIcon} alt="ORIIIcon" className="w-[300px]" />
         <h1 className="bg-transparent text-4xl font-bold text-center">Bienvenido</h1>
+        {
+          loginError && <p className="text-red-400">Usuario o contraseña incorrectos</p>
+        }
         <form className="flex flex-col items-center gap-y-2" onSubmit={handleSubmit(handleLogin)}>
           <label htmlFor="" className="text-xl">Ingresa con tu correo y contraseña</label>
           <div className="flex flex-col gap-y-2 bg-primary/75 rounded-3xl p-3 py-4 items-start w-[90%]">
@@ -81,7 +92,7 @@ function Login() {
             className=""
           />
         </form>
-        <p onClick={()=>{navigate("/passwordRecovery")}} style={styles}>Recuperar contraseña</p>
+        <p onClick={() => { navigate("/passwordRecovery") }} style={styles}>Recuperar contraseña</p>
       </div>
     </div>
   );
