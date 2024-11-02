@@ -37,6 +37,18 @@ function FormPage() {
     required: yes,
   };
 
+  let facultad = {
+    id: "faculty",
+    text:
+      isInOrOut === "" || isInOrOut === "IN"
+        ? "Facultad de acogida"
+        : "Facultad de origen",
+    type: "text",
+    required: true,
+    pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
+    message: "Este campo sólo acepta letras",
+  };
+
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
   };
@@ -203,9 +215,9 @@ function FormPage() {
           className="flex flex-col my-5 gap-y-5"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <section className="p-4 mx-8 text-center border-2 rounded-lg border-grays">
-            <h1 className="mb-5 text-2xl font-semibold text-primary-dark">
-              Datos personales
+          <section className="p-4 mx-8 border-2 rounded-lg border-grays">
+            <h1 className="mb-5 text-2xl font-semibold text-center text-primary-dark">
+              Datos de la persona movilizada
             </h1>
             <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
               <CustomInput
@@ -302,8 +314,8 @@ function FormPage() {
               />
             </article>
           </section>
-          <section className="p-4 mx-8 text-center border-2 rounded-lg border-grays">
-            <h1 className="mb-5 text-2xl font-semibold text-primary-dark">
+          <section className="p-4 mx-8 border-2 rounded-lg border-grays">
+            <h1 className="mb-5 text-2xl font-semibold text-center text-primary-dark">
               Información general de la movilidad
             </h1>
             <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
@@ -337,7 +349,7 @@ function FormPage() {
 
               <CustomInput
                 bubbleInf={Info.facultad}
-                inputInf={inputInfo.facultad}
+                inputInf={facultad}
                 errors={errors}
                 register={register}
               />
@@ -373,8 +385,8 @@ function FormPage() {
               />
             </article>
           </section>
-          <section className="p-4 mx-8 text-center border-2 rounded-lg border-grays">
-            <h1 className="mb-5 text-2xl font-semibold text-primary-dark">
+          <section className="p-4 mx-8 border-2 rounded-lg border-grays">
+            <h1 className="mb-5 text-2xl font-semibold text-center text-primary-dark">
               Detalles de la Movilidad
             </h1>
             <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
@@ -407,8 +419,8 @@ function FormPage() {
               />
             </article>
           </section>
-          <section className="p-4 mx-8 text-center border-2 rounded-lg border-grays">
-            <h1 className="mb-5 text-2xl font-semibold text-primary-dark">
+          <section className="p-4 mx-8 border-2 rounded-lg border-grays">
+            <h1 className="mb-5 text-2xl font-semibold text-center text-primary-dark">
               Detalles académicos
             </h1>
             <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
@@ -443,9 +455,78 @@ function FormPage() {
               </div>
             </article>
           </section>
-          <section className="p-4 mx-8 text-center border-2 rounded-lg border-grays">
-            <h1 className="mb-5 text-2xl font-semibold text-primary-dark">
-              Detalles de la estancia
+          <section className="p-4 mx-8 border-2 rounded-lg border-grays">
+            <h1 className="mb-5 text-2xl font-semibold text-center text-primary-dark">
+              Convenios y patrocinios
+            </h1>
+            <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
+              <div>
+                <Controller
+                  name={inputInfo.convenio.id}
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: inputInfo.convenio.required,
+                    onChange: (e) => setYes(e.target.value === "Y"),
+                  }}
+                  render={({ field }) => (
+                    <CustomSelect
+                      inputInf={inputInfo.convenio}
+                      options={inputInfo.convenio.options}
+                      value={field.value}
+                      onChange={field.onChange}
+                      bblInfo={Info.convenio}
+                    />
+                  )}
+                />
+                {errors[inputInfo.convenio.id] && (
+                  <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </div>
+
+              <div className={`${yes ? "" : "opacity-40 -z-50"}`}>
+                <Controller
+                  name={inputInfo.numConvenio.id}
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: yes }}
+                  render={({ field }) => (
+                    <CustomSelect
+                      inputInf={numConvenio}
+                      options={agreements}
+                      value={field.value}
+                      onChange={field.onChange}
+                      bblInfo={Info.numConvenio}
+                      isDisable={!yes}
+                    />
+                  )}
+                />
+                {errors[inputInfo.numConvenio.id] && (
+                  <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </div>
+              <CustomInput
+                bubbleInf={Info.financiacion}
+                inputInf={inputInfo.financiacion}
+                errors={errors}
+                register={register}
+              />
+
+              <CustomInput
+                bubbleInf={Info.fuenteFinanciacion}
+                inputInf={inputInfo.fuenteFinanciacion}
+                errors={errors}
+                register={register}
+              />
+            </article>
+          </section>
+          <section className="p-4 mx-8 border-2 rounded-lg border-grays">
+            <h1 className="mb-5 text-2xl font-semibold text-center text-primary-dark">
+              Tiempo de la estancia
             </h1>
             <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
               {/**Fecha de entrada por defecto */}
@@ -584,82 +665,13 @@ function FormPage() {
               <label className="flex flex-col w-full">
                 <div className="flex items-center gap-2">
                   <InfoBubble info={Info.anio} />
-                  <p>Año</p>
+                  <p>Año de movilidad</p>
                 </div>
                 <p className="py-1 text-left border-b-2 outline-none ml-7 border-neutral-hover">
                   {new Date().getFullYear()}{" "}
                   {/**Verificar la forma de enviarlo al backend */}
                 </p>
               </label>
-            </article>
-          </section>
-          <section className="p-4 mx-8 text-center border-2 rounded-lg border-grays">
-            <h1 className="mb-5 text-2xl font-semibold text-primary-dark">
-              Convenios y patrocinios
-            </h1>
-            <article className="grid grid-cols-1 gap-16 p-3 justify-evenly md:grid-cols-2 lg:grid-cols-4">
-              <div>
-                <Controller
-                  name={inputInfo.convenio.id}
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: inputInfo.convenio.required,
-                    onChange: (e) => setYes(e.target.value === "Y"),
-                  }}
-                  render={({ field }) => (
-                    <CustomSelect
-                      inputInf={inputInfo.convenio}
-                      options={inputInfo.convenio.options}
-                      value={field.value}
-                      onChange={field.onChange}
-                      bblInfo={Info.convenio}
-                    />
-                  )}
-                />
-                {errors[inputInfo.convenio.id] && (
-                  <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              </div>
-
-              <div className={`${yes ? "" : "opacity-40 -z-50"}`}>
-                <Controller
-                  name={inputInfo.numConvenio.id}
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: yes }}
-                  render={({ field }) => (
-                    <CustomSelect
-                      inputInf={numConvenio}
-                      options={agreements}
-                      value={field.value}
-                      onChange={field.onChange}
-                      bblInfo={Info.numConvenio}
-                      isDisable={!yes}
-                    />
-                  )}
-                />
-                {errors[inputInfo.numConvenio.id] && (
-                  <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              </div>
-              <CustomInput
-                bubbleInf={Info.financiacion}
-                inputInf={inputInfo.financiacion}
-                errors={errors}
-                register={register}
-              />
-
-              <CustomInput
-                bubbleInf={Info.fuenteFinanciacion}
-                inputInf={inputInfo.fuenteFinanciacion}
-                errors={errors}
-                register={register}
-              />
             </article>
           </section>
           <div className="mx-auto">
