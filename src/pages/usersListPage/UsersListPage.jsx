@@ -1,6 +1,5 @@
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import editIcon from "../../assets/icons/editIcon.svg";
-import checkIcon from "../../assets/icons/checkIcon.svg";
 import search from "../../assets/icons/searchIcon.svg";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +8,9 @@ import NotificationBox from "../../components/notificationBox/NotificationBox.js
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 import EditUser from "../../components/editUser/EditUser.jsx";
 import DeleteUser from "../../components/deleteUser/DeleteUser.jsx";
+import { getUsers, updateUser, deleteUser } from "../../services/user.service.js"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { styles } from "./styles.js";
 
@@ -25,110 +25,86 @@ function UsersListPage() {
   const [userSelected, setUserSelected] = useState({});
   const [estudiantes, setEstudiantes] = useState([
     {
-      Id: 1,
-      Correo: "ORI@UNICAUCA.EDU.CO",
-      Rol: "Admin",
-      Password: "123",
+      userId: 1,
+      email: "ORI@UNICAUCA.EDU.CO",
+      role: "Admin"
     },
     {
-      Id: 2,
-      Correo: "INGENIERIA@UNICAUCA.EDU.CO",
-      Rol: "Usuario",
-      Password: "123",
-    },
-    {
-      Id: 3,
-      Correo: "jsotelop@UNICAUCA.EDU.CO",
-      Rol: "Usuario",
-      Password: "123",
-    },
-    {
-      Id: 4,
-      Correo: "cgarcias@UNICAUCA.EDU.CO",
-      Rol: "Usuario",
-      Password: "123",
-    },
-    {
-      Id: 5,
-      Correo: "jorejuelam@UNICAUCA.EDU.CO",
-      Rol: "Usuario",
-      Password: "123",
-    },
-    {
-      Id: 6,
-      Correo: "jorgevelasco@UNICAUCA.EDU.CO",
-      Rol: "Admin",
-      Password: "123",
-    },
+      userId: 2,
+      email: "INGENIERIA@UNICAUCA.EDU.CO",
+      role: "Usuario"
+    }
   ]);
+
+  useEffect(() => {
+    console.log(localStorage.getItem("user"));
+    const fetchData = async () => {
+      const data = await getUsers();
+      setEstudiantes(data.data);
+      console.log(data.data);
+    };
+    fetchData();
+  }, []);
 
   const navigate = useNavigate();
 
-  const role = ["Admin", "Usuario"];
+  const updateData = async (idToUpdate, data) => {
+    try {
 
-  const updateData = (id, data) => {
-    console.log(id, data);
-    setEstudiantes(
-      estudiantes.map((estudiante) =>
-        estudiante.Id === id
-          ? { ...estudiante, Rol: data.rol, Password: data.password }
-          : estudiante
-      )
-    );
-    setSearchStudent(
-      searchStudent.map((estudiante) =>
-        estudiante.Id === id
-          ? { ...estudiante, Rol: data.rol, Password: data.password }
-          : estudiante
-      )
-    );
-    setwasUpdated("success");
+      let id;
+      if (typeof idToUpdate === "string") {
+        id = parseInt(idToUpdate);
+      } else {
+        id = idToUpdate;
+      }
+      console.log(id, data);
+
+      var userUpt = userSelected;
+
+      userUpt.role = data.rol;
+      userUpt.faculty = data.faculty;
+      console.log(await updateUser(id, userUpt));
+
+      setEstudiantes(
+        estudiantes.map((estudiante) =>
+          estudiante.userId === id
+            ? { ...estudiante, Rol: data.role, Password: data.password }
+            : estudiante
+        )
+      );
+      setSearchStudent(
+        searchStudent.map((estudiante) =>
+          estudiante.userId === id
+            ? { ...estudiante, Rol: data.role, Password: data.password }
+            : estudiante
+        )
+      );
+      setwasUpdated("success");
+    } catch (error) {
+      setwasUpdated("error");
+      console.log(error);
+    }
+
   };
 
-  const updatePassword = (id, data) => {
-    console.log(id, data);
-    setEstudiantes(
-      estudiantes.map((estudiante) =>
-        estudiante.Id === id
-          ? { ...estudiante, Password: data.password }
-          : estudiante
-      )
-    );
-    setSearchStudent(
-      searchStudent.map((estudiante) =>
-        estudiante.Id === id
-          ? { ...estudiante, Password: data.password }
-          : estudiante
-      )
-    );
-    setwasUpdated("success");
-  };
 
-  const updateRol = (id, data) => {
-    console.log(id, data);
-    setEstudiantes(
-      estudiantes.map((estudiante) =>
-        estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante
-      )
-    );
-    setSearchStudent(
-      searchStudent.map((estudiante) =>
-        estudiante.Id === id ? { ...estudiante, Rol: data.rol } : estudiante
-      )
-    );
-    setwasUpdated("success");
-  };
-
-  const handleDelete = (idToDelete) => {
-    console.log("idtodelete", idToDelete);
+  const handleDelete = async (idToDelete) => {
+    try {
+      console.log("idtodelete", idToDelete);
     let id;
     if (typeof idToDelete === "string") {
       id = parseInt(idToDelete);
     } else {
       id = idToDelete;
     }
-    setEstudiantes(estudiantes.filter((estudiante) => estudiante.Id !== id));
+    console.log(await deleteUser(id));
+    setEstudiantes(estudiantes.filter((estudiante) => estudiante.userId !== id));
     setWasDeleted("success");
+    } catch (error) {
+      setWasDeleted("error");
+      console.log(error);
+    }
+    
   };
 
   const handleSearch = (e) => {
@@ -139,10 +115,10 @@ function UsersListPage() {
       setSearchStudent(
         estudiantes.filter(
           (estudiante) =>
-            estudiante.Correo.toLowerCase().includes(
+            estudiante.email.toLowerCase().includes(
               e.target.value.toLowerCase()
             ) ||
-            estudiante.Rol.toLowerCase().includes(e.target.value.toLowerCase())
+            estudiante.role.toLowerCase().includes(e.target.value.toLowerCase())
         )
       );
     }
@@ -156,8 +132,6 @@ function UsersListPage() {
           user={userSelected}
           setUpdated={setwasUpdated}
           updateData={updateData}
-          updatePassword={updatePassword}
-          updateRol={updateRol}
         />
         <DeleteUser
           open={openDelete}
@@ -205,11 +179,12 @@ function UsersListPage() {
           )}
         </NotificationBox>
         <section className="flex justify-between items-center flex-col md:flex-row">
-          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col justify-between items-center">
+          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col justify-between md:items-center">
             <h2 className="w-full md:m-5 px-5 pt-3 md:pt-0 text-lg text-center">
               A continuación se presenta una tabla con los usuarios registrados
               actualmente..
             </h2>
+            <div className="w-fit ml-3 md:ml-0">
             <MainButton
               onClick={() => navigate("/user/register")}
               text="Registrar usuario"
@@ -218,6 +193,7 @@ function UsersListPage() {
               textColor="white"
               className=""
             />
+            </div>
           </section>
           <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:flex-row justify-between items-center">
             <article className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
@@ -249,15 +225,15 @@ function UsersListPage() {
                       (
                         <tr
                           className={"flex flex-col md:table-row border-b"}
-                          key={estudiante.Correo}
+                          key={estudiante.email}
                         >
                           <td className={`${styles.tdIn}`}>
                             <span className="md:hidden font-bold">Correo:</span>
-                            {estudiante.Correo + " " + estudiante.Password}
+                            {estudiante.email}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">Rol:</span>
-                            {estudiante.Rol}
+                            {estudiante.role}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">
@@ -265,7 +241,7 @@ function UsersListPage() {
                             </span>
                             <div className="flex justify-center gap-[10%]">
                               <button
-                              title="Editar usuario"
+                                title="Editar usuario"
                                 className=""
                                 onClick={() => {
                                   setOpenEdit(true);
@@ -279,11 +255,11 @@ function UsersListPage() {
                                 />
                               </button>
                               <button
-                              title="Eliminar usuario"
-                                id={estudiante.Id}
+                                title="Eliminar usuario"
+                                id={estudiante.userId}
                                 onClick={() => {
                                   setOpenDelete(true);
-                                  setUserId(estudiante.Id.toString());
+                                  setUserId(estudiante.userId.toString());
                                 }}
                               >
                                 <img
@@ -319,18 +295,17 @@ function UsersListPage() {
                       console.log(index, index % 2),
                       (
                         <tr
-                          className={`${
-                            index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-                          } flex flex-col md:table-row border-b`}
-                          key={estudiante.Correo}
+                          className={`${index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
+                            } flex flex-col md:table-row border-b`}
+                          key={estudiante.email}
                         >
                           <td className={`${styles.tdIn}`}>
                             <span className="md:hidden font-bold">Correo:</span>
-                            {estudiante.Correo + " " + estudiante.Password}
+                            {estudiante.email + " " + estudiante.Password}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">Rol:</span>
-                            estudiante.Rol
+                            estudiante.role
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">
@@ -347,7 +322,7 @@ function UsersListPage() {
                                 <img
                                   className={styles.buttonAction}
                                   src={editIcon}
-                                  id={estudiante.Id}
+                                  id={estudiante.userId}
                                   alt="editIcom"
                                 />
                               </button>
@@ -355,8 +330,8 @@ function UsersListPage() {
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
-                                  id={estudiante.Id}
-                                  onClick={(e) => handleDelete(e.target.id)}
+                                  id={estudiante.userId}
+                                  onClick={(e) => handleDelete(e.target.userId)}
                                   alt="deleteIcon"
                                 />
                               </button>
