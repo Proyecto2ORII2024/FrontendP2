@@ -3,6 +3,7 @@ import ORIIIcon from "../../assets/Images/ORII.webp";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import {createUser} from "../../services/user.service.js";
 
 function RegistrarUsuarioPage() {
 
@@ -17,15 +18,22 @@ function RegistrarUsuarioPage() {
 
 
     const handleRegister = (data) => {
-        navigate("/user/list")
+        //navigate("/user/list")
+        createUser(data)
         console.log(data)
     };
 
     const options = [
         { value: '', label: '' },
-        { value: 'admin', label: 'Admin' },
-        { value: 'usuario', label: 'Usuario' }
+        { value: 'ADMIN', label: 'Admin' },
+        { value: 'USER', label: 'Usuario' }
     ];
+    const faculties = [
+        { value: '', label: '' },
+        {value:'FIET', label:'FIET'},
+        {value:'FIC', label:'FIC'},
+        {value:'FACNED', label:'FACNED'}
+    ]
 
     return (
         <div
@@ -55,22 +63,11 @@ function RegistrarUsuarioPage() {
                         </span>}
                     </div>
                     <div className="flex flex-col w-full">
-                        <label htmlFor="" className="text-xl">Contraseña</label>
-                        <input
-                            htmlFor=""
-                            className="bg-primary-light w-[100%]"
-                            type="password"
-                            {...register("password", { required: true })} />
-                        {errors.password && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.password.message || "Este campo es requerido"}
-                        </span>}
-                    </div>
-                    <div className="flex flex-col w-full">
                         <label htmlFor="" className="text-xl">Rol</label>
                         <select
                             className="bg-primary-light"
                             placeholder=""
-                            {...register("rol", {
+                            {...register("role", {
                                 required: true
                             })}
                         >
@@ -80,8 +77,27 @@ function RegistrarUsuarioPage() {
                                 </option>
                             ))}
                         </select>
-                        {errors.rol && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.rol.message || "Seleccione un rol"}
+                        {errors.role && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
+                            {errors.role.message || "Seleccione un rol"}
+                        </span>}
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="" className="text-xl">Facultad</label>
+                        <select
+                            className="bg-primary-light"
+                            placeholder=""
+                            {...register("faculty", {
+                                required: true
+                            })}
+                        >
+                            {faculties.map((faculty) => (
+                                <option key={faculty.value} value={faculty.value}>
+                                    {faculty.label}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.faculty && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
+                            {errors.faculty.message || "Seleccione una facultad"}
                         </span>}
                     </div>
                 </div>
