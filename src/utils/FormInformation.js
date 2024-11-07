@@ -1,6 +1,6 @@
 export const Info = {
     sentido: {
-        title: 'Sentido',
+        title: 'Tipo de movilidad',
         shortInfo: 'Seleccione entre (SALIENTE PRESENCIAL, ENTRANTE PRESENCIAL, SALIENTE VIRTUAL, ENTRANTE VIRTUAL)',
         longInfo: {
             text: ['Seleccione uno de los siguientes items:'],
@@ -16,7 +16,7 @@ export const Info = {
         }
     },
     tipo: {
-        title: 'Tipo',
+        title: 'Rol en la movilidad',
         longInfo: {
             text: ['Seleccione uno de los siguientes items:'],
             list: {
@@ -177,7 +177,7 @@ export const Info = {
         }
     },
     profPres:{
-        title: 'Profesor presenta',
+        title: 'Tutor académico',
         shortInfo: 'Este campo únicamente se habilita cuando se trate de estudiantes en Movilidad académica ENTRANTE (pasantía o estancia de investigación o intercambio), escriba el nombre del profesor que ejerce como Tutor o Coordinador de dicha movilidad.'
     },
     facultad:{
@@ -211,7 +211,7 @@ export const Info = {
 export const inputInfo = {
     sentido:{
         id:'direction',
-        text: 'Sentido',
+        text: 'Tipo de movilidad',
         required: true,
         options: [
             {value: 'OUTGOING_IN_PERSON', text: 'Saliente presencial'},
@@ -222,7 +222,7 @@ export const inputInfo = {
     },
     tipo:{
         id:'personType',
-        text: 'Tipo',
+        text: 'Rol en la movilidad',
         required: true,
         options: [
             {value: 'TEACHER', text: 'Profesor'},
@@ -373,7 +373,7 @@ export const inputInfo = {
     },
     profPres:{
         id: 'teacher',
-        text: 'Profesor presenta',
+        text: 'Tutor académico',
         type: 'text',
         required: false,
         pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
@@ -389,7 +389,7 @@ export const inputInfo = {
     },
     financiacion:{
         id: 'funding',
-        text: 'Financiación',
+        text: 'Valor de la financiación',
         type: 'number',
         required: true,
         pattern: /^[0-9]+$/,
