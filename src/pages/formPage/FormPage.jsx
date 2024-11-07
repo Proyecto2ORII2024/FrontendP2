@@ -43,10 +43,18 @@ function FormPage() {
       isInOrOut === "" || isInOrOut === "IN"
         ? "Facultad de acogida"
         : "Facultad de origen",
-    type: "text",
     required: true,
-    pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
-    message: "Este campo sólo acepta letras",
+    options: [
+      {value:"FIET", text: "Ingeniería Electrónica y Telecomunicaciones"},
+      {value:"FIC", text: "Ingeniería Civil"},
+      {value:"FCS", text: "Ciencias de la Salud"},
+      {value:"FDCPS", text: "Derecho y Ciencias Políticas y Sociales"},
+      {value:"FACNED", text: "Facultad de Ciencias Naturales, Exactas y de la Educación"},
+      {value:"FCH", text: "Ciencias Humanas"},
+      {value:"FA", text: "Artes"},
+      {value:"FCA", text: "Ciencias Agropecuarias"},
+      {value:"FCCEA", text: "Ciencias Contables, Económicas y Administrativas"},
+    ]
   };
 
   const updateEntryDate = (e) => {
@@ -189,7 +197,7 @@ function FormPage() {
 
   return (
     <AdminLayout>
-      <main className="flex flex-col gap-10">
+      <main className="flex flex-col">
         <NotificationBox
           type={notification === "errorDate" ? "error" : notification}
           title={
@@ -211,6 +219,7 @@ function FormPage() {
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
+        <h3 className="mt-5 ml-8"><span className="font-medium">Nota: </span>Los campos con <span className="text-xl font-semibold text-red-400">*</span> son obligatorios</h3>
         <form
           className="flex flex-col my-5 gap-y-5"
           onSubmit={handleSubmit(onSubmit)}
@@ -346,13 +355,31 @@ function FormPage() {
                   </span>
                 )}
               </div>
-
-              <CustomInput
-                bubbleInf={Info.facultad}
-                inputInf={facultad}
-                errors={errors}
-                register={register}
-              />
+              
+              <div>
+                <Controller
+                  name={inputInfo.facultad.id}
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: facultad.required,
+                  }}
+                  render={({ field }) => (
+                    <CustomSelect
+                      inputInf={facultad}
+                      options={facultad.options}
+                      value={field.value}
+                      onChange={field.onChange}
+                      bblInfo={Info.sentido}
+                    />
+                  )}
+                />
+                {errors[facultad.id] && (
+                  <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                    Este campo es requerido
+                  </span>
+                )}
+              </div>
 
               <div>
                 <Controller
