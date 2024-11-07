@@ -112,6 +112,16 @@ function FormPage() {
       },
     };
 
+    //Forma provicional para los datos de las estadisticas
+    localStorage.setItem('userData', JSON.stringify(formData));
+
+    const agreementsData = JSON.parse(localStorage.getItem('agreementsData')) || {};
+
+    const selectedEventType = data.eventType;
+    agreementsData[selectedEventType] = (agreementsData[selectedEventType] || 0) + 1;
+
+    localStorage.setItem('agreementsData', JSON.stringify(agreementsData));
+
     createForm(formData)
       .then((res) => {
         if(res.status === 201) {
@@ -138,7 +148,7 @@ function FormPage() {
   useEffect(() => {
     getAgreements()
       .then((res) => {
-        createAgreementOptions(res.data.content, setAgreements);
+        createAgreementOptions(res.data, setAgreements);
       })
       .catch((err) => {
         console.log(err.response.data);

@@ -117,19 +117,22 @@ function AgreementAdminPage() {
           )}
         </NotificationBox>
 
-        <h2 className="w-full mt-5 md:pl-20 p-5 text-xl text-left">
-          A continuación se presenta una lista con todos los convenios
-          registrados.
-        </h2>
-        <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
-          <MainButton
-            onClick={() => navigate("/admin/agreement/create")}
-            text="Crear Convenio"
-            bgColor="primary"
-            hoverBg="primary-light"
-            textColor="white"
-            className="xl:ml-48 lg:ml-32 md:ml-20 mx-5"
-          />
+        <section className="flex items-center flex-col md:flex-row">
+          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col items-center">
+            <h2 className="w-full md:m-5 px-5 pt-3 md:pt-0 text-lg text-center">
+              A continuación se presenta una lista con todos los convenios
+              registrados.
+            </h2>
+            <MainButton
+              onClick={() => navigate("/admin/agreement/create")}
+              text="Crear Convenio"
+              bgColor="primary"
+              hoverBg="primary-light"
+              textColor="white"
+            />
+          </section>
+
+          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:flex-row justify-between items-center">
 
           <article className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
             <input
@@ -141,6 +144,7 @@ function AgreementAdminPage() {
             />
             <img src={search} alt="search icon" />
           </article>
+          </section>
         </section>
         {!isSearching ? (
           <>

@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await login(userLogin);
             setUser(jwtDecode(res.data.accessToken));
-            localStorage.setItem("user", JSON.stringify(res.data.accessToken));
+            localStorage.setItem("user", res.data.accessToken);
             setLoginError(null);
           } catch (error) {
             console.log(error);
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
         
         setUser(null);
 
-        localStorage.setItem("user", JSON.stringify(null));
+        localStorage.removeItem("user");
 
         return true;
     }

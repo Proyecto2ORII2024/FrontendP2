@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import logoUnicauca from "../../assets/Logo_Unicauca.png"
 import AsideAdmin from "../asideAdmin/AsideAdmin";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,11 @@ import agreementsNav from "../../assets/agreementsNav.svg";
 import formsNav from "../../assets/formsNav.svg";
 import statisticsNav from "../../assets/statisticsNav.svg";
 import regNav from "../../assets/regNav.svg";
-import logoutNav from "../../assets/logoutNav.svg";
 import menuNavbar from "../../assets/menuNavbar.svg";
-import changePassword from "../../assets/changePasswordNav.svg"
+import { AuthContext } from "../../context/LoginContext.jsx";
+
+
+import USerDropdown from "../userDropDown/UserDropDown";
 
 function NavbarAdmin() {
     const [open, setOpen] = useState(true);
@@ -17,14 +19,15 @@ function NavbarAdmin() {
         setOpen(!open); // Alterna entre true y false
     };
     const navigate = useNavigate();
+
+    const { singout } = useContext(AuthContext);
+
     const Menus = [
         {title: "Inicio", src:initNav, Link:"/admin"},
         {title: "Convenios", src:agreementsNav ,Link:"/admin/agreement"},
         {title: "Movilidad", src:formsNav, Link:"/admin/movilidad"},
         {title: "Estadísticas", src:statisticsNav, Link:"/statistics"},
         {title: "Registrar Usuarios", src:regNav, Link:"/user/list"},
-        {title: "Cambiar Contraseña", src:changePassword, Link:"/changePassword"},
-        {title: "Cerrar Sesión", src:logoutNav}
     ]
         return (
         <div>
@@ -47,6 +50,7 @@ function NavbarAdmin() {
                     </button>
                     </li>
                 ))} 
+                <USerDropdown onChangePassword={() => navigate("/changePassword")} onLogOut={()=>singout()}/>
             </div>
             <img 
                 src={menuNavbar}

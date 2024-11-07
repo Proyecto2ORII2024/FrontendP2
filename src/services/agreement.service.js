@@ -27,7 +27,7 @@ export const getAgreement = async (agreementId) => {
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
-    agreements = agreements.data.content;
+    agreements = agreements.data;
 
     const agreementsData = {
         NATIONAL: [],
