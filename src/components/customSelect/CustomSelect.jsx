@@ -32,6 +32,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable =
       <div className="flex items-center w-full gap-2">
         <InfoBubble info={bblInfo} />
         <p>{inputInf.text}</p>
+        {inputInf.required && <span className="text-xl font-semibold text-red-400">*</span>}
       </div>
       <button
         type="button"
@@ -94,6 +95,7 @@ CustomSelect.propTypes = {
   inputInf: PropTypes.shape({
     id: PropTypes.string,
     text: PropTypes.string,
+    required: PropTypes.bool,
   }),
   options: PropTypes.array.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),      

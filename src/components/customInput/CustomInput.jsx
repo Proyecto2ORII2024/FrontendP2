@@ -8,6 +8,7 @@ function CustomInput({ bubbleInf, inputInf, register, errors, isDisable = false 
       <div className="flex items-center gap-2">
         <InfoBubble info={bubbleInf} />
         <p>{inputInf.text}</p>
+        {inputInf.required && <span className="text-xl font-semibold text-red-400">*</span>}
       </div>
       <input
         id={inputInf.id}
