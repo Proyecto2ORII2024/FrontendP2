@@ -118,11 +118,12 @@ function AgreementAdminPage() {
         </NotificationBox>
 
         <section className="flex items-center flex-col md:flex-row">
-          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col items-center">
+          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:items-center">
             <h2 className="w-full md:m-5 px-5 pt-3 md:pt-0 text-lg text-center">
               A continuación se presenta una lista con todos los convenios
               registrados.
             </h2>
+            <div className="w-fit ml-3 md:ml-0">
             <MainButton
               onClick={() => navigate("/admin/agreement/create")}
               text="Crear Convenio"
@@ -130,6 +131,7 @@ function AgreementAdminPage() {
               hoverBg="primary-light"
               textColor="white"
             />
+            </div>
           </section>
 
           <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:flex-row justify-between items-center">

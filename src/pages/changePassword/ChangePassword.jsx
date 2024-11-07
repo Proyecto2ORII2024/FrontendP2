@@ -3,11 +3,12 @@ import ORIIIcon from "../../assets/Images/ORII.webp";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
+import { useState } from "react";
+import AdminLayout from "../../layouts/AdminLayout.jsx";
+import passwordIcon from "../../assets/icons/password.svg"
+import visibility from "../../assets/icons/visibility.svg"
+import visibilityOff from "../../assets/icons/visibility_off.svg"
 function ChangePassword() {
-
-    const navigate = useNavigate();
-
     const {
         register,
         handleSubmit,
@@ -15,65 +16,56 @@ function ChangePassword() {
         formState: { errors },
     } = useForm();
 
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleRegister = (data) => {
-        navigate("/user/list")
-        console.log(data)
-    };
-
+    const handleShowPassword =() => {
+        setShowPassword(!showPassword);
+    }
     return (
-        <div
-            className="h-screen w-full bg-slate-400 bg-cover bg-center flex justify-center items-center text-white"
-            style={{ backgroundImage: `url(${LoginImage})` }}
-        >
-            <form className="flex flex-col items-center bg-primary/50 rounded-3xl gap-3 w-[90%] md:w-[50%] lg:w-[25%] md:py-10 py-5 justify-center" onSubmit={handleSubmit(handleRegister)}
-            >
-                <img src={ORIIIcon} alt="ORIIIcon" className="w-[300px]" />
-                <h1 className="bg-transparent text-4xl font-bold text-center">Cambiar contraseña</h1>
-                <div className="flex flex-col gap-y-2 bg-primary/75 rounded-3xl p-3 py-4 items-start w-[60%]">
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="" className="text-x">Nueva Contraseña</label>
-                        <input
-                            htmlFor=""
-                            className="bg-primary-light w-[100%]"
-                            type="password"
-                            {...register("password", { required: true })} />
-                        {errors.password && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.password.message || "Este campo es requerido"}
-                        </span>}
+        <AdminLayout>
+            <div className="bg-gray-100 p-8 min-h-screen flex items-center justify-center">
+                <div className="bg-white p-8 rounded-lg w-96">
+                    <div className="mb-10">
+                        <h1 className="text-2xl uppercase font-bold text-center">Actualizar contraseña</h1>
                     </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="" className="text-x">Confirmar Contraseña</label>
-                        <input
-                            htmlFor=""
-                            className="bg-primary-light w-[100%]"
-                            type="password"
-                            {...register("password", { required: true })} />
-                        {errors.password && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.password.message || "Este campo es requerido"}
-                        </span>}
-                    </div>
+                    <form className="flex flex-col gap-4">
+                        <div className="relative">
+                            <img src={passwordIcon} alt="password" className="absolute left-2 top-1/2 -translate-y-1/2 h-5"/>
+                            <input type={showPassword ? "text" : "password"} 
+                                className="w-full border bg-grays outline-none py-2 px-9 rounded-lg" 
+                                placeholder="Contraseña"
+                            />
+                            {showPassword ? (
+                                <img src={visibilityOff} alt="password visibility" onClick={handleShowPassword} className="absolute right-2 top-1/2 -translate-y-1/2 h-5 hover:cursor-pointer"/>
+                            ) : (
+                                <img src={visibility} alt="password visibility" onClick={handleShowPassword} className="absolute right-2 top-1/2 -translate-y-1/2 h-5 hover:cursor-pointer"/>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <img src={passwordIcon} alt="password" className="absolute left-2 top-1/2 -translate-y-1/2 h-5"/>
+                            <input type={showPassword ? "text" : "password"}  
+                                className="w-full border bg-grays outline-none py-2 px-9 rounded-lg" 
+                                placeholder="Confirmar Contraseña"
+                            />
+                            {showPassword ? (
+                                <img src={visibilityOff} alt="password visibility" onClick={handleShowPassword} className="absolute right-2 top-1/2 -translate-y-1/2 h-5 hover:cursor-pointer"/>
+                            ) : (
+                                <img src={visibility} alt="password visibility" onClick={handleShowPassword} className="absolute right-2 top-1/2 -translate-y-1/2 h-5 hover:cursor-pointer"/>
+                            )}
+                        </div>
+                        <div>
+                        <MainButton
+                            bgColor="primary"
+                            hoverBg="primary-light"
+                            textColor="white"
+                            text="Reestablecer contraseña"
+                            className="w-full"
+                        />
+                        </div>
+                    </form>
                 </div>
-                <div className="flex items-center gap-2">
-                    <MainButton
-                        type="submit"
-                        text="Cambiar"
-                        bgColor="primary"
-                        hoverBg="primary-light"
-                        textColor="white"
-                        className=""
-                    />
-                    <MainButton
-                        type="submit"
-                        text="Cancelar"
-                        bgColor="primary"
-                        hoverBg="primary-light"
-                        textColor="white"
-                        className=""
-                    />
-                </div>
-            </form>
-        </div>
+            </div>
+        </AdminLayout>
     );
 }
 

@@ -16,7 +16,7 @@ function AsideAdmin({open, setOpen}) {
       {title: "Convenios", src:agreements ,Link:"/admin/agreement"},
       {title: "Movilidad", src:forms, Link:"/admin/movilidad"},
       {title: "Estadísticas", src:statistics, Link:"/statistics"},
-      {title: "Registrar Usuarios", src:reg, gap: true, Link:"/usuarios"},
+      {title: "Registrar Usuarios", src:reg, gap: true, Link:"/user/list"},
       {title: "Cambiar Contraseña", src:changePassword, Link:"/changePassword"},
       {title: "Cerrar Sesión", src:logout}
     ]
