@@ -8,7 +8,7 @@ const instance = axios.create({
     withCredentials: true,
     baseURL: apiUrl,
     headers: {
-        'Authorization': `Bearer ${tokenUser}`
+        'Authorization': `Bearer ${tokenUser}`,
     }
 })
 
