@@ -13,13 +13,12 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         register,
         handleSubmit,
         setValue,
-        watch,
         formState: { errors },
     } = useForm();
 
     const role = [
         'ADMIN',
-        'USUARIO'
+        'USER'
     ];
 
     const faculties = [
@@ -33,8 +32,6 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
             setValue("correo", user.email);
             setValue("role", user.role);
             setValue("faculty", user.faculty);
-            setValue("password", "");
-            setValue("confirmPassword", "");
         }
         setIsOpened(open);
     }, [open, setValue, user]);
@@ -46,8 +43,6 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         updateData(user.userId, data);
         console.log(data);
     };
-
-    const password = watch('password', '');
 
     return (
         <FloatingContainer open={isOpened} setOpen={() => setOpen(false)}>
@@ -130,53 +125,6 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
                                         {errors.faculty.message}
                                     </span>
 
-                                )}
-                            </label>
-                        </section>
-                        <section className="flex">
-                            <label className="flex flex-col w-full">
-                                <div className="flex gap-2 items-center">
-                                    <InfoBubble info={{ title: "Contraseña", shortInfo: "Minimo 8 caracteres, un numero y un caracter especial" }} />
-                                    <p>Contraseña</p>
-                                </div>
-                                <input id="password"
-                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
-                                    type="password"
-                                    placeholder="Constraseña"
-                                    {...register("password", {
-                                        minLength: {
-                                            value: 8,
-                                            message: "Password must be at least 8 characters"
-                                        },
-                                        pattern: {
-                                            value: /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
-                                            message: "Password must contain at least one number and one special character"
-                                        }
-                                    })} />
-                                {errors.password && (
-                                    <span className="text-sm text-red-400">
-                                        {errors.password.message}
-                                    </span>
-                                )}
-                            </label>
-                        </section>
-                        <section className="flex">
-                            <label className="flex flex-col w-full">
-                                <div className="flex gap-2 items-center">
-                                    <InfoBubble info={{ title: "Contraseña", shortInfo: "Minimo 8 caracteres, un numero y un caracter especial" }} />
-                                    <p>Confirmar contraseña</p>
-                                </div>
-                                <input id="confirmPassword"
-                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
-                                    placeholder="Institución"
-                                    type="password"
-                                    {...register("confirmPassword", {
-                                        validate: value => value === password || "Las contraseñas son diferentes"
-                                    })} />
-                                {errors.confirmPassword && (
-                                    <span className="text-sm text-red-400">
-                                        {errors.confirmPassword.message}
-                                    </span>
                                 )}
                             </label>
                         </section>

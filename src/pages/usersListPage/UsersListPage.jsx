@@ -61,7 +61,7 @@ function UsersListPage() {
 
       var userUpt = userSelected;
 
-      userUpt.role = data.rol;
+      userUpt.role = data.role;
       userUpt.faculty = data.faculty;
       console.log(await updateUser(id, userUpt));
 
