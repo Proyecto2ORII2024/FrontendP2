@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import logoUnicauca from "../../assets/Logo_Unicauca.png"
 import AsideAdmin from "../asideAdmin/AsideAdmin";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ import formsNav from "../../assets/formsNav.svg";
 import statisticsNav from "../../assets/statisticsNav.svg";
 import regNav from "../../assets/regNav.svg";
 import menuNavbar from "../../assets/menuNavbar.svg";
+import { AuthContext } from "../../context/LoginContext.jsx";
+
 
 import USerDropdown from "../userDropDown/UserDropDown";
 
@@ -17,6 +19,9 @@ function NavbarAdmin() {
         setOpen(!open); // Alterna entre true y false
     };
     const navigate = useNavigate();
+
+    const { singout } = useContext(AuthContext);
+
     const Menus = [
         {title: "Inicio", src:initNav, Link:"/admin"},
         {title: "Convenios", src:agreementsNav ,Link:"/admin/agreement"},
@@ -45,7 +50,7 @@ function NavbarAdmin() {
                     </button>
                     </li>
                 ))} 
-                <USerDropdown onChangePassword={() => navigate("/changePassword")}/>
+                <USerDropdown onChangePassword={() => navigate("/changePassword")} onLogOut={()=>singout()}/>
             </div>
             <img 
                 src={menuNavbar}

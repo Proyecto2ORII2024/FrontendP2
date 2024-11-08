@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 
-function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, updatePassword }) {
+function EditUser({ user, open, setOpen, setUpdated, updateData }) {
     const [isOpened, setIsOpened] = useState(false);
     const oriRol = user.rol;
 
@@ -18,14 +18,21 @@ function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, upda
     } = useForm();
 
     const role = [
-        'Admin',
-        'Usuario'
+        'ADMIN',
+        'USUARIO'
     ];
+
+    const faculties = [
+        'FIET',
+        'FIC',
+        'FACNED'
+    ]
 
     useEffect(() => {
         if (open) {
-            setValue("correo", user.Correo);
-            setValue("rol", user.Rol);
+            setValue("correo", user.email);
+            setValue("role", user.role);
+            setValue("faculty", user.faculty);
             setValue("password", "");
             setValue("confirmPassword", "");
         }
@@ -36,13 +43,7 @@ function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, upda
         setIsOpened(false);
         setOpen(false);
         setUpdated("success");
-        if(data.rol!==oriRol && data.password !== ""){
-            updateData(user.Id, data);
-        }else if(data.rol!==oriRol && data.password === ""){
-            updateRol(user.Id, data)
-        }else if(data.rol===oriRol && data.password !== ""){
-            updatePassword(user.Id, data)
-        }
+        updateData(user.userId, data);
         console.log(data);
     };
 
@@ -60,7 +61,7 @@ function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, upda
                         className="flex flex-col gap-3 w-[300px] md:w-[500px]"
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <section className="grid grid-cols-2 gap-5">
+                        <section className="flex">
                             <label className="flex flex-col w-full">
                                 <div className="flex gap-2 items-center">
                                     <InfoBubble info={{ title: "Correo", shortInfo: "Correo" }} />
@@ -83,6 +84,8 @@ function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, upda
                                     </span>
                                 )}
                             </label>
+                        </section>
+                        <section className="grid grid-cols-2 gap-5">
                             <label className="flex flex-col w-full">
                                 <div className="flex gap-2 items-center">
                                     <InfoBubble info={{ title: "Correo", shortInfo: "Correo" }} />
@@ -91,19 +94,42 @@ function EditUser({ user, open, setOpen, setUpdated, updateData, updateRol, upda
                                 <select id="rol"
                                     className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                                     type="text"
-                                    placeholder="Rol"
-                                    {...register("rol", {
+                                    placeholder="role"
+                                    {...register("role", {
                                         required: true,
                                     })}>
-                                        {role.map((role, index) => (
-                                            <option key={index} value={role}>{role}</option>
-                                        ))}
+                                    {role.map((role, index) => (
+                                        <option key={index} value={role}>{role}</option>
+                                    ))}
                                 </select>
-                                {errors.rol && (
+                                {errors.role && (
                                     <span className="text-sm text-red-400">
-                                        {errors.rol.message}
+                                        {errors.role.message}
                                     </span>
-                                    
+
+                                )}
+                            </label>
+                            <label className="flex flex-col w-full">
+                                <div className="flex gap-2 items-center">
+                                    <InfoBubble info={{ title: "Correo", shortInfo: "Correo" }} />
+                                    <p>Facultad</p>
+                                </div>
+                                <select id="faculty"
+                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                                    type="text"
+                                    placeholder="Facultad"
+                                    {...register("faculty", {
+                                        required: true,
+                                    })}>
+                                    {faculties.map((faculty, index) => (
+                                        <option key={index} value={faculty}>{faculty}</option>
+                                    ))}
+                                </select>
+                                {errors.faculty && (
+                                    <span className="text-sm text-red-400">
+                                        {errors.faculty.message}
+                                    </span>
+
                                 )}
                             </label>
                         </section>
