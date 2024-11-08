@@ -26,10 +26,9 @@ function MainAdmin() {
             </section>
             <section className={styles.descriptionSection}>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga,
-                esse ullam ab, velit repudiandae, dicta sequi id quis eius nobis
-                quas veritatis provident. Voluptates provident nisi sequi minus
-                illum. Delectus!
+              La sección de Convenios contiene listas completas de los eventos, intercambios y oportunidades de colaboración académica disponibles.
+               Esto incluye acuerdos con instituciones tanto nacionales como internacionales, que permiten a los estudiantes y docentes participar en una 
+               amplia variedad de actividades y programas, enriqueciendo la experiencia académica y fomentando el desarrollo profesional y personal.
               </p>
               <MainButton
                 type="button"
@@ -49,19 +48,18 @@ function MainAdmin() {
                 className={styles.icon}
               />
               <p style={{ color: "#000066", fontWeight: "bold" }}>
-                Formularios
+                Movilidad
               </p>
             </section>
             <section className={styles.descriptionSection}>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Soluta, fuga? Quisquam facere incidunt, nemo rerum deserunt
-                beatae officia, autem aliquid, nam consectetur optio non saepe
-                veniam fugiat nulla culpa laborum?
+              La sección de Movilidad en la Universidad del Cauca abarca la visualización y gestión de los formularios relacionados con los movimientos de los 
+              Estudiantes ,Profesores y Administrativos. Esto permite un control detallado de los intercambios académicos de movilidad estudiantil, 
+              proporcionando acceso a la documentación necesaria para cada movilización y asegurando que los procesos sean eficientes y transparentes.
               </p>
               <MainButton
                 type="button"
-                text="Ir a Formularios"
+                text="Ir a Movilidad"
                 bgColor="primary"
                 hoverBg="primary-light"
                 textColor="white"
@@ -82,10 +80,9 @@ function MainAdmin() {
             </section>
             <section className={styles.descriptionSection}>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-                nobis ullam soluta impedit optio, consequuntur earum blanditiis!
-                At vel odio dicta placeat, explicabo perferendis quos ipsam
-                voluptate quaerat, ab sed.{" "}
+              Las estadísticas sobre las movilizaciones de los Estudiantes ,Profesores y Administrativos son fundamentales para evaluar el impacto de los programas
+               de intercambio y colaboración académica. Esta sección ofrece un análisis detallado y visual de los datos relacionados con 
+               los Estudiantes ,Profesores y Administrativos. que participan en estos programas, ayudando a la universidad a identificar tendencias, medir resultados y optimizar las oportunidades de movilidad.
               </p>
               <MainButton
                 type="button"

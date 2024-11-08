@@ -173,7 +173,7 @@ function FormPage() {
         setNotiOpen(true);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
         setNotification("error");
         setNotiOpen(true);
       });
