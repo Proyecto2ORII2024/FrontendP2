@@ -105,7 +105,7 @@ function FormPage() {
       setDateError(
         isInOrOut === "IN"
           ? "La fecha de salida no puede ser mayor a la de entrada"
-          : "La fecha de entrada no puede ser mayor a la de salida"
+          : "La fecha de retorno no puede ser mayor a la de salida"
       );
       setNotification("errorDate");
       setNotiOpen(true);
@@ -191,9 +191,9 @@ function FormPage() {
 
   useEffect(() => {
     if (entryDate && exitDate) {
-      setDays(calcDays(entryDate, exitDate));
+      setDays(isInOrOut === 'IN' || isInOrOut === '' ?  calcDays(entryDate, exitDate) : calcDays(exitDate, entryDate));
     }
-  }, [entryDate, exitDate]);
+  }, [entryDate, exitDate, isInOrOut]);
 
   return (
     <AdminLayout>
@@ -634,7 +634,7 @@ function FormPage() {
                   <p>
                     {isInOrOut === "IN" || isInOrOut === ""
                       ? "Fecha de salida"
-                      : "Fecha de entrada"}
+                      : "Fecha de retorno"}
                   </p>
                   <span className="text-xl font-semibold text-red-400">*</span>
                 </div>
@@ -651,7 +651,7 @@ function FormPage() {
                   placeholder={
                     isInOrOut === "IN" || isInOrOut === ""
                       ? "Fecha de salida"
-                      : "Fecha de entrada"
+                      : "Fecha de retorno"
                   }
                   {...register(
                     isInOrOut === "IN" || isInOrOut === ""
