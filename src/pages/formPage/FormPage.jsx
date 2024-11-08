@@ -219,7 +219,7 @@ function FormPage() {
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
-        <h3 className="mt-5 ml-8"><span className="font-medium">Nota: </span>Los campos con <span className="text-xl font-semibold text-red-400">*</span> son obligatorios</h3>
+        <h3 className="mt-5 ml-8"><span className="font-semibold">Nota: </span>Los campos con <span className="text-xl font-semibold text-red-400">*</span> son obligatorios</h3>
         <form
           className="flex flex-col my-5 gap-y-5"
           onSubmit={handleSubmit(onSubmit)}
