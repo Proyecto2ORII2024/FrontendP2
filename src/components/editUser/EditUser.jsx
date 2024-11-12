@@ -41,7 +41,7 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         setOpen(false);
         setUpdated("success");
         updateData(user.userId, data);
-        console.log(data);
+        console.log("submit",data);
     };
 
     return (
