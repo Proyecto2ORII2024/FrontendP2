@@ -45,15 +45,15 @@ function FormPage() {
         : "Facultad de origen",
     required: true,
     options: [
-      {value:"FIET", text: "Ingeniería Electrónica y Telecomunicaciones"},
-      {value:"FIC", text: "Ingeniería Civil"},
-      {value:"FCS", text: "Ciencias de la Salud"},
-      {value:"FDCPS", text: "Derecho y Ciencias Políticas y Sociales"},
-      {value:"FACNED", text: "Facultad de Ciencias Naturales, Exactas y de la Educación"},
-      {value:"FCH", text: "Ciencias Humanas"},
-      {value:"FA", text: "Artes"},
-      {value:"FCA", text: "Ciencias Agropecuarias"},
-      {value:"FCCEA", text: "Ciencias Contables, Económicas y Administrativas"},
+      { value: "FIET", text: "Ingeniería Electrónica y Telecomunicaciones" },
+      { value: "FIC", text: "Ingeniería Civil" },
+      { value: "FCS", text: "Ciencias de la Salud" },
+      { value: "FDCPS", text: "Derecho y Ciencias Políticas y Sociales" },
+      { value: "FACNED", text: "Facultad de Ciencias Naturales, Exactas y de la Educación" },
+      { value: "FCH", text: "Ciencias Humanas" },
+      { value: "FA", text: "Artes" },
+      { value: "FCA", text: "Ciencias Agropecuarias" },
+      { value: "FCCEA", text: "Ciencias Contables, Económicas y Administrativas" },
     ]
   };
 
@@ -173,7 +173,7 @@ function FormPage() {
         setNotiOpen(true);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
         setNotification("error");
         setNotiOpen(true);
       });
@@ -219,7 +219,7 @@ function FormPage() {
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
-        <h3 className="mt-5 ml-8"><span className="font-medium">Nota: </span>Los campos con <span className="text-xl font-semibold text-red-400">*</span> son obligatorios</h3>
+        <h3 className="mt-5 ml-8"><span className="font-semibold">Nota: </span>Los campos con <span className="text-xl font-semibold text-red-400">*</span> son obligatorios</h3>
         <form
           className="flex flex-col my-5 gap-y-5"
           onSubmit={handleSubmit(onSubmit)}
@@ -355,7 +355,7 @@ function FormPage() {
                   </span>
                 )}
               </div>
-              
+
               <div>
                 <Controller
                   name={inputInfo.facultad.id}
@@ -466,9 +466,8 @@ function FormPage() {
               />
 
               <div
-                className={`${
-                  isStudent && isInOrOut === "IN" ? "" : "opacity-40 -z-50"
-                }`}
+                className={`${isStudent && isInOrOut === "IN" ? "" : "opacity-40 -z-50"
+                  }`}
               >
                 <CustomInput
                   bubbleInf={Info.profPres}
@@ -559,9 +558,8 @@ function FormPage() {
               {/**Fecha de entrada por defecto */}
 
               <label
-                className={`flex flex-col w-full ${
-                  isInOrOut === "" ? "opacity-40 -z-50" : ""
-                }`}
+                className={`flex flex-col w-full ${isInOrOut === "" ? "opacity-40 -z-50" : ""
+                  }`}
               >
                 <div className="flex items-center gap-2">
                   <InfoBubble
@@ -611,17 +609,16 @@ function FormPage() {
                     ? "entryDate"
                     : "exitDate"
                 ] && (
-                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
+                    <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                      Este campo es requerido
+                    </span>
+                  )}
               </label>
 
               {/**Fecha de salida por defecto */}
               <label
-                className={`flex flex-col w-full ${
-                  isInOrOut === "" ? "opacity-40 -z-50" : ""
-                }`}
+                className={`flex flex-col w-full ${isInOrOut === "" ? "opacity-40 -z-50" : ""
+                  }`}
               >
                 <div className="flex items-center gap-2">
                   <InfoBubble
@@ -670,14 +667,14 @@ function FormPage() {
                 />
                 {(dateError ||
                   errors[
-                    isInOrOut === "IN" || isInOrOut === ""
-                      ? "exitDate"
-                      : "entryDate"
+                  isInOrOut === "IN" || isInOrOut === ""
+                    ? "exitDate"
+                    : "entryDate"
                   ]) && (
-                  <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
-                    {dateError ? dateError : "Este campo es requerido"}
-                  </span>
-                )}
+                    <span className="text-sm text-red-400 border-b-2 w-fit border-b-red-400 ml-7">
+                      {dateError ? dateError : "Este campo es requerido"}
+                    </span>
+                  )}
               </label>
 
               <label className="flex flex-col w-full">
@@ -734,7 +731,9 @@ function FormPage() {
                 <tr key={index} className="flex flex-col border-b md:table-row">
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">Facultad: </span>
-                    {item.faculty}
+                    {facultad.options.find(option => option.value === item.faculty)?.text
+                      || "No disponible"
+                    }
                   </td>
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">

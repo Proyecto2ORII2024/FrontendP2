@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loginError, setLoginError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (loginError) {
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             setUser(jwtDecode(res.data.accessToken));
             localStorage.setItem("user", res.data.accessToken);
             setLoginError(null);
+            setLoading(false);
           } catch (error) {
             console.log(error);
             setLoginError("Usuario o contraseña incorrectos")
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{singin, user, loginError, singout}}>
+        <AuthContext.Provider value={{singin, user, loginError, singout, loading}}>
             {children}
         </AuthContext.Provider>
     );
