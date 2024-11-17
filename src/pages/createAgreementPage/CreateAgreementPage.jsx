@@ -210,7 +210,7 @@ function CreateAgreementPage() {
                 </div>
                 <select
                   id="scope"
-                  className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                  className="border-b-2 ml-7 border-neutral-hover outline-none py-1 border-t-transparent"
                   {...register("scope", { required: true })}
                 >
                   <option value="NATIONAL">Nacional</option>

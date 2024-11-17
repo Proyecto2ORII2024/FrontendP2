@@ -12,11 +12,14 @@ import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import UserLayout from "../../layouts/UserLayout.jsx";
 import { formatDateToDDMMYYYY } from "../../utils/Date.js";
+
+import { AuthContext } from "../../context/LoginContext.jsx";
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -29,6 +32,10 @@ function FormPage() {
   const [isInOrOut, setIsInOrOut] = useState("");
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  const Layout = user.role === "ADMIN" ? AdminLayout : UserLayout;
 
   const numConvenio = {
     id: "agreementId",
@@ -196,7 +203,7 @@ function FormPage() {
   }, [entryDate, exitDate]);
 
   return (
-    <AdminLayout>
+    <Layout>
       <main className="flex flex-col">
         <NotificationBox
           type={notification === "errorDate" ? "error" : notification}
@@ -357,7 +364,8 @@ function FormPage() {
               </div>
 
               <div>
-                <Controller
+                {user.role === "ADMIN"? (
+                  <Controller
                   name={inputInfo.facultad.id}
                   control={control}
                   defaultValue=""
@@ -374,6 +382,17 @@ function FormPage() {
                     />
                   )}
                 />
+                ):(
+                  <label className="flex flex-col w-full">
+                  <div className="flex items-center gap-2">
+                    <InfoBubble info={Info.sentido} />
+                    <p>{facultad.text}</p>
+                  </div>
+                  <p className="py-1 text-left border-b-2 outline-none ml-7 border-neutral-hover">
+                    {facultad.options.find(option => option.value === user.faculty)?.text  || "No disponible"} {/* Se debe cambiar por el valor de la facultad del usuario */}
+                  </p>
+                </label>
+                )}
                 {errors[facultad.id] && (
                   <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                     Este campo es requerido
@@ -755,7 +774,7 @@ function FormPage() {
           </table>
         )}
       </main>
-    </AdminLayout>
+    </Layout>
   );
 }
 

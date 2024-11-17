@@ -22,7 +22,7 @@ function Login() {
     }
 
     if (user.role === "USER") {
-      navigate("/form");
+      navigate("/user");
       return;
     }
   }, [user, navigate]);
@@ -35,9 +35,7 @@ function Login() {
   } = useForm();
 
   const handleLogin = async (data) => {
-    await singin(data)
-    //navigate("/admin")
-    console.log("data", data)
+    await singin(data);
   };
 
   return (
