@@ -130,7 +130,7 @@ function FormPage() {
       destinationProgram: data.destinationProgram,
       city: data.city,
       country: data.country,
-      faculty: data.faculty,
+      faculty: user.faculty,
       funding: Number(data.funding),
       fundingSource: data.fundingSource,
       destination: data.destination,
