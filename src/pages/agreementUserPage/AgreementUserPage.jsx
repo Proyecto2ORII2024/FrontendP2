@@ -5,6 +5,8 @@ import search from "../../assets/icons/searchIcon.svg";
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import AgreementUserTable from "../../components/agreementUserTable/AgreementUserTable.jsx";
 
+import UserLayout from "../../layouts/UserLayout.jsx";
+
 import { obtainAgreements } from "../../services/agreement.service.js";
 
 function AgreementUserPage() {
@@ -50,7 +52,7 @@ function AgreementUserPage() {
   };
 
   return (
-    <>
+    <UserLayout>
       <main>
         <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col mt-8 md:flex-row justify-between items-center">
           <h2 className="w-full p-5 text-lg text-center">
@@ -87,7 +89,7 @@ function AgreementUserPage() {
           </section>
         )}
       </main>
-    </>
+    </UserLayout>
   );
 }
 

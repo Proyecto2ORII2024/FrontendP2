@@ -5,21 +5,19 @@ function AgreementUserTable({ agreements }) {
   return (
     <table className="w-full text-left table-auto border-collapse md:table">
       <thead className="hidden md:table-header-group">
-        <tr className="bg-grays-dark">
-          <th className={`${styles.thIn} w-[150px]`}>Pais</th>
-          <th className={`${styles.thIn} w-[300px]`}>Institución</th>
-          <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
-          <th className={`${styles.thIn} w-[350px]`}>Descripción</th>
-          <th className={`${styles.thIn} w-[200px]`}>Fecha de inicio</th>
+        <tr className="bg-neutral">
+          <th className={`${styles.th} rounded-tl-xl`}>Pais</th>
+          <th className={`${styles.th}`}>Institución</th>
+          <th className={`${styles.th}`}>Codigo</th>
+          <th className={`${styles.th}`}>Descripción</th>
+          <th className={`${styles.th} rounded-tr-xl`}>Fecha de inicio</th>
         </tr>
       </thead>
       <tbody>
-        {agreements.map((agreement, index) => (
+        {agreements.map((agreement) => (
           <tr
-            className={`${
-              index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-            } flex flex-col md:table-row border-b`}
-            key={agreement.id}
+            className={`flex flex-col md:table-row border-b`}
+            key={agreement.agreementId}
           >
             <td className={styles.tdIn}>
               <span className="md:hidden font-bold">Pais: </span>

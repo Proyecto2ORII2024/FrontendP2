@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import { AuthContext } from "../context/LoginContext";
 
-function ProtectedRouteAdmin() {
+function ProtectedRouteBoth() {
   const { user, loading } = useContext(AuthContext);
 
   if (loading){
@@ -14,7 +14,7 @@ function ProtectedRouteAdmin() {
     );
   }
 
-  return user && user.role === "ADMIN" ? <Outlet /> : <Navigate to="/" />;
+  return user && (user.role === "USER" || user.role === "ADMIN") ? <Outlet /> : <Navigate to="/" />;
 }
 
-export default ProtectedRouteAdmin;
+export default ProtectedRouteBoth;

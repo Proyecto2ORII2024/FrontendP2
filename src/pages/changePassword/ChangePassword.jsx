@@ -1,10 +1,8 @@
-import LoginImage from "../../assets/Images/Login.webp";
-import ORIIIcon from "../../assets/Images/ORII.webp";
 import MainButton from "../../components/buttons/MainButton.jsx";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState, useContext } from "react";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import UserLayout from "../../layouts/UserLayout.jsx";
 import passwordIcon from "../../assets/icons/password.svg"
 import visibility from "../../assets/icons/visibility.svg"
 import visibilityOff from "../../assets/icons/visibility_off.svg"
@@ -22,6 +20,8 @@ function ChangePassword() {
     } = useForm();
 
     const {user} = useContext(AuthContext);
+
+    const Layout = user.role === "ADMIN" ? AdminLayout : UserLayout;
 
     const changePassword = async (data) => {
 
@@ -65,7 +65,7 @@ function ChangePassword() {
     }
 
     return (
-        <AdminLayout>
+        <Layout>
             <div className="bg-gray-100 p-8 min-h-screen flex items-center justify-center">
                 <div className="bg-white p-8 rounded-lg w-96">
                     <div className="mb-10">
@@ -167,7 +167,7 @@ function ChangePassword() {
                     </form>
                 </div>
             </div>
-        </AdminLayout>
+        </Layout>
     );
 }
 
