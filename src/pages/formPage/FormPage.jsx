@@ -48,7 +48,9 @@ function FormPage() {
         ? "Facultad de acogida"
         : "Facultad de origen",
     required: true,
+
     options: facultyOptions,
+
   };
 
   const updateEntryDate = (e) => {
@@ -222,6 +224,7 @@ function FormPage() {
           <span className="text-xl font-semibold text-red-400">*</span> son
           obligatorios
         </h3>
+
         <form
           className="flex flex-col my-5 gap-y-5"
           onSubmit={handleSubmit(onSubmit)}
@@ -340,6 +343,7 @@ function FormPage() {
                     onChange={field.onChange}
                     bblInfo={Info.sentido}
                   />
+
                 )}
               />
               {errors[inputInfo.sentido.id] && (
@@ -465,6 +469,7 @@ function FormPage() {
                   !isStudent && (isInOrOut === "OUT" || isInOrOut === "") 
                 }
               />
+
             </div>
           </DataContainer>
           <DataContainer title="Convenios y patrocinios">
@@ -485,6 +490,7 @@ function FormPage() {
                     onChange={field.onChange}
                     bblInfo={Info.convenio}
                   />
+
                 )}
               />
               {errors[inputInfo.convenio.id] && (
@@ -543,6 +549,7 @@ function FormPage() {
               <div className="flex items-center gap-2">
                 <InfoBubble
                   info={
+
                     isInOrOut === "IN" || isInOrOut === ""
                       ? Info.fechaEntrada
                       : Info.fechaSalida
@@ -560,6 +567,7 @@ function FormPage() {
                   isInOrOut === "IN" || isInOrOut === ""
                     ? "entryDate"
                     : "exitDate"
+
                 }
                 autoComplete="off"
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
@@ -577,6 +585,7 @@ function FormPage() {
                   {
                     required: true,
                     onChange:
+
                       isInOrOut === "IN" || isInOrOut === ""
                         ? updateEntryDate
                         : updateExitDate,
@@ -608,10 +617,12 @@ function FormPage() {
                       : Info.fechaEntrada
                   }
                 />
+
                 <p>
                   {isInOrOut === "IN" || isInOrOut === ""
                     ? "Fecha de salida"
                     : "Fecha de retorno"}
+
                 </p>
                 <span className="text-xl font-semibold text-red-400">*</span>
               </div>
@@ -711,7 +722,9 @@ function FormPage() {
                 <tr key={index} className="flex flex-col border-b md:table-row">
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">Facultad: </span>
+
                     {facultad.options.find(option => option.value === item.faculty)?.text || "No disponible"}
+
                   </td>
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">

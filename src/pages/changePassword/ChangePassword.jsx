@@ -14,6 +14,13 @@ import { AuthContext } from "../../context/LoginContext.jsx";
 function ChangePassword() {
     const [matchPassword, setMatchPassword] = useState(true);
 
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
     const {user} = useContext(AuthContext);
 
     const changePassword = async (data) => {
@@ -27,13 +34,6 @@ function ChangePassword() {
             actualPassword: data.actualPassword,
             newPassword: data.newPassword
         }
-
-        const {
-            register,
-            handleSubmit,
-            reset,
-            formState: { errors },
-        } = useForm();
 
         try {
           const res = await updatePassword(dataToSend);
