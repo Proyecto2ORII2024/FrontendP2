@@ -3,6 +3,7 @@ import MainButton from "../../components/buttons/MainButton";
 import { getForms, deleteForm } from "../../services/movilidad.service";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
+import facultyOptions from "../../utils/facultyOptions";
 
 import search from "../../assets/icons/searchIcon.svg";
 
@@ -88,7 +89,7 @@ const Movility = () => {
       sortConfig.key === key && sortConfig.direction === "desc";
 
     return (
-      <span className="ml-1 text-xs inline-flex items-center">
+      <span className="inline-flex items-center ml-1 text-xs">
         {isSortedAsc ? (
           <span className="material-symbols-outlined">keyboard_arrow_up</span>
         ) : isSortedDesc ? (
@@ -110,15 +111,15 @@ const Movility = () => {
 
   return (
     <AdminLayout>
-      <div className="overflow-x-auto p-10">
-        <div className="flex flex-col md:flex-row justify-between">
-          <div className="w-full flex gap-3 md:gap-0 mb-5 flex-col md:flex-row justify-between">
+      <div className="p-10 overflow-x-auto">
+        <div className="flex flex-col justify-between md:flex-row">
+          <div className="flex flex-col justify-between w-full gap-3 mb-5 md:gap-0 md:flex-row">
             <MainButton
               onClick={() => navigate("/form")}
               bgColor="primary-dark"
               textColor="white"
               text="Crear"
-              className="xl:ml-48 lg:ml-32 md:ml-20 mx-5"
+              className="mx-5 xl:ml-48 lg:ml-32 md:ml-20"
             />
 
             <div className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
@@ -131,16 +132,16 @@ const Movility = () => {
               />
               <img src={search} alt="search icon" />
             </div>
-            <div className="flex gap-x-5 justify-end md:items-center w-full md:w-fit">
+            <div className="flex justify-end w-full gap-x-5 md:items-center md:w-fit">
               <div className="relative">
                 <button
-                  className="flex items-center px-4 py-2 bg-neutral rounded-md hover:bg-gray-200"
+                  className="flex items-center px-4 py-2 rounded-md bg-neutral hover:bg-gray-200"
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
                 >
                   <span className="material-symbols-outlined">filter_alt</span>
                 </button>
                 {isFilterOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+                  <div className="absolute right-0 w-48 mt-2 bg-white border rounded shadow-lg">
                     <select
                       className="block w-full px-4 py-2 text-left cursor-pointer focus:outline-none"
                       value={filterStatus}
@@ -162,11 +163,11 @@ const Movility = () => {
           </div>
         </div>
 
-        <table className="w-full bg-white text-center text-primary-dark">
+        <table className="w-full text-center bg-white text-primary-dark">
           <thead className="bg-neutral">
-            <tr className="bg-azulClaro bg-opacity-20 text-left">
+            <tr className="text-left bg-azulClaro bg-opacity-20">
               <th
-                className="px-4 py-3 text-azulOscuro font-semibold text-center rounded-tl-xl cursor-pointer"
+                className="px-4 py-3 font-semibold text-center cursor-pointer text-azulOscuro rounded-tl-xl"
                 style={{ width: "20%" }}
                 onClick={() => handleSort("dependencia")}
               >
@@ -175,7 +176,7 @@ const Movility = () => {
                 </div>
               </th>
               <th
-                className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
+                className="px-4 py-3 font-semibold text-center cursor-pointer text-azulOscuro"
                 style={{ width: "20%" }}
                 onClick={() => handleSort("c_convenio")}
               >
@@ -184,7 +185,7 @@ const Movility = () => {
                 </div>
               </th>
               <th
-                className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
+                className="px-4 py-3 font-semibold text-center cursor-pointer text-azulOscuro"
                 style={{ width: "15%" }}
                 onClick={() => handleSort("t_documento")}
               >
@@ -193,7 +194,7 @@ const Movility = () => {
                 </div>
               </th>
               <th
-                className="px-4 py-3 text-azulOscuro font-semibold text-center cursor-pointer"
+                className="px-4 py-3 font-semibold text-center cursor-pointer text-azulOscuro"
                 style={{ width: "25%" }}
                 onClick={() => handleSort("d_usuario")}
               >
@@ -202,21 +203,21 @@ const Movility = () => {
                 </div>
               </th>
               <th
-                className="px-4 py-3 text-azulOscuro font-semibold text-center rounded-tr-xl"
+                className="px-4 py-3 font-semibold text-center text-azulOscuro rounded-tr-xl"
                 style={{ width: "20%" }}
               >
                 Acciones
               </th>
             </tr>
           </thead>
-          <tbody className="text-azulOscuro rounded-b-lg">
+          <tbody className="rounded-b-lg text-azulOscuro">
             {sortedMovilidad.length > 0 ? (
               sortedMovilidad.map((item, index) => (
                 <tr
                   key={index}
                   className="border-t even:bg-azulClaro even:bg-opacity-10"
                 >
-                  <td className="px-4 py-2">{item.dependencia}</td>
+                  <td className="px-4 py-2">{facultyOptions.find(option => option.value === item.dependencia)?.text || "No disponible"}</td>
                   <td className="px-4 py-2">{item.c_convenio}</td>
                   <td className="px-4 py-2">{item.t_documento}</td>
                   <td className="px-4 py-2">{item.d_usuario}</td>
