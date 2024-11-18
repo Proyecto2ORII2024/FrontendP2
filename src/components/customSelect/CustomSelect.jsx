@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import arrow from "../../assets/icons/arrowIcon.svg";
 import { useState, useRef, useEffect } from "react";
 import InfoBubble from "../infoBubble/InfoBubble";
+import CutString from "../../utils/CutString";
 
 function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,7 +43,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable =
       >
         <div className="flex items-center justify-between w-full p-1 rounded-lg">
           <label className={`cursor-pointer ${selectedOptionText ? 'text-black' : 'text-gray-400'} `}>
-            {selectedOptionText || inputInf.text}
+            {CutString(selectedOptionText, 25) || inputInf.text}
           </label>
           <img
             src={arrow}

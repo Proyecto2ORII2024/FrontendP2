@@ -9,7 +9,7 @@ export const Info = {
 
                 'ENTRANTE PRESENCIAL': 'Cuando llegan estudiantes para realizar intercambio o estancias de investigación o para participar en seminarios, congresos, talleres; o, cuando llegan los expertos extranjeros invitados a orientar actividades académicas, investigativas, culturales, en forma presencial en Universidad del Cauca.',
 
-                'SALIENTE VIRTUAL': 'Cuando llegan estudiantes para realizar intercambio o estancias de investigación o para participar en seminarios, congresos, talleres; o, cuando llegan los expertos extranjeros invitados a orientar actividades académicas, investigativas, culturales, en forma presencial en Universidad del Cauca.',
+                'SALIENTE VIRTUAL': 'Si el universitario, estudiante, funcionario administrativo o profesor, realiza movilidad a través de TICs, en otras instituciones o universidades del país o del exterior.',
 
                 'ENTRANTE VIRTUAL': 'Cuando los estudiantes realizan intercambio o participan en seminarios, congresos, talleres; o, cuando los expertos extranjeros invitados orientan actividades académicas, investigativas, culturales, a través de TICs, en Universidad del Cauca.'
             }
@@ -436,6 +436,10 @@ export function checkDirection(value) {
     } else {
         return 'OUT';
     }
+}
+
+export function checkEventType(value) {
+    return value === 4 || value===7
 }
 
 export function checkDates(direction, entryDate, exitDate){
