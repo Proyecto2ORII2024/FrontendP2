@@ -350,11 +350,18 @@ function FormPage() {
                     onChange={field.onChange}
                     bblInfo={Info.sentido}
                   />
+                )}
+              />
+              {errors[inputInfo.sentido.id] && (
+                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                  Este campo es requerido
+                </span>
+              )}
+            </div>
 
-
-              <div>
-                {user.role === "ADMIN"? (
-                  <Controller
+            <div>
+              {user.role === "ADMIN" ? (
+                <Controller
                   name={inputInfo.facultad.id}
                   control={control}
                   defaultValue=""
@@ -371,48 +378,19 @@ function FormPage() {
                     />
                   )}
                 />
-                ):(
-                  <label className="flex flex-col w-full">
+              ) : (
+                <label className="flex flex-col w-full">
                   <div className="flex items-center gap-2">
                     <InfoBubble info={Info.sentido} />
                     <p>{facultad.text}</p>
                   </div>
                   <p className="py-1 text-left border-b-2 outline-none ml-7 border-neutral-hover">
-                    {facultad.options.find(option => option.value === user.faculty)?.text  || "No disponible"} {/* Se debe cambiar por el valor de la facultad del usuario */}
+                    {facultad.options.find(
+                      (option) => option.value === user.faculty
+                    )?.text || "No disponible"}
                   </p>
                 </label>
-                )}
-                {errors[facultad.id] && (
-                  <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                    Este campo es requerido
-                  </span>
-                )}
-              />
-              {errors[inputInfo.sentido.id] && (
-                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                  Este campo es requerido
-                </span>
               )}
-            </div>
-
-            <div>
-              <Controller
-                name={inputInfo.facultad.id}
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: facultad.required,
-                }}
-                render={({ field }) => (
-                  <CustomSelect
-                    inputInf={facultad}
-                    options={facultad.options}
-                    value={field.value}
-                    onChange={field.onChange}
-                    bblInfo={Info.sentido}
-                  />
-                )}
-              />
               {errors[facultad.id] && (
                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                   Este campo es requerido
@@ -425,10 +403,12 @@ function FormPage() {
                 name={inputInfo.tipoEvento.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.tipoEvento.required,
-                   onChange: (e) => { 
-                    setIsValidETForTutor(checkEventType(e.target.value))
-                } }}
+                rules={{
+                  required: inputInfo.tipoEvento.required,
+                  onChange: (e) => {
+                    setIsValidETForTutor(checkEventType(e.target.value));
+                  },
+                }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.tipoEvento}
