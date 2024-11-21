@@ -2,13 +2,61 @@ import styles from "./styles";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
 import MainButton from "../../components/buttons/MainButton";
+import { useState, useEffect, useContext } from "react";
+
+import NotificationBox from "../../components/notificationBox/NotificationBox";
+
+import { AuthContext } from "../../context/LoginContext";
+
+// Función para calcular la diferencia de 3 meses
+const shouldShowPasswordReminder = (lastChangeDate) => {
+  const currentDate = new Date();
+  const lastChange = new Date(lastChangeDate);
+
+  // Calcular si han pasado 3 meses
+  const threeMonthsLater = new Date(lastChange);
+  threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
+
+  return {
+    showReminder: currentDate >= threeMonthsLater,
+    currentDate,  // Fecha actual
+    lastChange, // Fecha de último cambio
+    threeMonthsLater // Fecha de recordatorio (3 meses después)
+  };
+};
 
 function MainAdmin() {
   const navigate = useNavigate();
+  const [showReminder, setShowReminder] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  const lastPasswordChange = user?.lastPasswordChange || "2023-11-01T00:00:00Z"; //TODO: chage default value
+
+  useEffect(() => {
+    if (lastPasswordChange) {
+      const { showReminder } = shouldShowPasswordReminder(lastPasswordChange);
+      setShowReminder(showReminder);
+    } else {
+      console.warn("Fecha de último cambio de contraseña no proporcionada");
+    }
+  }, [lastPasswordChange]);
 
   return (
     <AdminLayout>
       <div className={styles.mainContainer}>
+      <NotificationBox
+          type="info"
+          title="Recordatorio de cambio de contraseña"
+          open={showReminder}
+          setOpen={setShowReminder}
+        >
+          <p>
+            Hace más de 3 meses que no cambias tu contraseña. Por tu seguridad,
+            te recomendamos cambiarla ahora.
+          </p>
+        </NotificationBox>
+
         <h2 className="w-full p-5 text-lg text-center">
           Bienvenido. A continuación, te presentamos las opciones disponibles,
           las cuales también están siempre accesibles en el menú de navegación

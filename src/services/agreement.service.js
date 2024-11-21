@@ -27,6 +27,8 @@ export const getAgreement = async (agreementId) => {
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
+    console.log(agreements);
+
     agreements = agreements.data;
 
     const agreementsData = {

@@ -1,4 +1,3 @@
-//import { useEffect, useState } from "react";
 import ShowMovilityField from "../../components/showMovilityField/ShowMovilityField";
 import { MoveInfo } from "./MoveInfo";
 import { getId } from "../../services/movilidad.service.js";
@@ -6,13 +5,14 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 import { FormDict } from "../../utils/FormDict.js";
+import { checkDirection } from "../../utils/FormInformation.js";
+import facultyOptions from "../../utils/facultyOptions.js";
 import { calcDays } from "../updateForm/Information.js";
-
+import DataContainer from "../../components/dataContainer/DataContainer.jsx";
 
 function ShowMovPage() {
-  
   const [days, setDays] = useState(0);
-
+  const [direction, setDirection] = useState("");
 
   const [data, setData] = useState({
     id: "",
@@ -60,132 +60,168 @@ function ShowMovPage() {
   });
   const { formId } = useParams();
 
+
   useEffect(() => {
     getId(formId).then((res) => {
-      setDays(calcDays(res.data.entryDate, res.data.exitDate));
-      setData(res.data);
+      setDirection(checkDirection(res.data.direction))
     });
   }, [formId]);
 
+  useEffect(() => {
+    getId(formId).then((res) => {
+      setDays(direction === "IN" ? calcDays(res.data.entryDate, res.data.exitDate): calcDays(res.data.exitDate, res.data.entryDate) );
+      setData(res.data);
+    });
+  }, [formId,direction]);
+
   return (
     <AdminLayout>
-      <main className="grid grid-cols-1 mx-8 mt-10 mb-16 sm:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
-        <ShowMovilityField
-          title="Sentido"
-          data={FormDict[data.direction]}
-          bblInf={MoveInfo.sentido}
-        />
-        <ShowMovilityField
-          title="Tipo"
-          data={FormDict[data.person.personType]}
-          bblInf={MoveInfo.tipo}
-        />
-        <ShowMovilityField
-          title="Tipo de documento"
-          data={data.person.identificationType}
-          bblInf={MoveInfo.tipoDocumento}
-        />
-        <ShowMovilityField
-          title="Número de identificación"
-          data={data.person.identification}
-          bblInf={MoveInfo.numID}
-        />
-        <ShowMovilityField
-          title="Nombre"
-          data={data.person.firstName}
-          bblInf={MoveInfo.nombre}
-        />
-        <ShowMovilityField
-          title="Apellidos"
-          data={data.person.lastName}
-          bblInf={MoveInfo.apellidos}
-        />
-        <ShowMovilityField
-          title="Género"
-          data={FormDict[data.gender]}
-          bblInf={MoveInfo.genero}
-        />
-        <ShowMovilityField
-          title="Fecha de salida"
-          data={data.exitDate}
-          bblInf={MoveInfo.fechaSalida}
-        />
-        <ShowMovilityField
-          title="Fecha de entrada"
-          data={data.entryDate}
-          bblInf={MoveInfo.fechaEntrada}
-        />
-        <ShowMovilityField
-          title="Días de estancia"
-          data={days}
-          bblInf={MoveInfo.diasEstancia}
-        />
-        <ShowMovilityField title="Año" data={new Date().getFullYear()} bblInf={MoveInfo.anio} />
-        <ShowMovilityField
-          title="Universidad de origen"
-          data={data.origin}
-          bblInf={MoveInfo.uniOrigen}
-        />
-        <ShowMovilityField
-          title="Universidad de destino"
-          data={data.destination}
-          bblInf={MoveInfo.uniDestino}
-        />
-        <ShowMovilityField
-          title="Número de convenio"
-          data={data.agreement && data.agreement.agreementNumber || 'N.A.'}
-          bblInf={MoveInfo.numConvenio}
-        />
-        <ShowMovilityField
-          title="Tipo de evento"
-          data={FormDict[data.event.eventType.eventTypeId]}
-          bblInf={MoveInfo.tipoEvento}
-        />
-        <ShowMovilityField
-          title="Descripción del evento"
-          data={data.event.description}
-          bblInf={MoveInfo.descEvento}
-        />
-        <ShowMovilityField
-          title="Programa de origen"
-          data={data.originProgram}
-          bblInf={MoveInfo.programaOrigen}
-        />
-        <ShowMovilityField
-          title="Programa de destino"
-          data={data.destinationProgram}
-          bblInf={MoveInfo.programaAcogida}
-        />
-        <ShowMovilityField
-          title="Ciudad"
-          data={data.city}
-          bblInf={MoveInfo.ciudad}
-        />
-        <ShowMovilityField
-          title="Pais"
-          data={data.country}
-          bblInf={MoveInfo.pais}
-        />
-        <ShowMovilityField
-          title="Profesor presenta"
-          data={data.teacher}
-          bblInf={MoveInfo.profPres}
-        />
-        <ShowMovilityField
-          title="Facultad"
-          data={data.faculty}
-          bblInf={MoveInfo.facultad}
-        />
-        <ShowMovilityField
-          title="Financiación"
-          data={data.funding}
-          bblInf={MoveInfo.financiacion}
-        />
-        <ShowMovilityField
-          title="Fuente de financiación"
-          data={data.fundingSource}
-          bblInf={MoveInfo.fuenteFinanciacion}
-        />
+      <main className="flex flex-col my-5 gap-y-5">
+        <DataContainer title="Datos de la persona movilizada">
+          <ShowMovilityField
+            title="Nombre"
+            data={data.person.firstName}
+            bblInf={MoveInfo.nombre}
+          />
+
+          <ShowMovilityField
+            title="Apellidos"
+            data={data.person.lastName}
+            bblInf={MoveInfo.apellidos}
+          />
+
+          <ShowMovilityField
+            title="Género"
+            data={FormDict[data.gender]}
+            bblInf={MoveInfo.genero}
+          />
+          <ShowMovilityField
+            title="Rol en la movilidad"
+            data={FormDict[data.person.personType]}
+            bblInf={MoveInfo.tipo}
+          />
+          <ShowMovilityField
+            title="Tipo de documento"
+            data={data.person.identificationType}
+            bblInf={MoveInfo.tipoDocumento}
+          />
+          <ShowMovilityField
+            title="Número de identificación"
+            data={data.person.identification}
+            bblInf={MoveInfo.numID}
+          />
+        </DataContainer>
+
+        <DataContainer title="Información general de la movilidad">
+          <ShowMovilityField
+            title="Tipo de movilidad"
+            data={FormDict[data.direction]}
+            bblInf={MoveInfo.sentido}
+          />
+
+          <ShowMovilityField
+            title={direction === "IN" ? "Facultad de acogida" : "Facultad de origen"}
+            data={facultyOptions.find(option => option.value === data.faculty)?.text || "No disponible"}
+            bblInf={MoveInfo.facultad}
+          />
+          <ShowMovilityField
+            title="Tipo de evento"
+            data={FormDict[data.event.eventType.eventTypeId]}
+            bblInf={MoveInfo.tipoEvento}
+          />
+          <ShowMovilityField
+            title="Descripción del evento"
+            data={data.event.description}
+            bblInf={MoveInfo.descEvento}
+          />
+        </DataContainer>
+
+        <DataContainer title="Detalles de la Movilidad">
+          <ShowMovilityField
+            title="Universidad de origen"
+            data={data.origin}
+            bblInf={MoveInfo.uniOrigen}
+          />
+
+          <ShowMovilityField
+            title="Universidad de destino"
+            data={data.destination}
+            bblInf={MoveInfo.uniDestino}
+          />
+
+          <ShowMovilityField
+            title="País"
+            data={data.country}
+            bblInf={MoveInfo.pais}
+          />
+
+          <ShowMovilityField
+            title="Ciudad"
+            data={data.city}
+            bblInf={MoveInfo.ciudad}
+          />
+        </DataContainer>
+
+        <DataContainer title="Detalles académicos">
+          <ShowMovilityField
+            title="Programa de origen"
+            data={data.originProgram}
+            bblInf={MoveInfo.programaOrigen}
+          />
+          <ShowMovilityField
+            title="Programa de acogida"
+            data={data.destinationProgram}
+            bblInf={MoveInfo.programaAcogida}
+          />
+
+          <ShowMovilityField
+            title="Tutor académico"
+            data={data.teacher}
+            bblInf={MoveInfo.profPres}
+          />
+        </DataContainer>
+
+        <DataContainer title="Convenios y patrocinios">
+          <ShowMovilityField
+            title="Número de convenio"
+            data={(data.agreement && data.agreement.agreementNumber) || "N.A."}
+            bblInf={MoveInfo.numConvenio}
+          />
+
+          <ShowMovilityField
+            title="Financiación"
+            data={data.funding}
+            bblInf={MoveInfo.financiacion}
+          />
+          <ShowMovilityField
+            title="Fuente de financiación"
+            data={data.fundingSource}
+            bblInf={MoveInfo.fuenteFinanciacion}
+          />
+        </DataContainer>
+
+        <DataContainer title="Tiempo de la estancia">
+          <ShowMovilityField
+            title={direction === "IN" ? "Fecha de entrada" : "Fecha de salida"}
+            data={direction === "IN" ? data.entryDate : data.exitDate}
+            bblInf={direction === "IN" ? MoveInfo.fechaEntrada : MoveInfo.fechaSalida}
+          />
+          <ShowMovilityField
+            title={direction === "IN" ? "Fecha de salida" : "Fecha de retorno"}
+            data={direction === "IN" ? data.exitDate : data.entryDate}
+            bblInf={direction === "IN" ? MoveInfo.fechaSalida : MoveInfo.fechaEntrada}
+          />
+          <ShowMovilityField
+            title="Días de estancia"
+            data={days}
+            bblInf={MoveInfo.diasEstancia}
+          />
+          <ShowMovilityField
+            title="Año"
+            data={new Date().getFullYear()}
+            bblInf={MoveInfo.anio}
+          />
+        </DataContainer>
       </main>
     </AdminLayout>
   );

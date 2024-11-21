@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {createUser} from "../../services/user.service.js";
 
+import AdminLayout from "../../layouts/AdminLayout.jsx";
+
 function RegistrarUsuarioPage() {
 
     const navigate = useNavigate();
@@ -35,6 +37,7 @@ function RegistrarUsuarioPage() {
     ]
 
     return (
+        <AdminLayout>
         <div
             className="h-screen w-full bg-gray-100 bg-cover bg-center flex justify-center items-center text-black"
         >
@@ -84,7 +87,7 @@ function RegistrarUsuarioPage() {
                     <div className="flex flex-col w-full">
                         <label htmlFor="" className="text-xl">Facultad</label>
                         <select
-                            className="bg-grays w-[100%] h-8"
+                            className="bg-grays w-[100%] h-8 outline-none border-none"
                             placeholder=""
                             {...register("faculty", {
                                 required: true
@@ -111,6 +114,7 @@ function RegistrarUsuarioPage() {
                 />
             </form>
         </div>
+        </AdminLayout>
     );
 }
 
