@@ -14,11 +14,11 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const data = {
   labels: [
-    "Cauca",
-    "Cundinamarca",
-    "Antioquia",
-    "Atlantico",
-    "Valle del Cauca",
+    "Ingeniería de Sistemas",
+    "Matemáticas",
+    "Historia",
+    "Ciencias politicas",
+    "Física",
   ],
   datasets: [
     {
