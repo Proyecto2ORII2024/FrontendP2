@@ -1,3 +1,9 @@
+/**
+ * Formats a given date input to the format DD-MM-YYYY.
+ *
+ * @param {string|Date} dateInput - The input date to be formatted. Can be a date string or a Date object.
+ * @returns {string} The formatted date string in DD-MM-YYYY format.
+ */
 export const formatDateToDDMMYYYY = (dateInput)=> {
   const date = new Date(dateInput); // Convierte el input a objeto Date
 

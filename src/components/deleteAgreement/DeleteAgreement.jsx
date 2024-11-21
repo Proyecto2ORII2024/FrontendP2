@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { deleteAgreement } from "../../services/agreement.service";
 
+/**
+ * DeleteAgreement component handles the deletion of an agreement.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.open - Determines if the delete confirmation dialog is open.
+ * @param {Function} props.setOpen - Function to set the open state of the dialog.
+ * @param {string} props.agreementId - The ID of the agreement to be deleted.
+ * @param {Function} props.setDeleted - Function to set the deletion status ('success' or 'error').
+ *
+ * @returns {JSX.Element} The rendered DeleteAgreement component.
+ */
 function DeleteAgreement({ open, setOpen, agreementId, setDeleted }) {
   const [isOpened, setIsOpened] = useState(false);
 

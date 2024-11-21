@@ -4,6 +4,18 @@ import PropTypes from "prop-types";
 import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 
+/**
+ * AgreementTable component renders a table displaying a list of agreements with actions to edit or delete each agreement.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.setOpen - Function to set the state of the modal open for editing an agreement.
+ * @param {Function} props.setAgreementId - Function to set the ID of the agreement to be deleted.
+ * @param {Function} props.setOpenDelete - Function to set the state of the modal open for deleting an agreement.
+ * @param {Array} props.agreements - Array of agreement objects to be displayed in the table.
+ * @param {Function} props.setAgreementSelected - Function to set the selected agreement for editing.
+ *
+ * @returns {JSX.Element} The rendered AgreementTable component.
+ */
 function AgreementTable({
   setOpen,
   setAgreementId,

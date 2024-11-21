@@ -6,6 +6,22 @@ import agreementsNav from "../../assets/agreementsNav.svg";
 
 import PropTypes from "prop-types";
 
+/**
+ * USerDropdown component renders a dropdown menu for user account options.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Function} props.onChangePassword - Callback function to handle password change
+ * @param {Function} props.onLogOut - Callback function to handle user logout
+ * 
+ * @example
+ * <USerDropdown 
+ *   onChangePassword={handlePasswordChange} 
+ *   onLogOut={handleLogout} 
+ * />
+ * 
+ * @returns {JSX.Element} The rendered component
+ */
 const USerDropdown = ({ onChangePassword, onLogOut }) => {
   const [isAccountOptOpen, setIsAccountOptOpen] = useState(false);
   const dropdownRef = useRef(null);

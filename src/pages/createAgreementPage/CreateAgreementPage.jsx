@@ -13,6 +13,19 @@ import { formatDateToDDMMYYYY } from "../../utils/Date.js";
 
 import { messages } from "../../utils/agreementsFormMessages.js";
 
+/**
+ * CreateAgreementPage component allows users to create a new agreement.
+ * It includes a form with fields for country, agreement number, institution, start date, scope, and description.
+ * Upon submission, it sends the data to create an agreement and displays a notification based on the response.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CreateAgreementPage />
+ * )
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
 function CreateAgreementPage() {
   const [open, setOpen] = useState(false);
   const [notification, setNotification] = useState("");
