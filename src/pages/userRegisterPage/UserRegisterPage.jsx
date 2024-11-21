@@ -73,18 +73,17 @@ function RegistrarUsuarioPage() {
                 type={wasCreated}
                 title={
                     wasCreated === "success"
-                        ? "Usuario eliminado"
-                        : "Error al eliminar usuario"
+                        ? "Usuario registrado"
+                        : "Error al registrar usuario"
                 }
                 open={wasCreated === "success" || wasCreated === "error"}
                 setOpen={() => setWasCreated("")}
             >
                 {wasCreated === "success" ? (
-                    <p>El usuario ha sido eliminado exitosamente</p>
+                    <p>El usuario ha sido registrado exitosamente</p>
                 ) : (
                     <p>
-                        Ha ocurrido un error al eliminar el usuario, por favor intente de
-                        nuevo
+                        Ha ocurrido un error al registrar el usuario, puede ya estar creado
                     </p>
                 )}
             </NotificationBox>
