@@ -7,24 +7,26 @@ import PropTypes from 'prop-types';
 
 function EditUser({ user, open, setOpen, setUpdated, updateData }) {
     const [isOpened, setIsOpened] = useState(false);
-    const oriRol = user.rol;
+    const [isFacultadDisabled, setIsFacultadDisabled] = useState(false);
 
     const {
         register,
-        handleSubmit,
         setValue,
+        handleSubmit,
+        clearErrors,
         formState: { errors },
     } = useForm();
 
-    const role = [
-        'ADMIN',
-        'USER'
+    const options = [
+        { value: null, label: '' },
+        { value: 'ADMIN', label: 'Admin' },
+        { value: 'USER', label: 'Usuario' }
     ];
-
     const faculties = [
-        'FIET',
-        'FIC',
-        'FACNED'
+        { value: null, label: '' },
+        { value: 'FIET', label: 'FIET' },
+        { value: 'FIC', label: 'FIC' },
+        { value: 'FACNED', label: 'FACNED' }
     ]
 
     useEffect(() => {
@@ -41,7 +43,19 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         setOpen(false);
         setUpdated("success");
         updateData(user.userId, data);
-        console.log("submit",data);
+        console.log("submit", data);
+    };
+
+    const handleRolChange = (e) => {
+        const value = e.target.value;
+        console.log("Value", value);
+        if (value === "ADMIN") {
+            setIsFacultadDisabled(true);
+            setValue("faculty", ""); // Limpia el valor de facultad
+            clearErrors("faculty"); // Limpia cualquier error previo
+        } else {
+            setIsFacultadDisabled(false);
+        }
     };
 
     return (
@@ -90,11 +104,15 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
                                     className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                                     type="text"
                                     placeholder="role"
+                                    
                                     {...register("role", {
                                         required: true,
-                                    })}>
-                                    {role.map((role, index) => (
-                                        <option key={index} value={role}>{role}</option>
+                                    })}
+                                    onChange={handleRolChange}>
+                                    {options.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
                                     ))}
                                 </select>
                                 {errors.role && (
@@ -113,11 +131,14 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
                                     className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                                     type="text"
                                     placeholder="Facultad"
+                                    disabled={isFacultadDisabled}
                                     {...register("faculty", {
-                                        required: true,
+                                        required: !isFacultadDisabled,
                                     })}>
-                                    {faculties.map((faculty, index) => (
-                                        <option key={index} value={faculty}>{faculty}</option>
+                                    {faculties.map((faculty) => (
+                                        <option key={faculty.value} value={faculty.value}>
+                                            {faculty.label}
+                                        </option>
                                     ))}
                                 </select>
                                 {errors.faculty && (
