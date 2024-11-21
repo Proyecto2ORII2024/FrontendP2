@@ -66,6 +66,9 @@ function UsersListPage() {
 
       userUpt.role = data.role;
       userUpt.faculty = data.faculty;
+      if(userUpt.faculty === null || userUpt.faculty === '' ){
+        delete userUpt.faculty
+      }
       console.log("userupt2", userUpt)
       console.log("update",await updateUser(id, userUpt));
 

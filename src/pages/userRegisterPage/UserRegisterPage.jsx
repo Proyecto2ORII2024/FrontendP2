@@ -2,118 +2,170 @@ import BackIcon from "../../assets/icons/BackArrow.svg";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import {createUser} from "../../services/user.service.js";
+import { useState } from "react";
+import { createUser } from "../../services/user.service.js";
+import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 function RegistrarUsuarioPage() {
 
     const navigate = useNavigate();
+    const [isFacultadDisabled, setIsFacultadDisabled] = useState(false);
+    const [wasCreated, setWasCreated] = useState("");
 
     const {
         register,
+        setValue,
         handleSubmit,
+        clearErrors,
         formState: { errors },
     } = useForm();
 
 
-    const handleRegister = (data) => {
+    const handleRegister = async(data) => {
         //navigate("/user/list")
-        createUser(data)
-        console.log(data)
-        navigate("/user/list")
+        try {
+            if (data.faculty === null || data.faculty === '') {
+                delete data.faculty;
+            }
+            console.log(await createUser(data))
+            console.log(data)
+            setWasCreated("success")
+        } catch (error) {
+            console.log(error);
+            setWasCreated("error")
+        }
+        
     };
 
     const options = [
-        { value: '', label: '' },
+        { value: null, label: '' },
         { value: 'ADMIN', label: 'Admin' },
         { value: 'USER', label: 'Usuario' }
     ];
     const faculties = [
-        { value: '', label: '' },
-        {value:'FIET', label:'FIET'},
-        {value:'FIC', label:'FIC'},
-        {value:'FACNED', label:'FACNED'}
+        { value: null, label: '' },
+        { value: 'FIET', label: 'FIET' },
+        { value: 'FIC', label: 'FIC' },
+        { value: 'FACNED', label: 'FACNED' }
     ]
+
+
+    const handleRolChange = (e) => {
+        const value = e.target.value;
+        if (value === "ADMIN") {
+            setIsFacultadDisabled(true);
+            setValue("faculty", ""); // Limpia el valor de facultad
+            clearErrors("faculty"); // Limpia cualquier error previo
+        } else {
+            setIsFacultadDisabled(false);
+        }
+    };
+
+    const returnList = () => {
+        navigate("/user/list")
+    }
 
     return (
         <AdminLayout>
-        <div
-            className="h-screen w-full bg-gray-100 bg-cover bg-center flex justify-center items-center text-black"
-        >
-            <form className="flex flex-col items-center bg-white rounded-3xl gap-3 w-[90%] md:w-[50%] lg:w-[25%] md:py-10 py-5 justify-center" onSubmit={handleSubmit(handleRegister)}
+            <NotificationBox
+                type={wasCreated}
+                title={
+                    wasCreated === "success"
+                        ? "Usuario eliminado"
+                        : "Error al eliminar usuario"
+                }
+                open={wasCreated === "success" || wasCreated === "error"}
+                setOpen={() => setWasCreated("")}
             >
-                <div className="flex justify-start w-[90%]">
-                    <button className="flex bg-grays w-10 h-10 justify-center items-center rounded-3xl"><img src={BackIcon} alt="BackIcon" onClick={navigate("/user/list")} /></button>
-                </div>
-                <h1 className="bg-transparent text-4xl font-bold text-center">Registro</h1>
-                <div className="flex flex-col gap-y-2 bg-white rounded-3xl p-3 py-4 items-start w-[80%]">
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="" className="text-xl">Correo</label>
-                        <input
-                            htmlFor=""
-                            className="bg-grays w-[100%] h-8"
-                            type="email"
-                            {...register("email", {
-                                required: true, pattern: {
-                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "Correo no valido",
-                                },
-                            })}
-                        />
-                        {errors.email && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.email.message || "Este campo es requerido"}
-                        </span>}
+                {wasCreated === "success" ? (
+                    <p>El usuario ha sido eliminado exitosamente</p>
+                ) : (
+                    <p>
+                        Ha ocurrido un error al eliminar el usuario, por favor intente de
+                        nuevo
+                    </p>
+                )}
+            </NotificationBox>
+            <div
+                className="h-screen w-full bg-gray-100 bg-cover bg-center flex justify-center items-center text-black"
+            >
+                <form className="flex flex-col items-center bg-white rounded-3xl gap-3 w-[90%] md:w-[50%] lg:w-[25%] md:py-10 py-5 justify-center" onSubmit={handleSubmit(handleRegister)}
+                >
+                    <div className="flex justify-start w-[90%]">
+                        <button className="flex bg-grays w-10 h-10 justify-center items-center rounded-3xl"><img src={BackIcon} alt="BackIcon" onClick={returnList} /></button>
                     </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="" className="text-xl">Rol</label>
-                        <select
-                            className="bg-grays w-[100%] h-8"
-                            placeholder=""
-                            {...register("role", {
-                                required: true
-                            })}
-                        >
-                            {options.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.role && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.role.message || "Seleccione un rol"}
-                        </span>}
+                    <h1 className="bg-transparent text-4xl font-bold text-center">Registro</h1>
+                    <div className="flex flex-col gap-y-2 bg-white rounded-3xl p-3 py-4 items-start w-[80%]">
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="" className="text-xl">Correo</label>
+                            <input
+                                htmlFor=""
+                                className="bg-grays w-[100%] h-8"
+                                type="email"
+                                {...register("email", {
+                                    required: true, pattern: {
+                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message: "Correo no valido",
+                                    },
+                                })}
+                            />
+                            {errors.email && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
+                                {errors.email.message || "Este campo es requerido"}
+                            </span>}
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="" className="text-xl">Rol</label>
+                            <select
+                                className="bg-grays w-[100%] h-8"
+                                placeholder=""
+                                {...register("role", {
+                                    required: true
+                                })}
+                                onChange={handleRolChange}
+                            >
+                                {options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.role && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
+                                {errors.role.message || "Seleccione un rol"}
+                            </span>}
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="" className="text-xl">Facultad</label>
+                            <select
+                                className="bg-grays w-[100%] h-8 outline-none border-none"
+                                placeholder=""
+                                disabled={isFacultadDisabled}
+                                {...register("faculty", {
+                                    required: !isFacultadDisabled
+                                })}
+                            >
+                                {faculties.map((faculty) => (
+                                    <option key={faculty.value} value={faculty.value}>
+                                        {faculty.label}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.faculty && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
+                                {errors.faculty.message || "Seleccione una facultad"}
+                            </span>}
+                        </div>
                     </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="" className="text-xl">Facultad</label>
-                        <select
-                            className="bg-grays w-[100%] h-8 outline-none border-none"
-                            placeholder=""
-                            {...register("faculty", {
-                                required: true
-                            })}
-                        >
-                            {faculties.map((faculty) => (
-                                <option key={faculty.value} value={faculty.value}>
-                                    {faculty.label}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.faculty && <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-2">
-                            {errors.faculty.message || "Seleccione una facultad"}
-                        </span>}
-                    </div>
-                </div>
-                <MainButton
-                    type="submit"
-                    text="Registrar"
-                    bgColor="primary"
-                    hoverBg="primary-light"
-                    textColor="white"
-                    className=""
-                />
-            </form>
-        </div>
+                    <MainButton
+                        type="submit"
+                        text="Registrar"
+                        bgColor="primary"
+                        hoverBg="primary-light"
+                        textColor="white"
+                        className=""
+                    />
+                </form>
+            </div>
         </AdminLayout>
     );
 }

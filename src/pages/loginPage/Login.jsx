@@ -35,6 +35,7 @@ function Login() {
   } = useForm();
 
   const handleLogin = async (data) => {
+    console.log(data)
     await singin(data);
   };
 
