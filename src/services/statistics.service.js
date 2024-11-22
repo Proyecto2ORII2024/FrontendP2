@@ -9,5 +9,8 @@ export const getStatistics = {
     },
     getMobilityPerYear: async () => {
         return await axios.get(`${url}/mobilitytrend`);
+    },
+    getMobilityByEvent: async () => {
+        return await axios.get(`${url}/mobilitybyevent`);
     }
 };
