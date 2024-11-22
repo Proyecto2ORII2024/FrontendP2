@@ -4,6 +4,7 @@ import { getForms, deleteForm } from "../../services/movilidad.service";
 import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
 import facultyOptions from "../../utils/facultyOptions";
+import { downloadFile } from "../../services/report.service";
 
 import search from "../../assets/icons/searchIcon.svg";
 
@@ -268,6 +269,7 @@ const Movility = () => {
           textColor="white"
           text="Guardar"
           className="fixed bottom-10 right-10"
+          onClick={() => downloadFile()}
         />
       </div>
     </AdminLayout>

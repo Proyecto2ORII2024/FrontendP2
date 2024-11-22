@@ -7,7 +7,7 @@ import {
   calcDays,
   checkDirection,
   checkDates,
-  checkEventType
+  checkEventType,
 } from "../../utils/FormInformation.js";
 import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
@@ -21,6 +21,7 @@ import AdminLayout from "../../layouts/AdminLayout.jsx";
 import UserLayout from "../../layouts/UserLayout.jsx";
 import { formatDateToDDMMYYYY } from "../../utils/Date.js";
 import facultyOptions from "../../utils/facultyOptions.js";
+import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/LoginContext.jsx";
 
@@ -33,11 +34,13 @@ function FormPage() {
   const [yes, setYes] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isInOrOut, setIsInOrOut] = useState("");
-  const [isValidETForTutor, setIsValidETForTutor] = useState(false)
+  const [isValidETForTutor, setIsValidETForTutor] = useState(false);
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
 
   const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const Layout = user.role === "ADMIN" ? AdminLayout : UserLayout;
 
@@ -57,7 +60,6 @@ function FormPage() {
     required: true,
 
     options: facultyOptions,
-
   };
 
   const updateEntryDate = (e) => {
@@ -133,7 +135,9 @@ function FormPage() {
       origin: data.origin,
       agreementId: yes ? data.agreementId : null,
       teacher:
-        isStudent && isInOrOut === "IN" && data.teacher && isValidETForTutor ? data.teacher : null,
+        isStudent && isInOrOut === "IN" && data.teacher && isValidETForTutor
+          ? data.teacher
+          : null,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -214,6 +218,17 @@ function FormPage() {
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
+        {user.role === "ADMIN" && (
+          <section className="flex w-full p-5 pb-0 md:items-center flex-col md:flex-row">
+          <MainButton
+            text="Volver a Movilidades"
+            bgColor="primary"
+            hoverBg="primary-light"
+            textColor="white"
+            onClick={() => navigate("/admin/movilidad")}
+          />
+        </section>
+        )}
         <h3 className="mt-5 ml-8">
           <span className="font-semibold">Nota: </span>Los campos con{" "}
           <span className="text-xl font-semibold text-red-400">*</span> son
@@ -467,7 +482,9 @@ function FormPage() {
 
             <div
               className={`${
-                isStudent && isInOrOut === "IN" && isValidETForTutor ? "" : "opacity-40 -z-50"
+                isStudent && isInOrOut === "IN" && isValidETForTutor
+                  ? ""
+                  : "opacity-40 -z-50"
               }`}
             >
               <CustomInput
@@ -476,10 +493,9 @@ function FormPage() {
                 errors={errors}
                 register={register}
                 isDisable={
-                  !isStudent && (isInOrOut === "OUT" || isInOrOut === "") 
+                  !isStudent && (isInOrOut === "OUT" || isInOrOut === "")
                 }
               />
-
             </div>
           </DataContainer>
           <DataContainer title="Convenios y patrocinios">
@@ -500,7 +516,6 @@ function FormPage() {
                     onChange={field.onChange}
                     bblInfo={Info.convenio}
                   />
-
                 )}
               />
               {errors[inputInfo.convenio.id] && (
@@ -559,7 +574,6 @@ function FormPage() {
               <div className="flex items-center gap-2">
                 <InfoBubble
                   info={
-
                     isInOrOut === "IN" || isInOrOut === ""
                       ? Info.fechaEntrada
                       : Info.fechaSalida
@@ -577,7 +591,6 @@ function FormPage() {
                   isInOrOut === "IN" || isInOrOut === ""
                     ? "entryDate"
                     : "exitDate"
-
                 }
                 autoComplete="off"
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
@@ -595,7 +608,6 @@ function FormPage() {
                   {
                     required: true,
                     onChange:
-
                       isInOrOut === "IN" || isInOrOut === ""
                         ? updateEntryDate
                         : updateExitDate,
@@ -632,7 +644,6 @@ function FormPage() {
                   {isInOrOut === "IN" || isInOrOut === ""
                     ? "Fecha de salida"
                     : "Fecha de retorno"}
-
                 </p>
                 <span className="text-xl font-semibold text-red-400">*</span>
               </div>
@@ -698,7 +709,7 @@ function FormPage() {
               </p>
             </label>
           </DataContainer>
-          
+
           <div className="mx-auto">
             <MainButton
               text={"Confirmar"}
@@ -733,8 +744,9 @@ function FormPage() {
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">Facultad: </span>
 
-                    {facultad.options.find(option => option.value === item.faculty)?.text || "No disponible"}
-
+                    {facultad.options.find(
+                      (option) => option.value === item.faculty
+                    )?.text || "No disponible"}
                   </td>
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">
@@ -747,7 +759,7 @@ function FormPage() {
                     {item.person.identificationType}
                   </td>
                   <td className="px-4 py-2">
-                      <span className="font-bold md:hidden">Número de ID: </span>
+                    <span className="font-bold md:hidden">Número de ID: </span>
                     {item.person.identification}
                   </td>
                 </tr>

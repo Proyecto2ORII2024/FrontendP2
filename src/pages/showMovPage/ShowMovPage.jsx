@@ -9,10 +9,14 @@ import { checkDirection } from "../../utils/FormInformation.js";
 import facultyOptions from "../../utils/facultyOptions.js";
 import { calcDays } from "../updateForm/Information.js";
 import DataContainer from "../../components/dataContainer/DataContainer.jsx";
+import MainButton from "../../components/buttons/MainButton";
+import { useNavigate } from "react-router-dom";
 
 function ShowMovPage() {
   const [days, setDays] = useState(0);
   const [direction, setDirection] = useState("");
+
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     id: "",
@@ -60,23 +64,35 @@ function ShowMovPage() {
   });
   const { formId } = useParams();
 
-
   useEffect(() => {
     getId(formId).then((res) => {
-      setDirection(checkDirection(res.data.direction))
+      setDirection(checkDirection(res.data.direction));
     });
   }, [formId]);
 
   useEffect(() => {
     getId(formId).then((res) => {
-      setDays(direction === "IN" ? calcDays(res.data.entryDate, res.data.exitDate): calcDays(res.data.exitDate, res.data.entryDate) );
+      setDays(
+        direction === "IN"
+          ? calcDays(res.data.entryDate, res.data.exitDate)
+          : calcDays(res.data.exitDate, res.data.entryDate)
+      );
       setData(res.data);
     });
-  }, [formId,direction]);
+  }, [formId, direction]);
 
   return (
     <AdminLayout>
       <main className="flex flex-col my-5 gap-y-5">
+        <section className="flex w-full pl-5 md:items-center flex-col md:flex-row">
+          <MainButton
+            text="Volver a Movilidades"
+            bgColor="primary"
+            hoverBg="primary-light"
+            textColor="white"
+            onClick={() => navigate("/admin/movilidad")}
+          />
+        </section>
         <DataContainer title="Datos de la persona movilizada">
           <ShowMovilityField
             title="Nombre"
@@ -120,8 +136,13 @@ function ShowMovPage() {
           />
 
           <ShowMovilityField
-            title={direction === "IN" ? "Facultad de acogida" : "Facultad de origen"}
-            data={facultyOptions.find(option => option.value === data.faculty)?.text || "No disponible"}
+            title={
+              direction === "IN" ? "Facultad de acogida" : "Facultad de origen"
+            }
+            data={
+              facultyOptions.find((option) => option.value === data.faculty)
+                ?.text || "No disponible"
+            }
             bblInf={MoveInfo.facultad}
           />
           <ShowMovilityField
@@ -204,12 +225,16 @@ function ShowMovPage() {
           <ShowMovilityField
             title={direction === "IN" ? "Fecha de entrada" : "Fecha de salida"}
             data={direction === "IN" ? data.entryDate : data.exitDate}
-            bblInf={direction === "IN" ? MoveInfo.fechaEntrada : MoveInfo.fechaSalida}
+            bblInf={
+              direction === "IN" ? MoveInfo.fechaEntrada : MoveInfo.fechaSalida
+            }
           />
           <ShowMovilityField
             title={direction === "IN" ? "Fecha de salida" : "Fecha de retorno"}
             data={direction === "IN" ? data.exitDate : data.entryDate}
-            bblInf={direction === "IN" ? MoveInfo.fechaSalida : MoveInfo.fechaEntrada}
+            bblInf={
+              direction === "IN" ? MoveInfo.fechaSalida : MoveInfo.fechaEntrada
+            }
           />
           <ShowMovilityField
             title="Días de estancia"
