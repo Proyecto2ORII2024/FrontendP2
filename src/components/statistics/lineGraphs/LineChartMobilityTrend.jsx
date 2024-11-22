@@ -39,7 +39,7 @@ const options = {
       }
     },
     y: {
-      max: 150,
+      //max: 10,
       beginAtZero: true, 
       title: {
         display: true,
@@ -61,11 +61,11 @@ export const LineChartMobilityTrend = () => {
         const response = await getStatistics.getMobilityPerYear();
 
         const data = {
-          labels: response.data.years,
+          labels: response.data.years.reverse(),
           datasets: [
             {
               label: '',
-              data: response.data.amountMobility,
+              data: response.data.amountMobility.reverse(),
               borderColor: "#9D0311",
               pointBackgroundColor: "#ffffff",
               pointBorderColor: "#9D0311",

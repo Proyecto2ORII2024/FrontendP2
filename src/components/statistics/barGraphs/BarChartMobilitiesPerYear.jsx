@@ -28,7 +28,7 @@ const options = {
       },
     },
     y: {
-      max: 50,
+      //max: 25,
       title: {
         display: true,
         text: "Número de movilidades",
@@ -49,11 +49,11 @@ export const BarChartMobilitiesPerYear = () => {
         const response = await getStatistics.getMobilityPerYear();
         
         const data = {
-          labels: response.data.years,
+          labels: response.data.years.reverse(),
           datasets: [
             {
               label: 'Movilidades',
-              data: response.data.amountMobility,
+              data: response.data.amountMobility.reverse(),
               backgroundColor: "#A5DE6F",
               borderWidth: 1,
               barPercentage: 0.5,
