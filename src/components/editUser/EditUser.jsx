@@ -38,6 +38,10 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         setIsOpened(open);
     }, [open, setValue, user]);
 
+    /**
+     * Funcion para actualizar los datos del usuario seleccionado
+     * @param {object} data - Informacion para actualizar 
+     */
     const onSubmit = (data) => {
         setIsOpened(false);
         setOpen(false);
@@ -46,9 +50,12 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         console.log("submit", data);
     };
 
+    /**
+     * Funcion que maneja cuando se cambia el rol del usuario(por cuestiones de requerimientos)
+     * @param {object} e - Evento dado en el objeto en el que se utiliza la funcion 
+     */
     const handleRolChange = (e) => {
         const value = e.target.value;
-        console.log("Value", value);
         if (value === "ADMIN") {
             setIsFacultadDisabled(true);
             setValue("faculty", ""); // Limpia el valor de facultad
@@ -169,7 +176,8 @@ EditUser.propTypes = {
     user: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
-    setUpdated: PropTypes.func.isRequired
+    setUpdated: PropTypes.func.isRequired,
+    updateData: PropTypes.func.isRequired
 };
 
 export default EditUser;
