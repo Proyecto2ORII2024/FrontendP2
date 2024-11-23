@@ -21,9 +21,24 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("user");
+  
     if (token) {
-      setUser(jwtDecode(token));
+      try {
+        const decodedToken = jwtDecode(token);
+  
+        // Verificar si el token ha expirado
+        if (decodedToken.exp * 1000 > Date.now()) {
+          setUser(decodedToken);
+        } else {
+          // El token ha expirado
+          localStorage.removeItem("user");
+        }
+      } catch (error) {
+        console.error("Token inválido:", error);
+        localStorage.removeItem("user"); // Eliminar tokens corruptos
+      }
     }
+  
     setLoading(false);
   }, []);
 
