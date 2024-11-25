@@ -1,6 +1,6 @@
 /**
- * Lista de opciones de facultades con su respectivo código y nombre completo.
- * Cada opción contiene un valor único y su texto descriptivo.
+ * List of faculty options with their respective code and full name.
+ * Each option contains a unique value and its descriptive text.
  */
 
 const facultyOptions = [

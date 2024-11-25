@@ -2,17 +2,17 @@ import PropTypes from "prop-types";
 import MainButton from "../buttons/MainButton";
 
 /**
- * Componente de contenedor flotante que actúa como modal con animaciones de aparición y opciones de cierre.
+ * Floating container component that acts as a modal with appearance animations and close options.
  * 
  * @component
- * @param {Object} props - Propiedades del componente.
- * @param {boolean} props.open - Indica si el modal está abierto o cerrado.
- * @param {function} props.setOpen - Función para actualizar el estado de apertura del modal.
- * @param {React.ReactNode} props.children - Contenido que se mostrará dentro del modal.
- * @param {number} [props.bttType=0] - Tipo de botón para el cierre del modal. 
- * - `0`: Botón de cierre en la esquina superior derecha.
- * - `1`: Botón principal "Entendido" al pie del modal.
- * @returns {JSX.Element} Un elemento JSX que representa el contenedor flotante.
+ * @param {Object} props - The component's properties.
+ * @param {boolean} props.open - Indicates whether the modal is open or closed.
+ * @param {function} props.setOpen - Function to update the modal's open/close state.
+ * @param {React.ReactNode} props.children - The content to be displayed inside the modal.
+ * @param {number} [props.bttType=0] - The type of button used to close the modal. 
+ * - `0`: Close button in the top-right corner.
+ * - `1`: Main "Got it" button at the bottom of the modal.
+ * @returns {JSX.Element} A JSX element representing the floating container.
  */
 function FloatingContainer({ open, setOpen, children, bttType = 0 }) {
   const XBtt = (

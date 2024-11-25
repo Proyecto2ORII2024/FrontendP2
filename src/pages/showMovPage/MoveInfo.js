@@ -1,6 +1,6 @@
 /**
- * Información detallada sobre los datos que se muestran después de crear una movilidad.
- * Cada campo tiene un título, información corta o larga, y opciones listas para ser desplegadas.
+ * Detailed information about the data displayed after creating a mobility entry.
+ * Each field has a title, short or long information, and options ready to be displayed.
  */
 
 export const MoveInfo = {

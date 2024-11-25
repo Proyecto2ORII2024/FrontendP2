@@ -36,8 +36,8 @@ export const colors = {
 }
 
 /**
- * Objeto que contiene las clases CSS para el estilo y la disposición de los elementos de la interfaz de usuario.
- * Se incluyen estilos de contenedor principal, bordes, texto y botones.
+ * An object containing the CSS classes for the style and layout of user interface elements.
+ * It includes styles for the main container, borders, text, and buttons.
  * 
  * @namespace styles
  */

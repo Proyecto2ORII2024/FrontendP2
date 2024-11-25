@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 
 /**
- * Componente que renderiza un select HTML con opciones dinámicas, ordenadas alfabéticamente.
+ * Component that renders an HTML select with dynamic options, sorted alphabetically.
  * 
  * @component
- * @param {Object} props - Propiedades del componente.
- * @param {Object} props.selectInfo - Información necesaria para renderizar el select.
- * @param {string} props.selectInfo.id - Identificador único para el select.
- * @param {Array<{value: string|number, text: string}>} props.selectInfo.options - Lista de opciones para el select, cada una con un `value` y un `text`.
- * @param {string} props.selectInfo.text - Texto que se muestra como placeholder o etiqueta del select.
- * @returns {JSX.Element} Un elemento JSX que representa un campo select con sus opciones.
+ * @param {Object} props - The component's properties.
+ * @param {Object} props.selectInfo - Information required to render the select.
+ * @param {string} props.selectInfo.id - A unique identifier for the select.
+ * @param {Array<{value: string|number, text: string}>} props.selectInfo.options - A list of options for the select, each with a `value` and a `text`.
+ * @param {string} props.selectInfo.text - Text to display as the select's placeholder or label.
+ * @returns {JSX.Element} A JSX element representing a select field with its options.
  */
 function SimpleSelect({selectInfo}){
 

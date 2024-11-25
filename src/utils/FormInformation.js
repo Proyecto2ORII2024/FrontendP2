@@ -1,6 +1,6 @@
 /**
- * Información detallada sobre los campos de un formulario de movilidad.
- * Cada campo tiene un título, información corta o larga, y opciones listas para ser desplegadas.
+ * Detailed information about the fields of a mobility form.
+ * Each field has a title, short or long information, and options ready to be displayed.
  */
 
 export const Info = {
@@ -214,10 +214,10 @@ export const Info = {
 }
 
 /**
- * Objeto que contiene información sobre los campos del formulario, incluyendo su id, texto de la etiqueta, 
- * si es obligatorio, las opciones disponibles (en caso de ser un campo select) y las validaciones requeridas.
- * Este objeto organiza los distintos campos de entrada para una solicitud relacionada con la movilidad académica.
- */ 
+ * Object that contains information about the form fields, including their ID, label text, 
+ * whether they are required, available options (in case of a select field), and required validations.
+ * This object organizes the different input fields for a request related to academic mobility.
+ */
 export const inputInfo = {
     sentido:{
         id:'direction',
@@ -416,10 +416,10 @@ export const inputInfo = {
 }
 
 /**
- * Crea un arreglo de opciones para un campo de selección basado en la lista de acuerdos proporcionada.
- * La función toma un arreglo de objetos de acuerdos y actualiza el estado con las opciones formateadas.
- * @param {Array<{agreementId: string, agreementNumber: string}>} agreements - Un arreglo de acuerdos, donde cada acuerdo tiene un `agreementId` y un `agreementNumber`.
- * @param {function} setAgreements - Función de actualización de estado que se utilizará para establecer el nuevo valor de las opciones.
+ * Creates an array of options for a select field based on the provided agreements list.
+ * The function takes an array of agreement objects and updates the state with the formatted options.
+ * @param {Array<{agreementId: string, agreementNumber: string}>} agreements - An array of agreements, where each agreement has an `agreementId` and an `agreementNumber`.
+ * @param {function} setAgreements - State update function that will be used to set the new value of the options.
  */
 export const createAgreementOptions = (agreements, setAgreements) => {
     const options = [];
@@ -435,11 +435,11 @@ export const createAgreementOptions = (agreements, setAgreements) => {
 };
 
 /**
- * Calcula la cantidad de días entre dos fechas.
- * La función toma dos fechas y calcula la diferencia en días, redondeando hacia abajo al valor entero más cercano.
- * @param {string|Date} fechaInicio - La fecha de inicio en formato de fecha o cadena de texto que puede ser interpretada por el constructor de `Date`.
- * @param {string|Date} fechaFin - La fecha de fin en formato de fecha o cadena de texto que puede ser interpretada por el constructor de `Date`.
- * @returns {number} La diferencia en días entre `fechaInicio` y `fechaFin`.
+ * Calculates the number of days between two dates.
+ * The function takes two dates and calculates the difference in days, rounding down to the nearest whole number.
+ * @param {string|Date} startDate - The start date in date format or a string that can be interpreted by the `Date` constructor.
+ * @param {string|Date} endDate - The end date in date format or a string that can be interpreted by the `Date` constructor.
+ * @returns {number} The difference in days between `startDate` and `endDate`.
  */
 export function calcDays(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
@@ -454,13 +454,13 @@ export function calcDays(fechaInicio, fechaFin) {
 }
 
 /**
- * Determina la dirección de la movilidad (entrante o saliente) basándose en el valor proporcionado.
- * @param {string} value - El valor de la movilidad, que puede ser uno de los siguientes:
+ * Determines the direction of the mobility (incoming or outgoing) based on the provided value.
+ * @param {string} value - The mobility value, which can be one of the following:
  *   - 'INCOMING_VIRTUAL'
  *   - 'INCOMING_IN_PERSON'
- *   - Cualquier otro valor se considera como 'OUT'.
- * @returns {string} 'IN' si el valor corresponde a una movilidad entrante, 
- *                   'OUT' si corresponde a una movilidad saliente.
+ *   - Any other value is considered as 'OUT'.
+ * @returns {string} 'IN' if the value corresponds to an incoming mobility,
+ *                   'OUT' if it corresponds to an outgoing mobility.
  */
 export function checkDirection(value) {
     if (value === 'INCOMING_VIRTUAL' || value === 'INCOMING_IN_PERSON') {
@@ -471,24 +471,24 @@ export function checkDirection(value) {
 }
 
 /**
- * Verifica si el tipo de evento corresponde a un evento de investigación o pasantía.
- * @param {number} value - El valor del tipo de evento. Este valor debe ser un número entero.
- * @returns {boolean} `true` si el valor corresponde a un evento de investigación(4) o pasantía(7), 
- *                   `false` en caso contrario.
+ * Verifies if the event type corresponds to a research or internship event.
+ * @param {number} value - The event type value. This value must be an integer.
+ * @returns {boolean} `true` if the value corresponds to a research (4) or internship (7) event,
+ *                   `false` otherwise.
  */
 export function checkEventType(value) {
     return value === 4 || value===7
 }
 
 /**
- * Verifica si las fechas de entrada y salida son válidas en función de la dirección de la movilidad.
- * Si la dirección es "IN" (entrante), la fecha de entrada debe ser anterior o igual a la fecha de salida.
- * Si la dirección es "OUT" (saliente), la fecha de salida debe ser anterior o igual a la fecha de entrada.
- * @param {string} direction - La dirección de la movilidad. Puede ser 'IN' (entrante) o 'OUT' (saliente).
- * @param {string|Date} entryDate - La fecha de entrada, en formato de fecha válida o cadena de texto que puede ser convertida a fecha.
- * @param {string|Date} exitDate - La fecha de salida, en formato de fecha válida o cadena de texto que puede ser convertida a fecha.
+ * Verifies if the entry and exit dates are valid based on the direction of mobility.
+ * If the direction is "IN" (incoming), the entry date must be earlier than or equal to the exit date.
+ * If the direction is "OUT" (outgoing), the exit date must be earlier than or equal to the entry date.
+ * @param {string} direction - The direction of mobility. It can be 'IN' (incoming) or 'OUT' (outgoing).
+ * @param {string|Date} entryDate - The entry date, in a valid date format or a string that can be converted to a date.
+ * @param {string|Date} exitDate - The exit date, in a valid date format or a string that can be converted to a date.
  * 
- * @returns {boolean} `true` si las fechas son válidas según la dirección proporcionada, `false` en caso contrario.
+ * @returns {boolean} `true` if the dates are valid according to the provided direction, `false` otherwise.
  */
 export function checkDates(direction, entryDate, exitDate){
     const entry = new Date(entryDate);

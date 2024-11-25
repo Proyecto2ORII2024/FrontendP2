@@ -1,10 +1,10 @@
 /**
- * Recorta una cadena de texto si excede una longitud máxima y agrega "..." al final.
- * Si la cadena es más corta que la longitud máxima, se devuelve tal cual.
+ * Trims a string if it exceeds a maximum length and appends "..." at the end.
+ * If the string is shorter than the maximum length, it is returned as is.
  * 
- * @param {string} str - La cadena de texto que se desea recortar.
- * @param {number} maxLen - La longitud máxima permitida para la cadena.
- * @returns {string} - La cadena recortada si es necesario, con "..." añadido al final.
+ * @param {string} str - The string to be trimmed.
+ * @param {number} maxLen - The maximum allowed length for the string.
+ * @returns {string} - The trimmed string, if necessary, with "..." added at the end.
  */
 
 const CutString = (str, maxLen) => {

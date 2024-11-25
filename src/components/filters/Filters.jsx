@@ -4,13 +4,13 @@ import { inputInfo } from "../../utils/FormInformation";
 import PropTypes from "prop-types";
 
 /**
- * Componente de filtros que muestra un conjunto de campos de selección y entrada de datos dentro de un contenedor flotante.
+ * Filter component that displays a set of selection fields and data entry inputs inside a floating container.
  * 
  * @component
- * @param {Object} props - Propiedades del componente.
- * @param {boolean} props.open - Indica si el contenedor flotante está abierto.
- * @param {function} props.setOpen - Función para actualizar el estado de apertura del contenedor flotante.
- * @returns {JSX.Element} Un elemento JSX que representa la interfaz de filtros.
+ * @param {Object} props - The component's properties.
+ * @param {boolean} props.open - Indicates whether the floating container is open.
+ * @param {function} props.setOpen - Function to update the state of the floating container's open/close status.
+ * @returns {JSX.Element} A JSX element representing the filter interface.
  */
 function Filters({open, setOpen}){
 
