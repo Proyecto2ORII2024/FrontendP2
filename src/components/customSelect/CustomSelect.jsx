@@ -4,6 +4,22 @@ import { useState, useRef, useEffect } from "react";
 import InfoBubble from "../infoBubble/InfoBubble";
 import CutString from "../../utils/CutString";
 
+/**
+ * Custom select component that allows searching and selecting options from a list.
+ * 
+ * @component
+ * @param {Object} props - The component's properties.
+ * @param {Object} props.inputInf - Information about the select field.
+ * @param {string} props.inputInf.id - Unique ID of the field.
+ * @param {string} props.inputInf.text - Label for the field.
+ * @param {boolean} props.inputInf.required - Indicates if the field is required.
+ * @param {Array<{value: string|number, text: string}>} props.options - Available options to select from.
+ * @param {string|number} props.value - Currently selected value.
+ * @param {Function} props.onChange - Function that is executed when the selected value changes.
+ * @param {Object} props.bblInfo - Information to display in the `InfoBubble` component.
+ * @param {boolean} [props.isDisable=false] - Determines whether the select is disabled.
+ * @returns {JSX.Element} The custom select component.
+ */
 function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -11,7 +27,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable =
 
   options = options.sort((a, b) => a.text.localeCompare(b.text));
 
-  // Cerrar el menú cuando el usuario haga clic fuera del componente
+  //Close menu when user clicks outside component
   useEffect(() => {
     function handleClickOutside(event) {
       if (selectRef.current && !selectRef.current.contains(event.target)) {
@@ -25,6 +41,7 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable =
     };
   }, []);
 
+  // Find selected option text based on 'value'
   // Encontrar el texto de la opción seleccionada en base al `value`
   const selectedOptionText = options.find((option) => option.value === value)?.text || "";
 
@@ -77,8 +94,8 @@ function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable =
                     selectedOptionText === option.text ? 'bg-grays-dark' : 'bg-white'
                   }`}
                   onClick={() => {
-                    onChange(option.value); // Actualizamos el valor en el formulario
-                    setIsMenuOpen(false); // Cierra el menú después de seleccionar
+                    onChange(option.value); // Update form value
+                    setIsMenuOpen(false); // Close menu after select option
                   }}
                 >
                   {option.text || "Ups, no se hallaron items"}

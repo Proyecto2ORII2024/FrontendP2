@@ -1,3 +1,8 @@
+/**
+ * Detailed information about the data displayed after creating a mobility entry.
+ * Each field has a title, short or long information, and options ready to be displayed.
+ */
+
 export const MoveInfo = {
     sentido: {
         title: 'Tipo de movilidad',

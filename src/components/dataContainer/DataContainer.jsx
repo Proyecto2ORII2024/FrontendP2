@@ -1,5 +1,14 @@
 import PropTypes from "prop-types";
 
+/**
+ * Container component to display data organized in a grid format.
+ * 
+ * @component
+ * @param {Object} props - The component's properties.
+ * @param {string} props.title - Title to be displayed at the top of the container.
+ * @param {React.ReactNode} props.children - Child elements to be displayed inside the container.
+ * @returns {JSX.Element} A JSX element representing the data container.
+ */
 function DataContainer({title, children}){
     return(
         <section className="p-4 mx-8 border-2 rounded-lg border-grays">

@@ -1,3 +1,8 @@
+/**
+ * List of faculty options with their respective code and full name.
+ * Each option contains a unique value and its descriptive text.
+ */
+
 const facultyOptions = [
     { value: "FIET", text: "Ingeniería Electrónica y Telecomunicaciones" },
     { value: "FIC", text: "Ingeniería Civil" },

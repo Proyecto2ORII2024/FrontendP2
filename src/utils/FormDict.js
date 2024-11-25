@@ -1,3 +1,9 @@
+/**
+ * Dictionary of translations and descriptions for the values used in the form.
+ * The `FormDict` object maps specific keys to their corresponding descriptions,
+ * including mobility type, gender, role, and the types of events related to academic mobility.
+ */
+
 export const FormDict = {
     'OUTGOING_IN_PERSON': 'Saliente presencial',
     'INCOMING_IN_PERSON': 'Entrante presencial',

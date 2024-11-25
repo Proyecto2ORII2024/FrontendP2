@@ -3,6 +3,20 @@ import FloatingContainer from "../floatingContainer/FloatingContainer";
 import MainButton from "../buttons/MainButton";
 import PropTypes from "prop-types";
 
+/**
+ * Component that displays an interactive icon with a tooltip. On hover, 
+ * an informational box with additional options, including a floating container, is revealed.
+ *
+ * @component
+ * @param {Object} props - The component's properties.
+ * @param {Object} props.info - Information to be displayed in the component.
+ * @param {string} props.info.title - The main title displayed in the tooltip.
+ * @param {string} [props.info.shortInfo] - Brief information displayed in the pop-up box.
+ * @param {Object} [props.info.longInfo] - Detailed information to be shown in the floating container.
+ * @param {Array<string>} [props.info.longInfo.text] - List of texts to display in the detailed information.
+ * @param {Object<string, string>} [props.info.longInfo.list] - List of key-value pairs, sorted alphabetically.
+ * @returns {JSX.Element} A JSX element representing the interactive informational tooltip.
+ */
 function InfoBubble({ info }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFloating, setIsFloating] = useState(false);
