@@ -2,6 +2,15 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import arrow from "../../assets/icons/arrowIcon.svg";
 
+/**
+ * Accordeon component that displays a collapsible section with a title and content.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.title - The title of the accordion.
+ * @param {React.ReactNode} props.children - The content to be displayed inside the accordion.
+ *
+ * @returns {JSX.Element} The rendered accordion component.
+ */
 const Accordeon = ({title, children}) =>{
     const [open, setOpen] = useState(false);
 

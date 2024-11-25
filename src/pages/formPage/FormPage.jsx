@@ -7,19 +7,23 @@ import {
   calcDays,
   checkDirection,
   checkDates,
-  checkEventType
+  checkEventType,
 } from "../../utils/FormInformation.js";
 import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
 import CustomSelect from "../../components/customSelect/CustomSelect.jsx";
 import DataContainer from "../../components/dataContainer/DataContainer.jsx";
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { createForm } from "../../services/form.service.js";
 import { getAgreements } from "../../services/agreement.service.js";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import UserLayout from "../../layouts/UserLayout.jsx";
 import { formatDateToDDMMYYYY } from "../../utils/Date.js";
 import facultyOptions from "../../utils/facultyOptions.js";
+import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../../context/LoginContext.jsx";
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -30,10 +34,16 @@ function FormPage() {
   const [yes, setYes] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isInOrOut, setIsInOrOut] = useState("");
-  const [isValidETForTutor, setIsValidETForTutor] = useState(false)
+  const [isValidETForTutor, setIsValidETForTutor] = useState(false);
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
   const [showTable, setShowTable] = useState(false)
+
+  const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  const Layout = user.role === "ADMIN" ? AdminLayout : UserLayout;
 
   const numConvenio = {
     id: "agreementId",
@@ -49,6 +59,7 @@ function FormPage() {
         ? "Facultad de acogida"
         : "Facultad de origen",
     required: true,
+
     options: facultyOptions,
   };
 
@@ -125,14 +136,16 @@ function FormPage() {
       destinationProgram: data.destinationProgram,
       city: data.city,
       country: data.country,
-      faculty: data.faculty,
+      faculty: data.faculty || user.faculty,
       funding: Number(data.funding),
       fundingSource: data.fundingSource,
       destination: data.destination,
       origin: data.origin,
       agreementId: yes ? data.agreementId : null,
       teacher:
-        isStudent && isInOrOut === "IN" && data.teacher && isValidETForTutor ? data.teacher : null,
+        isStudent && isInOrOut === "IN" && data.teacher && isValidETForTutor
+          ? data.teacher
+          : null,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -145,18 +158,6 @@ function FormPage() {
         identification: data.personId,
       },
     };
-
-    //Forma provicional para los datos de las estadisticas
-    localStorage.setItem("userData", JSON.stringify(formData));
-
-    const agreementsData =
-      JSON.parse(localStorage.getItem("agreementsData")) || {};
-
-    const selectedEventType = data.eventType;
-    agreementsData[selectedEventType] =
-      (agreementsData[selectedEventType] || 0) + 1;
-
-    localStorage.setItem("agreementsData", JSON.stringify(agreementsData));
 
     createForm(formData)
       .then((res) => {
@@ -204,7 +205,7 @@ function FormPage() {
   }, [entryDate, exitDate, isInOrOut]);
 
   return (
-    <AdminLayout>
+    <Layout>
       <main className="flex flex-col">
         <NotificationBox
           type={notification === "errorDate" ? "error" : notification}
@@ -227,11 +228,23 @@ function FormPage() {
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
+        {user.role === "ADMIN" && (
+          <section className="flex w-full p-5 pb-0 md:items-center flex-col md:flex-row">
+          <MainButton
+            text="Volver a Movilidades"
+            bgColor="primary"
+            hoverBg="primary-light"
+            textColor="white"
+            onClick={() => navigate("/admin/movilidad")}
+          />
+        </section>
+        )}
         <h3 className="mt-5 ml-8">
           <span className="font-semibold">Nota: </span>Los campos con{" "}
           <span className="text-xl font-semibold text-red-400">*</span> son
           obligatorios
         </h3>
+
         <form
           className="flex flex-col my-5 gap-y-5"
           onSubmit={handleSubmit(onSubmit)}
@@ -360,23 +373,37 @@ function FormPage() {
             </div>
 
             <div>
-              <Controller
-                name={inputInfo.facultad.id}
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: facultad.required,
-                }}
-                render={({ field }) => (
-                  <CustomSelect
-                    inputInf={facultad}
-                    options={facultad.options}
-                    value={field.value}
-                    onChange={field.onChange}
-                    bblInfo={Info.sentido}
-                  />
-                )}
-              />
+              {user.role === "ADMIN" ? (
+                <Controller
+                  name={inputInfo.facultad.id}
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: facultad.required,
+                  }}
+                  render={({ field }) => (
+                    <CustomSelect
+                      inputInf={facultad}
+                      options={facultad.options}
+                      value={field.value}
+                      onChange={field.onChange}
+                      bblInfo={Info.sentido}
+                    />
+                  )}
+                />
+              ) : (
+                <label className="flex flex-col w-full">
+                  <div className="flex items-center gap-2">
+                    <InfoBubble info={Info.sentido} />
+                    <p>{facultad.text}</p>
+                  </div>
+                  <p className="py-1 text-left border-b-2 outline-none ml-7 border-neutral-hover">
+                    {facultad.options.find(
+                      (option) => option.value === user.faculty
+                    )?.text || "No disponible"}
+                  </p>
+                </label>
+              )}
               {errors[facultad.id] && (
                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                   Este campo es requerido
@@ -389,10 +416,12 @@ function FormPage() {
                 name={inputInfo.tipoEvento.id}
                 control={control}
                 defaultValue=""
-                rules={{ required: inputInfo.tipoEvento.required,
-                   onChange: (e) => { 
-                    setIsValidETForTutor(checkEventType(e.target.value))
-                } }}
+                rules={{
+                  required: inputInfo.tipoEvento.required,
+                  onChange: (e) => {
+                    setIsValidETForTutor(checkEventType(e.target.value));
+                  },
+                }}
                 render={({ field }) => (
                   <CustomSelect
                     inputInf={inputInfo.tipoEvento}
@@ -463,7 +492,9 @@ function FormPage() {
 
             <div
               className={`${
-                isStudent && isInOrOut === "IN" && isValidETForTutor ? "" : "opacity-40 -z-50"
+                isStudent && isInOrOut === "IN" && isValidETForTutor
+                  ? ""
+                  : "opacity-40 -z-50"
               }`}
             >
               <CustomInput
@@ -472,7 +503,7 @@ function FormPage() {
                 errors={errors}
                 register={register}
                 isDisable={
-                  !isStudent && (isInOrOut === "OUT" || isInOrOut === "") 
+                  !isStudent && (isInOrOut === "OUT" || isInOrOut === "")
                 }
               />
             </div>
@@ -618,6 +649,7 @@ function FormPage() {
                       : Info.fechaEntrada
                   }
                 />
+
                 <p>
                   {isInOrOut === "IN" || isInOrOut === ""
                     ? "Fecha de salida"
@@ -687,7 +719,7 @@ function FormPage() {
               </p>
             </label>
           </DataContainer>
-          
+
           <div className="mx-auto">
             <MainButton
               text={"Confirmar"}
@@ -722,7 +754,10 @@ function FormPage() {
                 <tr key={index} className="flex flex-col border-b md:table-row">
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">Facultad: </span>
-                    {facultad.options.find(option => option.value === item.faculty)?.text || "No disponible"}
+
+                    {facultad.options.find(
+                      (option) => option.value === item.faculty
+                    )?.text || "No disponible"}
                   </td>
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">
@@ -735,7 +770,7 @@ function FormPage() {
                     {item.person.identificationType}
                   </td>
                   <td className="px-4 py-2">
-                      <span className="font-bold md:hidden">Número de ID: </span>
+                    <span className="font-bold md:hidden">Número de ID: </span>
                     {item.person.identification}
                   </td>
                 </tr>
@@ -744,7 +779,7 @@ function FormPage() {
           </table>
         )}
       </main>
-    </AdminLayout>
+    </Layout>
   );
 }
 

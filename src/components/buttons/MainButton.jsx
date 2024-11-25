@@ -1,5 +1,19 @@
 import PropTypes from "prop-types";
 
+/**
+ * MainButton component renders a customizable button.
+ *
+ * @param {Object} props - The properties object.
+ * @param {function} props.onClick - The function to call when the button is clicked.
+ * @param {string} props.bgColor - The background color of the button.
+ * @param {string} props.hoverBg - The background color of the button when hovered.
+ * @param {string} props.textColor - The text color of the button.
+ * @param {string} props.text - The text to display inside the button.
+ * @param {string} [props.className] - Additional CSS classes to apply to the button.
+ * @param {string} [props.type="button"] - The type attribute of the button.
+ *
+ * @returns {JSX.Element} The rendered button component.
+ */
 function MainButton({onClick, bgColor, hoverBg, textColor, text, className, type}) {
     return (
         <button

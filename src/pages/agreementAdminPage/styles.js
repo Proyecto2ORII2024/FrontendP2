@@ -1,3 +1,12 @@
+/**
+ * An object containing CSS class definitions for various elements.
+ * 
+ * @property {string} blueButton - Styles for a blue button with padding, rounded corners, background color, font properties, and hover effect.
+ * @property {string} th - Styles for table header cells with padding, text color, font properties, text alignment, and cursor pointer.
+ * @property {string} tdIn - Styles for table data cells with padding, text alignment, border properties, and right border.
+ * @property {string} tdOut - Styles for table data cells with padding, text alignment, and border properties.
+ * @property {string} buttonAction - Styles for action buttons with height, width, hover effect, and transition duration.
+ */
 const styles = {
   blueButton:
     "px-5 py-1 rounded-[20px] bg-primary font-semibold text-white text-lg hover:bg-primary-light duration-200",

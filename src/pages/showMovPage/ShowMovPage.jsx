@@ -10,11 +10,15 @@ import facultyOptions from "../../utils/facultyOptions.js";
 import { calcDays } from "../updateForm/Information.js";
 import DataContainer from "../../components/dataContainer/DataContainer.jsx";
 import { formatDateToDDMMYYYYView } from "../../utils/Date.js";
+import MainButton from "../../components/buttons/MainButton";
+import { useNavigate } from "react-router-dom";
 
 function ShowMovPage() {
   const [days, setDays] = useState(0);
   const [direction, setDirection] = useState("");
   const [year, setYear] = useState("");
+
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     id: "",
@@ -76,14 +80,27 @@ function ShowMovPage() {
   //Setear los días de estancia y la información del formulario
   useEffect(() => {
     getId(formId).then((res) => {
-      setDays(direction === "IN" ? calcDays(res.data.entryDate, res.data.exitDate): calcDays(res.data.exitDate, res.data.entryDate) );
+      setDays(
+        direction === "IN"
+          ? calcDays(res.data.entryDate, res.data.exitDate)
+          : calcDays(res.data.exitDate, res.data.entryDate)
+      );
       setData(res.data);
     });
-  }, [formId,direction]);
+  }, [formId, direction]);
 
   return (
     <AdminLayout>
       <main className="flex flex-col my-5 gap-y-5">
+        <section className="flex flex-col w-full pl-5 md:items-center md:flex-row">
+          <MainButton
+            text="Volver a Movilidades"
+            bgColor="primary"
+            hoverBg="primary-light"
+            textColor="white"
+            onClick={() => navigate("/admin/movilidad")}
+          />
+        </section>
         <DataContainer title="Datos de la persona movilizada">
           <ShowMovilityField
             title="Nombre"
@@ -127,8 +144,13 @@ function ShowMovPage() {
           />
 
           <ShowMovilityField
-            title={direction === "IN" ? "Facultad de acogida" : "Facultad de origen"}
-            data={facultyOptions.find(option => option.value === data.faculty)?.text || "No disponible"}
+            title={
+              direction === "IN" ? "Facultad de acogida" : "Facultad de origen"
+            }
+            data={
+              facultyOptions.find((option) => option.value === data.faculty)
+                ?.text || "No disponible"
+            }
             bblInf={MoveInfo.facultad}
           />
           <ShowMovilityField

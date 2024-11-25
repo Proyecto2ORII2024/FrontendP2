@@ -23,25 +23,14 @@ function UsersListPage() {
   const [wasDeleted, setWasDeleted] = useState("");
   const [wasUpdated, setwasUpdated] = useState("");
   const [userSelected, setUserSelected] = useState({});
-  const [estudiantes, setEstudiantes] = useState([
-    {
-      userId: 1,
-      email: "ORI@UNICAUCA.EDU.CO",
-      role: "Admin"
-    },
-    {
-      userId: 2,
-      email: "INGENIERIA@UNICAUCA.EDU.CO",
-      role: "Usuario"
-    }
-  ]);
+  const [estudiantes, setEstudiantes] = useState([]);
 
   useEffect(() => {
     console.log(localStorage.getItem("user"));
     const fetchData = async () => {
       const data = await getUsers();
       setEstudiantes(data.data);
-      console.log(data.data);
+      console.log("data",data.data);
     };
     fetchData();
   }, []);
@@ -49,6 +38,7 @@ function UsersListPage() {
   const navigate = useNavigate();
 
   const updateData = async (idToUpdate, data) => {
+    console.log("dataantes", data);
     try {
 
       let id;
@@ -61,9 +51,15 @@ function UsersListPage() {
 
       var userUpt = userSelected;
 
-      userUpt.role = data.rol;
+      console.log("userupt", userUpt)
+
+      userUpt.role = data.role;
       userUpt.faculty = data.faculty;
-      console.log(await updateUser(id, userUpt));
+      if(userUpt.faculty === null || userUpt.faculty === '' ){
+        delete userUpt.faculty
+      }
+      console.log("userupt2", userUpt)
+      console.log("update",await updateUser(id, userUpt));
 
       setEstudiantes(
         estudiantes.map((estudiante) =>
@@ -216,6 +212,7 @@ function UsersListPage() {
                   <tr className="bg-azulClaro bg-opacity-20">
                     <th className={`${styles.thIn} rounded-tl-xl`}>Correo</th>
                     <th className={`${styles.thIn}`}>Rol</th>
+                    <th className={`${styles.thIn}`}>Facultad</th>
                     <th className={`${styles.thIn} rounded-tr-xl`}>Acciones</th>
                   </tr>
                 </thead>
@@ -234,6 +231,12 @@ function UsersListPage() {
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">Rol:</span>
                             {estudiante.role}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">
+                              Facultad:
+                            </span>
+                            {estudiante.faculty || "N/A"}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">
@@ -280,39 +283,45 @@ function UsersListPage() {
           </>
         ) : (
           <>
-            <section className="w-full flex justify-center px-20 mb-5">
-              <table className="w-full text-left table-auto border-collapse md:table">
-                <thead className="hidden md:table-header-group">
-                  <tr className="bg-[#928F9A]">
-                    <th className={`${styles.thIn} w-[200px]`}>Correo</th>
-                    <th className={`${styles.thIn} w-[100px]`}>Rol</th>
-                    <th className={`${styles.thIn} w-[150px]`}>Acciones</th>
+            <section className="w-full flex justify-center px-20 mb-5 ">
+              <table className="w-full text-left table-auto border-collapse text-primary-dark md:table">
+                <thead className="hidden md:table-header-group bg-neutral">
+                  <tr className="bg-azulClaro bg-opacity-20">
+                    <th className={`${styles.thIn} rounded-tl-xl`}>Correo</th>
+                    <th className={`${styles.thIn}`}>Rol</th>
+                    <th className={`${styles.thIn}`}>Facultad</th>
+                    <th className={`${styles.thIn} rounded-tr-xl`}>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {searchStudent.map(
-                    (estudiante, index) => (
-                      console.log(index, index % 2),
+                    (estudiante) => (
                       (
                         <tr
-                          className={`${index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-                            } flex flex-col md:table-row border-b`}
+                          className={"flex flex-col md:table-row border-b"}
                           key={estudiante.email}
                         >
                           <td className={`${styles.tdIn}`}>
                             <span className="md:hidden font-bold">Correo:</span>
-                            {estudiante.email + " " + estudiante.Password}
+                            {estudiante.email}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">Rol:</span>
-                            estudiante.role
+                            {estudiante.role}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">
-                              Acciones:{" "}
+                              Facultad:
                             </span>
-                            <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
+                            {estudiante.faculty}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">
+                              Acciones:
+                            </span>
+                            <div className="flex justify-center gap-[10%]">
                               <button
+                                title="Editar usuario"
                                 className=""
                                 onClick={() => {
                                   setOpenEdit(true);
@@ -322,16 +331,20 @@ function UsersListPage() {
                                 <img
                                   className={styles.buttonAction}
                                   src={editIcon}
-                                  id={estudiante.userId}
                                   alt="editIcom"
                                 />
                               </button>
-                              <button>
+                              <button
+                                title="Eliminar usuario"
+                                id={estudiante.userId}
+                                onClick={() => {
+                                  setOpenDelete(true);
+                                  setUserId(estudiante.userId.toString());
+                                }}
+                              >
                                 <img
                                   className={styles.buttonAction}
                                   src={deleteIcon}
-                                  id={estudiante.userId}
-                                  onClick={(e) => handleDelete(e.target.userId)}
                                   alt="deleteIcon"
                                 />
                               </button>

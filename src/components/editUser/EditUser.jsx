@@ -7,25 +7,26 @@ import PropTypes from 'prop-types';
 
 function EditUser({ user, open, setOpen, setUpdated, updateData }) {
     const [isOpened, setIsOpened] = useState(false);
-    const oriRol = user.rol;
+    const [isFacultadDisabled, setIsFacultadDisabled] = useState(false);
 
     const {
         register,
-        handleSubmit,
         setValue,
-        watch,
+        handleSubmit,
+        clearErrors,
         formState: { errors },
     } = useForm();
 
-    const role = [
-        'ADMIN',
-        'USUARIO'
+    const options = [
+        { value: null, label: '' },
+        { value: 'ADMIN', label: 'Admin' },
+        { value: 'USER', label: 'Usuario' }
     ];
-
     const faculties = [
-        'FIET',
-        'FIC',
-        'FACNED'
+        { value: null, label: '' },
+        { value: 'FIET', label: 'FIET' },
+        { value: 'FIC', label: 'FIC' },
+        { value: 'FACNED', label: 'FACNED' }
     ]
 
     useEffect(() => {
@@ -33,8 +34,6 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
             setValue("correo", user.email);
             setValue("role", user.role);
             setValue("faculty", user.faculty);
-            setValue("password", "");
-            setValue("confirmPassword", "");
         }
         setIsOpened(open);
     }, [open, setValue, user]);
@@ -44,10 +43,20 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
         setOpen(false);
         setUpdated("success");
         updateData(user.userId, data);
-        console.log(data);
+        console.log("submit", data);
     };
 
-    const password = watch('password', '');
+    const handleRolChange = (e) => {
+        const value = e.target.value;
+        console.log("Value", value);
+        if (value === "ADMIN") {
+            setIsFacultadDisabled(true);
+            setValue("faculty", ""); // Limpia el valor de facultad
+            clearErrors("faculty"); // Limpia cualquier error previo
+        } else {
+            setIsFacultadDisabled(false);
+        }
+    };
 
     return (
         <FloatingContainer open={isOpened} setOpen={() => setOpen(false)}>
@@ -95,11 +104,15 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
                                     className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                                     type="text"
                                     placeholder="role"
+                                    
                                     {...register("role", {
                                         required: true,
-                                    })}>
-                                    {role.map((role, index) => (
-                                        <option key={index} value={role}>{role}</option>
+                                    })}
+                                    onChange={handleRolChange}>
+                                    {options.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
                                     ))}
                                 </select>
                                 {errors.role && (
@@ -118,11 +131,14 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
                                     className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                                     type="text"
                                     placeholder="Facultad"
+                                    disabled={isFacultadDisabled}
                                     {...register("faculty", {
-                                        required: true,
+                                        required: !isFacultadDisabled,
                                     })}>
-                                    {faculties.map((faculty, index) => (
-                                        <option key={index} value={faculty}>{faculty}</option>
+                                    {faculties.map((faculty) => (
+                                        <option key={faculty.value} value={faculty.value}>
+                                            {faculty.label}
+                                        </option>
                                     ))}
                                 </select>
                                 {errors.faculty && (
@@ -130,53 +146,6 @@ function EditUser({ user, open, setOpen, setUpdated, updateData }) {
                                         {errors.faculty.message}
                                     </span>
 
-                                )}
-                            </label>
-                        </section>
-                        <section className="flex">
-                            <label className="flex flex-col w-full">
-                                <div className="flex gap-2 items-center">
-                                    <InfoBubble info={{ title: "Contraseña", shortInfo: "Minimo 8 caracteres, un numero y un caracter especial" }} />
-                                    <p>Contraseña</p>
-                                </div>
-                                <input id="password"
-                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
-                                    type="password"
-                                    placeholder="Constraseña"
-                                    {...register("password", {
-                                        minLength: {
-                                            value: 8,
-                                            message: "Password must be at least 8 characters"
-                                        },
-                                        pattern: {
-                                            value: /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
-                                            message: "Password must contain at least one number and one special character"
-                                        }
-                                    })} />
-                                {errors.password && (
-                                    <span className="text-sm text-red-400">
-                                        {errors.password.message}
-                                    </span>
-                                )}
-                            </label>
-                        </section>
-                        <section className="flex">
-                            <label className="flex flex-col w-full">
-                                <div className="flex gap-2 items-center">
-                                    <InfoBubble info={{ title: "Contraseña", shortInfo: "Minimo 8 caracteres, un numero y un caracter especial" }} />
-                                    <p>Confirmar contraseña</p>
-                                </div>
-                                <input id="confirmPassword"
-                                    className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
-                                    placeholder="Institución"
-                                    type="password"
-                                    {...register("confirmPassword", {
-                                        validate: value => value === password || "Las contraseñas son diferentes"
-                                    })} />
-                                {errors.confirmPassword && (
-                                    <span className="text-sm text-red-400">
-                                        {errors.confirmPassword.message}
-                                    </span>
                                 )}
                             </label>
                         </section>

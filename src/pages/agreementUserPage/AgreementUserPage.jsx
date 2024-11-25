@@ -5,8 +5,41 @@ import search from "../../assets/icons/searchIcon.svg";
 import Accordeon from "../../components/acordeonBox/Acordeon.jsx";
 import AgreementUserTable from "../../components/agreementUserTable/AgreementUserTable.jsx";
 
+import UserLayout from "../../layouts/UserLayout.jsx";
+
 import { obtainAgreements } from "../../services/agreement.service.js";
 
+/**
+ * AgreementUserPage component fetches and displays a list of agreements.
+ * It allows users to search through the agreements by agreement number, country, institution, or description.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <AgreementUserPage />
+ * )
+ * 
+ * @returns {JSX.Element} The rendered component.
+ * 
+ * @function
+ * @name AgreementUserPage
+ * 
+ * @description
+ * This component uses several state variables:
+ * - `isSearching`: A boolean indicating if a search is being performed.
+ * - `searchAgreement`: An array of agreements that match the search criteria.
+ * - `nationalAgreements`: An array of national agreements.
+ * - `internationalAgreements`: An array of international agreements.
+ * - `agreements`: An array of all agreements.
+ * 
+ * The component fetches the agreements data on mount using the `useEffect` hook and the `obtainAgreements` function.
+ * It provides a search input field that filters the agreements based on the user's input.
+ * 
+ * @requires obtainAgreements
+ * @requires UserLayout
+ * @requires Accordeon
+ * @requires AgreementUserTable
+ */
 function AgreementUserPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchAgreement, setSearchAgreement] = useState([]);
@@ -24,6 +57,14 @@ function AgreementUserPage() {
     fetchData();
   }, []);
 
+  /**
+   * Handles the search functionality for agreements.
+   * Filters the agreements based on the search input and updates the state accordingly.
+   *
+   * @param {Object} e - The event object from the search input.
+   * @param {Object} e.target - The target element of the event.
+   * @param {string} e.target.value - The value of the search input.
+   */
   const handleSearch = (e) => {
     if (e.target.value === "") {
       setIsSearching(false);
@@ -50,7 +91,7 @@ function AgreementUserPage() {
   };
 
   return (
-    <>
+    <UserLayout>
       <main>
         <section className="w-full flex gap-3 md:gap-0 mb-5 flex-col mt-8 md:flex-row justify-between items-center">
           <h2 className="w-full p-5 text-lg text-center">
@@ -87,7 +128,7 @@ function AgreementUserPage() {
           </section>
         )}
       </main>
-    </>
+    </UserLayout>
   );
 }
 

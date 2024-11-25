@@ -12,6 +12,17 @@ import {
 } from "../../utils/Date.js";
 import { messages } from "../../utils/agreementsFormMessages.js";
 
+/**
+ * EditAgreement component allows users to edit an existing agreement.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.agreement - The agreement data to be edited.
+ * @param {boolean} props.open - A boolean indicating if the edit form is open.
+ * @param {Function} props.setOpen - Function to set the open state of the form.
+ * @param {Function} props.setUpdated - Function to set the update status.
+ *
+ * @returns {JSX.Element} The EditAgreement component.
+ */
 function EditAgreement({ agreement, open, setOpen, setUpdated }) {
   const [isOpened, setIsOpened] = useState(false);
 
