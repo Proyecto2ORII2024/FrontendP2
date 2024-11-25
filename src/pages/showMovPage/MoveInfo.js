@@ -1,3 +1,8 @@
+/**
+ * Información detallada sobre los datos que se muestran después de crear una movilidad.
+ * Cada campo tiene un título, información corta o larga, y opciones listas para ser desplegadas.
+ */
+
 export const MoveInfo = {
     sentido: {
         title: 'Tipo de movilidad',

@@ -9,10 +9,12 @@ import { checkDirection } from "../../utils/FormInformation.js";
 import facultyOptions from "../../utils/facultyOptions.js";
 import { calcDays } from "../updateForm/Information.js";
 import DataContainer from "../../components/dataContainer/DataContainer.jsx";
+import { formatDateToDDMMYYYYView } from "../../utils/Date.js";
 
 function ShowMovPage() {
   const [days, setDays] = useState(0);
   const [direction, setDirection] = useState("");
+  const [year, setYear] = useState("");
 
   const [data, setData] = useState({
     id: "",
@@ -60,13 +62,18 @@ function ShowMovPage() {
   });
   const { formId } = useParams();
 
-
+  //Obtener el tipo de movilidad (Sentido)
   useEffect(() => {
     getId(formId).then((res) => {
-      setDirection(checkDirection(res.data.direction))
+      setDirection(checkDirection(res.data.direction));
+      let entryDate = new Date(res.data.entryDate);
+      let exitDate = new Date(res.data.exitDate);
+      let olderDate = entryDate<exitDate ? entryDate : exitDate;
+      setYear(olderDate.getFullYear()) 
     });
   }, [formId]);
 
+  //Setear los días de estancia y la información del formulario
   useEffect(() => {
     getId(formId).then((res) => {
       setDays(direction === "IN" ? calcDays(res.data.entryDate, res.data.exitDate): calcDays(res.data.exitDate, res.data.entryDate) );
@@ -203,12 +210,12 @@ function ShowMovPage() {
         <DataContainer title="Tiempo de la estancia">
           <ShowMovilityField
             title={direction === "IN" ? "Fecha de entrada" : "Fecha de salida"}
-            data={direction === "IN" ? data.entryDate : data.exitDate}
+            data={formatDateToDDMMYYYYView(direction === "IN" ? data.entryDate : data.exitDate)}
             bblInf={direction === "IN" ? MoveInfo.fechaEntrada : MoveInfo.fechaSalida}
           />
           <ShowMovilityField
             title={direction === "IN" ? "Fecha de salida" : "Fecha de retorno"}
-            data={direction === "IN" ? data.exitDate : data.entryDate}
+            data={formatDateToDDMMYYYYView(direction === "IN" ? data.exitDate : data.entryDate)}
             bblInf={direction === "IN" ? MoveInfo.fechaSalida : MoveInfo.fechaEntrada}
           />
           <ShowMovilityField
@@ -218,7 +225,7 @@ function ShowMovPage() {
           />
           <ShowMovilityField
             title="Año"
-            data={new Date().getFullYear()}
+            data={year}
             bblInf={MoveInfo.anio}
           />
         </DataContainer>

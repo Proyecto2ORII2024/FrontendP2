@@ -3,6 +3,15 @@ import SimpleSelect from "../simpleSelect/SimpleSelect";
 import { inputInfo } from "../../utils/FormInformation";
 import PropTypes from "prop-types";
 
+/**
+ * Componente de filtros que muestra un conjunto de campos de selección y entrada de datos dentro de un contenedor flotante.
+ * 
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {boolean} props.open - Indica si el contenedor flotante está abierto.
+ * @param {function} props.setOpen - Función para actualizar el estado de apertura del contenedor flotante.
+ * @returns {JSX.Element} Un elemento JSX que representa la interfaz de filtros.
+ */
 function Filters({open, setOpen}){
 
     return(

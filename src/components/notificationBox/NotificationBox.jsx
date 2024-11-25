@@ -2,8 +2,21 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { colors, styles } from './BoxStyles.js';
 
+/**
+ * Componente que muestra una caja de notificación con un estilo dinámico y un temporizador de cierre automático.
+ * 
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {'success'|'error'|'info'|'alert'|''} props.type - Tipo de notificación que define los estilos de color.
+ * @param {string} props.title - Título que se muestra en la notificación.
+ * @param {React.ReactNode} props.children - Contenido adicional que se muestra dentro de la caja de notificación.
+ * @param {boolean} props.open - Estado que controla si la notificación está visible.
+ * @param {Function} props.setOpen - Función para actualizar el estado `open`.
+ * @returns {JSX.Element} Un elemento JSX que representa la notificación.
+ */
 const NotificationBox = ({type, title, children, open, setOpen}) => {
 
+    //Temporizador
     useEffect(() => {
         let timer;
         if (open) {

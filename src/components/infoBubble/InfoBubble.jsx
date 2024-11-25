@@ -3,6 +3,20 @@ import FloatingContainer from "../floatingContainer/FloatingContainer";
 import MainButton from "../buttons/MainButton";
 import PropTypes from "prop-types";
 
+/**
+ * Componente que muestra un ícono interactivo con información emergente. Al hacer hover, 
+ * se despliega un cuadro informativo con opciones adicionales, incluyendo un contenedor flotante.
+ *
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {Object} props.info - Información que se mostrará en el componente.
+ * @param {string} props.info.title - Título principal que se muestra en la burbuja.
+ * @param {string} [props.info.shortInfo] - Información breve que se despliega en el cuadro emergente.
+ * @param {Object} [props.info.longInfo] - Información detallada para mostrar en el contenedor flotante.
+ * @param {Array<string>} [props.info.longInfo.text] - Lista de textos para mostrar en la información detallada.
+ * @param {Object<string, string>} [props.info.longInfo.list] - Lista de pares clave-valor, ordenados alfabéticamente.
+ * @returns {JSX.Element} Un elemento JSX que representa la burbuja informativa interactiva.
+ */
 function InfoBubble({ info }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFloating, setIsFloating] = useState(false);

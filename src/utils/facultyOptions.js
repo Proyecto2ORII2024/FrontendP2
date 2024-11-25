@@ -1,3 +1,8 @@
+/**
+ * Lista de opciones de facultades con su respectivo código y nombre completo.
+ * Cada opción contiene un valor único y su texto descriptivo.
+ */
+
 const facultyOptions = [
     { value: "FIET", text: "Ingeniería Electrónica y Telecomunicaciones" },
     { value: "FIC", text: "Ingeniería Civil" },

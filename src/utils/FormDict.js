@@ -1,3 +1,9 @@
+/**
+ * Diccionario de traducciones y descripciones para los valores utilizados en el formulario.
+ * El objeto `FormDict` mapea claves específicas a sus descripciones correspondientes, 
+ * tanto para tipo de movilidad, género, rol, como para los tipos de eventos relacionados con la movilidad académica.
+ */ 
+
 export const FormDict = {
     'OUTGOING_IN_PERSON': 'Saliente presencial',
     'INCOMING_IN_PERSON': 'Entrante presencial',

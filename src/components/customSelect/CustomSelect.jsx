@@ -4,6 +4,22 @@ import { useState, useRef, useEffect } from "react";
 import InfoBubble from "../infoBubble/InfoBubble";
 import CutString from "../../utils/CutString";
 
+/**
+ * Componente personalizado de selección que permite buscar y seleccionar opciones de un listado.
+ * 
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {Object} props.inputInf - Información sobre el campo del select.
+ * @param {string} props.inputInf.id - ID único del campo.
+ * @param {string} props.inputInf.text - Etiqueta del campo.
+ * @param {boolean} props.inputInf.required - Indica si el campo es obligatorio.
+ * @param {Array<{value: string|number, text: string}>} props.options - Opciones disponibles para seleccionar.
+ * @param {string|number} props.value - Valor seleccionado actualmente.
+ * @param {Function} props.onChange - Función que se ejecuta cuando cambia el valor seleccionado.
+ * @param {Object} props.bblInfo - Información para mostrar en el componente `InfoBubble`.
+ * @param {boolean} [props.isDisable=false] - Determina si el select está deshabilitado.
+ * @returns {JSX.Element} El componente de selección personalizado.
+ */
 function CustomSelect({ inputInf, options, value, onChange, bblInfo, isDisable = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");

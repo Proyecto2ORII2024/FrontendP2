@@ -33,6 +33,7 @@ function FormPage() {
   const [isValidETForTutor, setIsValidETForTutor] = useState(false)
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
+  const [showTable, setShowTable] = useState(false)
 
   const numConvenio = {
     id: "agreementId",
@@ -51,14 +52,17 @@ function FormPage() {
     options: facultyOptions,
   };
 
+  //Actualizar la fecha de entrada/retorno
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
   };
 
+  //Actualizar la fecha de salida
   const updateExitDate = (e) => {
     setExitDate(e.target.value);
   };
 
+  //Obtener el text del convenio por ID
   const getAgreementTextById = (id, agreements) => {
     const agreement = agreements.find((ag) => ag.value === id);
     return agreement ? agreement.text : "N/A"; // Si no se encuentra, muestra "N/A"
@@ -72,6 +76,7 @@ function FormPage() {
     formState: { errors },
   } = useForm();
 
+  //Guardar los datos de formularios creados recientemente
   const saveLocalStorage = (object) => {
     // Verifica si ya existe el valor en sessionStorage
     const existingData = sessionStorage.getItem("movility");
@@ -87,14 +92,17 @@ function FormPage() {
     }
   };
 
+  //Retorno de las movilidades recientes
   const returnMov = () => {
     const mov = JSON.parse(sessionStorage.getItem("movility"));
     return Array.isArray(mov) ? mov : [];
   };
 
+  //Subida de datos
   const onSubmit = (data) => {
     const validDate = checkDates(isInOrOut, data.entryDate, data.exitDate);
 
+    //Validar fechas
     if (!validDate) {
       setDateError(
         isInOrOut === "IN"
@@ -173,6 +181,7 @@ function FormPage() {
       });
   };
 
+  //Obtener los convenios creados
   useEffect(() => {
     getAgreements()
       .then((res) => {
@@ -183,6 +192,7 @@ function FormPage() {
       });
   }, []);
 
+  //Calcular los días de estancia
   useEffect(() => {
     if (entryDate && exitDate) {
       setDays(
@@ -688,7 +698,8 @@ function FormPage() {
             />
           </div>
         </form>
-        {returnMov().length > 0 && (
+        <button className="mb-5 font-semibold underline duration-150 text-primary hover:text-primary-light" onClick={() => setShowTable(!showTable)} type="button">{!showTable ? "Mostrar movilidades recientes" : "Ocultar movilidades recientes"}</button>
+        {showTable && returnMov().length > 0 && (
           <table className="w-5/6 mx-auto mb-10 text-center border-collapse table-auto text-primary-dark md:table">
             <thead className="hidden bg-neutral md:table-header-group">
               <tr className="rounded-t-xl">

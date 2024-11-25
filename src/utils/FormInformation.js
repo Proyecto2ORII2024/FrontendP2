@@ -1,3 +1,8 @@
+/**
+ * Información detallada sobre los campos de un formulario de movilidad.
+ * Cada campo tiene un título, información corta o larga, y opciones listas para ser desplegadas.
+ */
+
 export const Info = {
     sentido: {
         title: 'Tipo de movilidad',
@@ -208,6 +213,11 @@ export const Info = {
     }
 }
 
+/**
+ * Objeto que contiene información sobre los campos del formulario, incluyendo su id, texto de la etiqueta, 
+ * si es obligatorio, las opciones disponibles (en caso de ser un campo select) y las validaciones requeridas.
+ * Este objeto organiza los distintos campos de entrada para una solicitud relacionada con la movilidad académica.
+ */ 
 export const inputInfo = {
     sentido:{
         id:'direction',
@@ -405,6 +415,12 @@ export const inputInfo = {
     }
 }
 
+/**
+ * Crea un arreglo de opciones para un campo de selección basado en la lista de acuerdos proporcionada.
+ * La función toma un arreglo de objetos de acuerdos y actualiza el estado con las opciones formateadas.
+ * @param {Array<{agreementId: string, agreementNumber: string}>} agreements - Un arreglo de acuerdos, donde cada acuerdo tiene un `agreementId` y un `agreementNumber`.
+ * @param {function} setAgreements - Función de actualización de estado que se utilizará para establecer el nuevo valor de las opciones.
+ */
 export const createAgreementOptions = (agreements, setAgreements) => {
     const options = [];
 
@@ -418,6 +434,13 @@ export const createAgreementOptions = (agreements, setAgreements) => {
     setAgreements(options);
 };
 
+/**
+ * Calcula la cantidad de días entre dos fechas.
+ * La función toma dos fechas y calcula la diferencia en días, redondeando hacia abajo al valor entero más cercano.
+ * @param {string|Date} fechaInicio - La fecha de inicio en formato de fecha o cadena de texto que puede ser interpretada por el constructor de `Date`.
+ * @param {string|Date} fechaFin - La fecha de fin en formato de fecha o cadena de texto que puede ser interpretada por el constructor de `Date`.
+ * @returns {number} La diferencia en días entre `fechaInicio` y `fechaFin`.
+ */
 export function calcDays(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
@@ -430,6 +453,15 @@ export function calcDays(fechaInicio, fechaFin) {
     return Math.floor(diferenciaDias); // Redondear al número de días
 }
 
+/**
+ * Determina la dirección de la movilidad (entrante o saliente) basándose en el valor proporcionado.
+ * @param {string} value - El valor de la movilidad, que puede ser uno de los siguientes:
+ *   - 'INCOMING_VIRTUAL'
+ *   - 'INCOMING_IN_PERSON'
+ *   - Cualquier otro valor se considera como 'OUT'.
+ * @returns {string} 'IN' si el valor corresponde a una movilidad entrante, 
+ *                   'OUT' si corresponde a una movilidad saliente.
+ */
 export function checkDirection(value) {
     if (value === 'INCOMING_VIRTUAL' || value === 'INCOMING_IN_PERSON') {
         return 'IN';
@@ -438,10 +470,26 @@ export function checkDirection(value) {
     }
 }
 
+/**
+ * Verifica si el tipo de evento corresponde a un evento de investigación o pasantía.
+ * @param {number} value - El valor del tipo de evento. Este valor debe ser un número entero.
+ * @returns {boolean} `true` si el valor corresponde a un evento de investigación(4) o pasantía(7), 
+ *                   `false` en caso contrario.
+ */
 export function checkEventType(value) {
     return value === 4 || value===7
 }
 
+/**
+ * Verifica si las fechas de entrada y salida son válidas en función de la dirección de la movilidad.
+ * Si la dirección es "IN" (entrante), la fecha de entrada debe ser anterior o igual a la fecha de salida.
+ * Si la dirección es "OUT" (saliente), la fecha de salida debe ser anterior o igual a la fecha de entrada.
+ * @param {string} direction - La dirección de la movilidad. Puede ser 'IN' (entrante) o 'OUT' (saliente).
+ * @param {string|Date} entryDate - La fecha de entrada, en formato de fecha válida o cadena de texto que puede ser convertida a fecha.
+ * @param {string|Date} exitDate - La fecha de salida, en formato de fecha válida o cadena de texto que puede ser convertida a fecha.
+ * 
+ * @returns {boolean} `true` si las fechas son válidas según la dirección proporcionada, `false` en caso contrario.
+ */
 export function checkDates(direction, entryDate, exitDate){
     const entry = new Date(entryDate);
     const exit = new Date(exitDate);

@@ -1,3 +1,9 @@
+/**
+ * Objeto que define las clases de colores utilizadas en el sistema para diferentes estados (éxito, error, información, alerta).
+ * Se incluye tanto en sus variantes claras como oscuras para adaptarse a diferentes temas de color.
+ * 
+ * @namespace colors
+ */
 export const colors = {
     success: {
         bgLight: 'bg-success-light',
@@ -29,6 +35,12 @@ export const colors = {
     }
 }
 
+/**
+ * Objeto que contiene las clases CSS para el estilo y la disposición de los elementos de la interfaz de usuario.
+ * Se incluyen estilos de contenedor principal, bordes, texto y botones.
+ * 
+ * @namespace styles
+ */
 export const styles = {
     mainContainer: 'fixed bottom-8 left-0 flex justify-between gap-2 md:gap-5 rounded-lg shadow-md w-10/12 sm:w-80 min-h-16 transition-all duration-150 z-50',
     border: 'w-2.5 rounded-l',

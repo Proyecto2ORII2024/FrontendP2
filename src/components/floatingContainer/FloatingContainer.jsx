@@ -1,6 +1,19 @@
 import PropTypes from "prop-types";
 import MainButton from "../buttons/MainButton";
 
+/**
+ * Componente de contenedor flotante que actúa como modal con animaciones de aparición y opciones de cierre.
+ * 
+ * @component
+ * @param {Object} props - Propiedades del componente.
+ * @param {boolean} props.open - Indica si el modal está abierto o cerrado.
+ * @param {function} props.setOpen - Función para actualizar el estado de apertura del modal.
+ * @param {React.ReactNode} props.children - Contenido que se mostrará dentro del modal.
+ * @param {number} [props.bttType=0] - Tipo de botón para el cierre del modal. 
+ * - `0`: Botón de cierre en la esquina superior derecha.
+ * - `1`: Botón principal "Entendido" al pie del modal.
+ * @returns {JSX.Element} Un elemento JSX que representa el contenedor flotante.
+ */
 function FloatingContainer({ open, setOpen, children, bttType = 0 }) {
   const XBtt = (
     <svg
@@ -13,8 +26,6 @@ function FloatingContainer({ open, setOpen, children, bttType = 0 }) {
       <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
     </svg>
   );
-
-  console.log("Dentro del componente: " + open);
 
   return (
     <div
