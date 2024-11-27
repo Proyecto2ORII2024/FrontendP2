@@ -7,7 +7,7 @@ import {
   calcDays,
   checkDirection,
   checkDates,
-  checkEventType
+  checkEventType,
 } from "../../utils/FormInformation.js";
 import { useForm, Controller } from "react-hook-form";
 import CustomInput from "../../components/customInput/CustomInput.jsx";
@@ -21,8 +21,98 @@ import AdminLayout from "../../layouts/AdminLayout.jsx";
 import UserLayout from "../../layouts/UserLayout.jsx";
 import { formatDateToDDMMYYYY } from "../../utils/Date.js";
 import facultyOptions from "../../utils/facultyOptions.js";
+import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/LoginContext.jsx";
+
+/**
+ * FormPage component handles the creation and management of mobility forms.
+ * It includes form validation, state management, and interaction with APIs 
+ * to save and retrieve data.
+ *
+ * @component
+ * @example
+ * return (
+ *   <FormPage />
+ * )
+ *
+ * @returns {JSX.Element} The rendered FormPage component.
+ *
+ * @typedef {Object} FormData
+ * @property {boolean} orii - Indicates if the form is for mobility within the institution.
+ * @property {string} direction - The direction of mobility (e.g., "IN" or "OUT").
+ * @property {string} gender - The gender of the individual.
+ * @property {number} cta - The CTA value associated with the form.
+ * @property {string} entryDate - The entry date in DD/MM/YYYY format.
+ * @property {string} exitDate - The exit date in DD/MM/YYYY format.
+ * @property {string} originProgram - The origin program of the individual.
+ * @property {string} destinationProgram - The destination program.
+ * @property {string} city - The destination city.
+ * @property {string} country - The destination country.
+ * @property {string} faculty - The associated faculty.
+ * @property {number} funding - The funding amount.
+ * @property {string} fundingSource - The source of the funding.
+ * @property {string} destination - The destination details.
+ * @property {string} origin - The origin details.
+ * @property {string|null} agreementId - The ID of the agreement (if applicable).
+ * @property {string|null} teacher - The assigned teacher (if applicable).
+ * @property {Object} event - The event details.
+ * @property {string} event.description - Description of the event.
+ * @property {number} event.eventTypeId - The ID of the event type.
+ * @property {Object} person - The person's details.
+ * @property {string} person.identificationType - The identification type.
+ * @property {string} person.personType - The type of person (e.g., "student").
+ * @property {string} person.firstName - The first name of the person.
+ * @property {string} person.lastName - The last name of the person.
+ * @property {string} person.identification - The identification number.
+ *
+ * @typedef {Object} Notification
+ * @property {string} type - The type of notification (e.g., "success", "error").
+ * @property {string} message - The message to display in the notification.
+ * @property {boolean} open - Whether the notification is open.
+ *
+ * @state {number} days - The number of days calculated between entry and exit dates.
+ * @state {string} entryDate - The selected entry date.
+ * @state {string} exitDate - The selected exit date.
+ * @state {Array} agreements - List of agreements fetched from the API.
+ * @state {string} dateError - Error message related to date validation.
+ * @state {boolean} yes - Indicates if an agreement ID is required.
+ * @state {boolean} isStudent - Indicates if the person is a student.
+ * @state {string} isInOrOut - The mobility direction ("IN" or "OUT").
+ * @state {boolean} isValidETForTutor - Indicates if the teacher is valid for tutoring.
+ * @state {string} notification - The current notification type.
+ * @state {boolean} notiOpen - Whether the notification is open.
+ * @state {boolean} showTable - Whether to display the table of data.
+ *
+ * @function updateEntryDate - Updates the entry date state.
+ * @param {Object} e - Event object from the input field.
+ *
+ * @function updateExitDate - Updates the exit date state.
+ * @param {Object} e - Event object from the input field.
+ *
+ * @function getAgreementTextById - Retrieves the agreement text by ID.
+ * @param {string} id - The ID of the agreement.
+ * @param {Array} agreements - List of agreements.
+ * @returns {string} The text of the agreement or "N/A" if not found.
+ *
+ * @function saveLocalStorage - Saves the form data to session storage.
+ * @param {Object} object - The form data to save.
+ *
+ * @function returnMov - Retrieves recently created mobility data from session storage.
+ * @returns {Array} An array of recent mobility data.
+ *
+ * @function onSubmit - Handles form submission, validates data, and saves to the backend.
+ * @param {Object} data - The data submitted from the form.
+ *
+ * @function checkDates - Validates the relationship between entry and exit dates.
+ * @param {string} isInOrOut - The direction of mobility.
+ * @param {string} entryDate - The entry date.
+ * @param {string} exitDate - The exit date.
+ * @returns {boolean} Whether the dates are valid.
+ *
+ * @useEffect - Fetches agreements from the API on component mount.
+ * @useEffect - Calculates the number of days between entry and exit dates when these values change.
+ */
 
 function FormPage() {
   const [days, setDays] = useState(0);
@@ -33,11 +123,14 @@ function FormPage() {
   const [yes, setYes] = useState(false);
   const [isStudent, setIsStudent] = useState(false);
   const [isInOrOut, setIsInOrOut] = useState("");
-  const [isValidETForTutor, setIsValidETForTutor] = useState(false)
+  const [isValidETForTutor, setIsValidETForTutor] = useState(false);
   const [notification, setNotification] = useState("");
   const [notiOpen, setNotiOpen] = useState(false);
+  const [showTable, setShowTable] = useState(false)
 
   const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const Layout = user.role === "ADMIN" ? AdminLayout : UserLayout;
 
@@ -57,17 +150,19 @@ function FormPage() {
     required: true,
 
     options: facultyOptions,
-
   };
 
+  //Actualizar la fecha de entrada/retorno
   const updateEntryDate = (e) => {
     setEntryDate(e.target.value);
   };
 
+  //Actualizar la fecha de salida
   const updateExitDate = (e) => {
     setExitDate(e.target.value);
   };
 
+  //Obtener el text del convenio por ID
   const getAgreementTextById = (id, agreements) => {
     const agreement = agreements.find((ag) => ag.value === id);
     return agreement ? agreement.text : "N/A"; // Si no se encuentra, muestra "N/A"
@@ -81,6 +176,7 @@ function FormPage() {
     formState: { errors },
   } = useForm();
 
+  //Guardar los datos de formularios creados recientemente
   const saveLocalStorage = (object) => {
     // Verifica si ya existe el valor en sessionStorage
     const existingData = sessionStorage.getItem("movility");
@@ -96,14 +192,17 @@ function FormPage() {
     }
   };
 
+  //Retorno de las movilidades recientes
   const returnMov = () => {
     const mov = JSON.parse(sessionStorage.getItem("movility"));
     return Array.isArray(mov) ? mov : [];
   };
 
+  //Subida de datos
   const onSubmit = (data) => {
     const validDate = checkDates(isInOrOut, data.entryDate, data.exitDate);
 
+    //Validar fechas
     if (!validDate) {
       setDateError(
         isInOrOut === "IN"
@@ -133,7 +232,9 @@ function FormPage() {
       origin: data.origin,
       agreementId: yes ? data.agreementId : null,
       teacher:
-        isStudent && isInOrOut === "IN" && data.teacher && isValidETForTutor ? data.teacher : null,
+        isStudent && isInOrOut === "IN" && data.teacher && isValidETForTutor
+          ? data.teacher
+          : null,
       event: {
         description: data.eventDescription,
         eventTypeId: data.eventType,
@@ -146,18 +247,6 @@ function FormPage() {
         identification: data.personId,
       },
     };
-
-    //Forma provicional para los datos de las estadisticas
-    localStorage.setItem("userData", JSON.stringify(formData));
-
-    const agreementsData =
-      JSON.parse(localStorage.getItem("agreementsData")) || {};
-
-    const selectedEventType = data.eventType;
-    agreementsData[selectedEventType] =
-      (agreementsData[selectedEventType] || 0) + 1;
-
-    localStorage.setItem("agreementsData", JSON.stringify(agreementsData));
 
     createForm(formData)
       .then((res) => {
@@ -182,6 +271,7 @@ function FormPage() {
       });
   };
 
+  //Obtener los convenios creados
   useEffect(() => {
     getAgreements()
       .then((res) => {
@@ -192,6 +282,7 @@ function FormPage() {
       });
   }, []);
 
+  //Calcular los días de estancia
   useEffect(() => {
     if (entryDate && exitDate) {
       setDays(
@@ -226,6 +317,17 @@ function FormPage() {
             <p>Ha ocurrido un error al enviar el formulario</p>
           )}
         </NotificationBox>
+        {user.role === "ADMIN" && (
+          <section className="flex flex-col w-full p-5 pb-0 md:items-center md:flex-row">
+          <MainButton
+            text="Volver a Movilidades"
+            bgColor="primary"
+            hoverBg="primary-light"
+            textColor="white"
+            onClick={() => navigate("/admin/movilidad")}
+          />
+        </section>
+        )}
         <h3 className="mt-5 ml-8">
           <span className="font-semibold">Nota: </span>Los campos con{" "}
           <span className="text-xl font-semibold text-red-400">*</span> son
@@ -479,7 +581,9 @@ function FormPage() {
 
             <div
               className={`${
-                isStudent && isInOrOut === "IN" && isValidETForTutor ? "" : "opacity-40 -z-50"
+                isStudent && isInOrOut === "IN" && isValidETForTutor
+                  ? ""
+                  : "opacity-40 -z-50"
               }`}
             >
               <CustomInput
@@ -488,10 +592,9 @@ function FormPage() {
                 errors={errors}
                 register={register}
                 isDisable={
-                  !isStudent && (isInOrOut === "OUT" || isInOrOut === "") 
+                  !isStudent && (isInOrOut === "OUT" || isInOrOut === "")
                 }
               />
-
             </div>
           </DataContainer>
           <DataContainer title="Convenios y patrocinios">
@@ -512,7 +615,6 @@ function FormPage() {
                     onChange={field.onChange}
                     bblInfo={Info.convenio}
                   />
-
                 )}
               />
               {errors[inputInfo.convenio.id] && (
@@ -571,7 +673,6 @@ function FormPage() {
               <div className="flex items-center gap-2">
                 <InfoBubble
                   info={
-
                     isInOrOut === "IN" || isInOrOut === ""
                       ? Info.fechaEntrada
                       : Info.fechaSalida
@@ -589,7 +690,6 @@ function FormPage() {
                   isInOrOut === "IN" || isInOrOut === ""
                     ? "entryDate"
                     : "exitDate"
-
                 }
                 autoComplete="off"
                 className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
@@ -607,7 +707,6 @@ function FormPage() {
                   {
                     required: true,
                     onChange:
-
                       isInOrOut === "IN" || isInOrOut === ""
                         ? updateEntryDate
                         : updateExitDate,
@@ -644,7 +743,6 @@ function FormPage() {
                   {isInOrOut === "IN" || isInOrOut === ""
                     ? "Fecha de salida"
                     : "Fecha de retorno"}
-
                 </p>
                 <span className="text-xl font-semibold text-red-400">*</span>
               </div>
@@ -710,7 +808,7 @@ function FormPage() {
               </p>
             </label>
           </DataContainer>
-          
+
           <div className="mx-auto">
             <MainButton
               text={"Confirmar"}
@@ -721,7 +819,8 @@ function FormPage() {
             />
           </div>
         </form>
-        {returnMov().length > 0 && (
+        <button className="mb-5 font-semibold underline duration-150 text-primary hover:text-primary-light" onClick={() => setShowTable(!showTable)} type="button">{!showTable ? "Mostrar movilidades recientes" : "Ocultar movilidades recientes"}</button>
+        {showTable && returnMov().length > 0 && (
           <table className="w-5/6 mx-auto mb-10 text-center border-collapse table-auto text-primary-dark md:table">
             <thead className="hidden bg-neutral md:table-header-group">
               <tr className="rounded-t-xl">
@@ -745,8 +844,9 @@ function FormPage() {
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">Facultad: </span>
 
-                    {facultad.options.find(option => option.value === item.faculty)?.text || "No disponible"}
-
+                    {facultad.options.find(
+                      (option) => option.value === item.faculty
+                    )?.text || "No disponible"}
                   </td>
                   <td className="px-4 py-2">
                     <span className="font-bold md:hidden">
@@ -759,7 +859,7 @@ function FormPage() {
                     {item.person.identificationType}
                   </td>
                   <td className="px-4 py-2">
-                      <span className="font-bold md:hidden">Número de ID: </span>
+                    <span className="font-bold md:hidden">Número de ID: </span>
                     {item.person.identification}
                   </td>
                 </tr>

@@ -3,6 +3,15 @@ import SimpleSelect from "../simpleSelect/SimpleSelect";
 import { inputInfo } from "../../utils/FormInformation";
 import PropTypes from "prop-types";
 
+/**
+ * Filter component that displays a set of selection fields and data entry inputs inside a floating container.
+ * 
+ * @component
+ * @param {Object} props - The component's properties.
+ * @param {boolean} props.open - Indicates whether the floating container is open.
+ * @param {function} props.setOpen - Function to update the state of the floating container's open/close status.
+ * @returns {JSX.Element} A JSX element representing the filter interface.
+ */
 function Filters({open, setOpen}){
 
     return(

@@ -39,6 +39,7 @@ function Login() {
    * @param {object} data - Datos del formulario de login 
    */
   const handleLogin = async (data) => {
+    console.log(data)
     await singin(data);
   };
 

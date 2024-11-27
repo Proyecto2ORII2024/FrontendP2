@@ -1,25 +1,34 @@
 import logoUnicauca from "../../assets/Logo_Unicauca_Azul.png"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import init from "../../assets/init.svg";
+import agreements from "../../assets/agreements.svg";
+import forms from "../../assets/forms.svg";
+import logout from "../../assets/logout.svg";
+import asideLeft from "../../assets/asideLeft.svg";
+import changePassword from "../../assets/changePassword.svg"
+import { useContext } from "react";
+import { AuthContext } from "../../context/LoginContext";
 
 function AsideUser({open, setOpen}) {
     
     const navigate = useNavigate();
     const Menus = [
-      {title: "Inicio", src:"init", Link:"/user"},
-      {title: "Convenios", src:"agreements", Link:"/user/agreement"},
-      {title: "Formularios", src:"forms"},
-      {title: "Registra Usuarios", src:"reg", gap: true, Link:"/user/registrar"},
-      {title: "Cambiar Contraseña", src:"changePassword", Link:"/changePassword"},
-      {title: "Cerrar Sesión", src:"logout"},
+      {title: "Inicio", src:init, Link:"/user"},
+      {title: "Convenios", src:agreements, Link:"/user/agreement"},
+      {title: "Formularios", src:forms, Link:"/form"},
+      {title: "Cambiar Contraseña", gap: true, src:changePassword, Link:"/changePassword"},
     ]
+
+    const { singout } = useContext(AuthContext);
+
     return (
-      <div className={`flex fixed h-full w-screen lg:hidden bg-black/50 backdrop-blur-sm top-0 right-0 
+      <div className={`flex fixed z-30 h-full w-screen lg:hidden bg-black/50 backdrop-blur-sm top-0 right-0 
       -translate-x-full ${!open && "translate-x-0"} transition-all`}>
         <section className={`w-72
         duration-300
         bg-white relative p-5 pt-8`}>
           <img 
-            src="./src/assets/asideLeft.svg" 
+            src={asideLeft}
             className={`absolute cursor-pointer -right-4 top-40 w-10 bottom-2 border-info-dark`} 
             onClick={() => setOpen(!open)}
           />
@@ -35,11 +44,19 @@ function AsideUser({open, setOpen}) {
               gap-x-2 cursor-pointer p-x hover:text-primary-light rounded-md
               ${menu.gap ? "mt-60" : "mt-1"}`}>
                 <button className="flex" onClick={() => navigate(menu.Link)}>
-                  <img src={`./src/assets/${menu.src}.svg`} className="w-5"/>
+                  <img src={menu.src} className="w-5"/>
                   {menu.title}
                 </button>
               </li>
             ))}
+            <li className={`text-primary-dark text-sm font-bold flex items-center 
+              gap-x-2 cursor-pointer p-x hover:text-primary-light rounded-md
+              ${"mt-1"}`}>
+                <button className="flex" onClick={() => singout()}>
+                  <img src={logout} className="w-5"/>
+                  Cerrar Sesión
+                </button>
+              </li>
           </ul>
         </section>
       </div>

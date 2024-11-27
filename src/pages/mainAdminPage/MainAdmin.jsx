@@ -31,7 +31,7 @@ function MainAdmin() {
 
   const { user } = useContext(AuthContext);
 
-  const lastPasswordChange = user?.lastPasswordChange || "2023-11-01T00:00:00Z"; //TODO: chage default value
+  const lastPasswordChange = user?.lastPasswordChange;
 
   useEffect(() => {
     if (lastPasswordChange) {

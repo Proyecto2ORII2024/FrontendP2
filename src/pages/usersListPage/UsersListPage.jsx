@@ -23,18 +23,7 @@ function UsersListPage() {
   const [wasDeleted, setWasDeleted] = useState("");
   const [wasUpdated, setwasUpdated] = useState("");
   const [userSelected, setUserSelected] = useState({});
-  const [estudiantes, setEstudiantes] = useState([
-    {
-      userId: 1,
-      email: "ORI@UNICAUCA.EDU.CO",
-      role: "Admin"
-    },
-    {
-      userId: 2,
-      email: "INGENIERIA@UNICAUCA.EDU.CO",
-      role: "Usuario"
-    }
-  ]);
+  const [estudiantes, setEstudiantes] = useState([]);
 
   /**
    * Recibe los usuarios desde el backend
@@ -255,7 +244,7 @@ function UsersListPage() {
                             <span className="md:hidden font-bold">
                               Facultad:
                             </span>
-                            {estudiante.faculty}
+                            {estudiante.faculty || "N/A"}
                           </td>
                           <td className={styles.tdIn}>
                             <span className="md:hidden font-bold">

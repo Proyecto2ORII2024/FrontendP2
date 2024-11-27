@@ -1,3 +1,8 @@
+/**
+ * Detailed information about the fields of a mobility form.
+ * Each field has a title, short or long information, and options ready to be displayed.
+ */
+
 export const Info = {
     sentido: {
         title: 'Tipo de movilidad',
@@ -208,6 +213,11 @@ export const Info = {
     }
 }
 
+/**
+ * Object that contains information about the form fields, including their ID, label text, 
+ * whether they are required, available options (in case of a select field), and required validations.
+ * This object organizes the different input fields for a request related to academic mobility.
+ */
 export const inputInfo = {
     sentido:{
         id:'direction',
@@ -405,6 +415,12 @@ export const inputInfo = {
     }
 }
 
+/**
+ * Creates an array of options for a select field based on the provided agreements list.
+ * The function takes an array of agreement objects and updates the state with the formatted options.
+ * @param {Array<{agreementId: string, agreementNumber: string}>} agreements - An array of agreements, where each agreement has an `agreementId` and an `agreementNumber`.
+ * @param {function} setAgreements - State update function that will be used to set the new value of the options.
+ */
 export const createAgreementOptions = (agreements, setAgreements) => {
     const options = [];
 
@@ -418,6 +434,13 @@ export const createAgreementOptions = (agreements, setAgreements) => {
     setAgreements(options);
 };
 
+/**
+ * Calculates the number of days between two dates.
+ * The function takes two dates and calculates the difference in days, rounding down to the nearest whole number.
+ * @param {string|Date} startDate - The start date in date format or a string that can be interpreted by the `Date` constructor.
+ * @param {string|Date} endDate - The end date in date format or a string that can be interpreted by the `Date` constructor.
+ * @returns {number} The difference in days between `startDate` and `endDate`.
+ */
 export function calcDays(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
@@ -430,6 +453,15 @@ export function calcDays(fechaInicio, fechaFin) {
     return Math.floor(diferenciaDias); // Redondear al número de días
 }
 
+/**
+ * Determines the direction of the mobility (incoming or outgoing) based on the provided value.
+ * @param {string} value - The mobility value, which can be one of the following:
+ *   - 'INCOMING_VIRTUAL'
+ *   - 'INCOMING_IN_PERSON'
+ *   - Any other value is considered as 'OUT'.
+ * @returns {string} 'IN' if the value corresponds to an incoming mobility,
+ *                   'OUT' if it corresponds to an outgoing mobility.
+ */
 export function checkDirection(value) {
     if (value === 'INCOMING_VIRTUAL' || value === 'INCOMING_IN_PERSON') {
         return 'IN';
@@ -438,10 +470,26 @@ export function checkDirection(value) {
     }
 }
 
+/**
+ * Verifies if the event type corresponds to a research or internship event.
+ * @param {number} value - The event type value. This value must be an integer.
+ * @returns {boolean} `true` if the value corresponds to a research (4) or internship (7) event,
+ *                   `false` otherwise.
+ */
 export function checkEventType(value) {
     return value === 4 || value===7
 }
 
+/**
+ * Verifies if the entry and exit dates are valid based on the direction of mobility.
+ * If the direction is "IN" (incoming), the entry date must be earlier than or equal to the exit date.
+ * If the direction is "OUT" (outgoing), the exit date must be earlier than or equal to the entry date.
+ * @param {string} direction - The direction of mobility. It can be 'IN' (incoming) or 'OUT' (outgoing).
+ * @param {string|Date} entryDate - The entry date, in a valid date format or a string that can be converted to a date.
+ * @param {string|Date} exitDate - The exit date, in a valid date format or a string that can be converted to a date.
+ * 
+ * @returns {boolean} `true` if the dates are valid according to the provided direction, `false` otherwise.
+ */
 export function checkDates(direction, entryDate, exitDate){
     const entry = new Date(entryDate);
     const exit = new Date(exitDate);

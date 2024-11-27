@@ -156,6 +156,16 @@ function UpdateForm() {
                         <p>Ha ocurrido un error al actualizar el convenio, por favor intente de nuevo</p>
                     )}
                 </NotificationBox>
+
+                <section className="flex w-full p-5 pb-0 md:items-center flex-col md:flex-row">
+                <MainButton
+                    text="Volver a Movilidades"
+                    bgColor="primary"
+                    hoverBg="primary-light"
+                    textColor="white"
+                    onClick={() => navigate("/admin/movilidad")}
+                />
+                </section>
                 <h3 className="mt-5 ml-8">
                     <span className="font-semibold">Nota: </span>Los campos con{" "}
                     <span className="text-xl font-semibold text-red-400">*</span> son

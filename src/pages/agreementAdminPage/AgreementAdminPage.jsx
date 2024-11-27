@@ -13,6 +13,54 @@ import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 import { obtainAgreements } from "../../services/agreement.service.js";
 
+/**
+ * AgreementAdminPage component is responsible for displaying and managing agreements.
+ * It fetches agreements data, handles search functionality, and provides options to edit or delete agreements.
+ *
+ * @component
+ * @example
+ * return (
+ *   <AgreementAdminPage />
+ * )
+ *
+ * @returns {JSX.Element} The rendered AgreementAdminPage component.
+ *
+ * @typedef {Object} Agreement
+ * @property {string} agreementNumber - The number of the agreement.
+ * @property {string} country - The country associated with the agreement.
+ * @property {string} institution - The institution associated with the agreement.
+ * @property {string} description - The description of the agreement.
+ *
+ * @typedef {Object} AgreementsData
+ * @property {Agreement[]} NATIONAL - Array of national agreements.
+ * @property {Agreement[]} INTERNATIONAL - Array of international agreements.
+ * @property {Agreement[]} ALL - Array of all agreements.
+ *
+ * @typedef {Object} NotificationType
+ * @property {string} type - The type of notification ("success" or "error").
+ * @property {string} title - The title of the notification.
+ * @property {boolean} open - Whether the notification is open or not.
+ * @property {Function} setOpen - Function to set the open state of the notification.
+ *
+ * @typedef {Object} EditAgreementProps
+ * @property {boolean} open - Whether the edit agreement modal is open or not.
+ * @property {Function} setOpen - Function to set the open state of the edit agreement modal.
+ * @property {Agreement} agreement - The agreement to be edited.
+ * @property {Function} setUpdated - Function to set the updated state.
+ *
+ * @typedef {Object} DeleteAgreementProps
+ * @property {boolean} open - Whether the delete agreement modal is open or not.
+ * @property {Function} setOpen - Function to set the open state of the delete agreement modal.
+ * @property {string} agreementId - The ID of the agreement to be deleted.
+ * @property {Function} setDeleted - Function to set the deleted state.
+ *
+ * @typedef {Object} AgreementTableProps
+ * @property {Agreement[]} agreements - Array of agreements to be displayed in the table.
+ * @property {Function} setOpen - Function to set the open state of the edit agreement modal.
+ * @property {Function} setAgreementId - Function to set the ID of the selected agreement.
+ * @property {Function} setAgreementSelected - Function to set the selected agreement.
+ * @property {Function} setOpenDelete - Function to set the open state of the delete agreement modal.
+ */
 function AgreementAdminPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [nationalAgreements, setNationalAgreements] = useState([]);
@@ -38,6 +86,14 @@ function AgreementAdminPage() {
 
   const navigate = useNavigate();
 
+  /**
+   * Handles the search functionality for agreements.
+   * Filters the agreements based on the search input and updates the search results.
+   *
+   * @param {Object} e - The event object from the search input.
+   * @param {Object} e.target - The target element of the event.
+   * @param {string} e.target.value - The value of the search input.
+   */
   const handleSearch = (e) => {
     if (e.target.value === "") {
       setIsSearching(false);
