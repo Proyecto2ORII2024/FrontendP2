@@ -56,7 +56,7 @@ function RegistrarUsuarioPage() {
 
     /**
      * Funcion que maneja cuando se cambia el rol del usuario(por cuestiones de requerimientos)
-     * @param {object} e - Evento dado en el objeto en el que se utiliza la funcion 
+     * @param {object} e - Evento dado en el componente en el que se utiliza la funcion 
      */
     const handleRolChange = (e) => {
         const value = e.target.value;
