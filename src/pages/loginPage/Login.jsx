@@ -34,6 +34,10 @@ function Login() {
     formState: { errors },
   } = useForm();
 
+  /**
+   * Funcion que maneja el login del usuario
+   * @param {object} data - Datos del formulario de login 
+   */
   const handleLogin = async (data) => {
     console.log(data)
     await singin(data);

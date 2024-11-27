@@ -1,18 +1,17 @@
 import LoginImage from "../../assets/Images/Login.webp";
 import ORIIIcon from "../../assets/Images/ORII.webp";
 import MainButton from "../../components/buttons/MainButton.jsx";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 //
 function Login() {
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 

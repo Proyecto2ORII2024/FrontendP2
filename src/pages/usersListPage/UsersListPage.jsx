@@ -25,20 +25,25 @@ function UsersListPage() {
   const [userSelected, setUserSelected] = useState({});
   const [estudiantes, setEstudiantes] = useState([]);
 
+  /**
+   * Recibe los usuarios desde el backend
+   */
   useEffect(() => {
-    console.log(localStorage.getItem("user"));
     const fetchData = async () => {
       const data = await getUsers();
       setEstudiantes(data.data);
-      console.log("data",data.data);
     };
     fetchData();
   }, []);
 
   const navigate = useNavigate();
 
+  /**
+   * Funcion que actualiza un usuario
+   * @param {int} idToUpdate - La id del usuario que se quiere actualizar
+   * @param {object} data - informacion del usuario que se quiere actualizar
+   */
   const updateData = async (idToUpdate, data) => {
-    console.log("dataantes", data);
     try {
 
       let id;
@@ -47,19 +52,15 @@ function UsersListPage() {
       } else {
         id = idToUpdate;
       }
-      console.log(id, data);
 
       var userUpt = userSelected;
-
-      console.log("userupt", userUpt)
 
       userUpt.role = data.role;
       userUpt.faculty = data.faculty;
       if(userUpt.faculty === null || userUpt.faculty === '' ){
         delete userUpt.faculty
       }
-      console.log("userupt2", userUpt)
-      console.log("update",await updateUser(id, userUpt));
+      await updateUser(id, userUpt)
 
       setEstudiantes(
         estudiantes.map((estudiante) =>
@@ -83,7 +84,10 @@ function UsersListPage() {
 
   };
 
-
+  /**
+   * Funcion para eliminar un usuario
+   * @param {int} idToDelete - La id del usuario a eliminar
+   */
   const handleDelete = async (idToDelete) => {
     try {
       console.log("idtodelete", idToDelete);
@@ -103,6 +107,10 @@ function UsersListPage() {
     
   };
 
+  /**
+   * Funcion que controla la busqueda de usuarios
+   * @param {object} e - evento del componente que contiene la informacion de busqueda
+   */
   const handleSearch = (e) => {
     if (e.target.value === "") {
       setIsSearching(false);

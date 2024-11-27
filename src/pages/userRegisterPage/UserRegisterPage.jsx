@@ -21,7 +21,11 @@ function RegistrarUsuarioPage() {
     reset,
     formState: { errors },
   } = useForm();
-
+                             
+    /**
+     * Funcion para crear un usuario
+     * @param {object} data - La informacion del usuario a registrar
+     */
   const handleRegister = async (data) => {
     try {
       if (data.faculty === null || data.faculty === "") {
@@ -64,6 +68,10 @@ function RegistrarUsuarioPage() {
     },
   ];
 
+                             /**
+     * Funcion que maneja cuando se cambia el rol del usuario(por cuestiones de requerimientos)
+     * @param {object} e - Evento dado en el componente en el que se utiliza la funcion 
+     */
   const handleRolChange = (e) => {
     const value = e.target.value;
     if (value === "ADMIN") {
@@ -75,6 +83,9 @@ function RegistrarUsuarioPage() {
     }
   };
 
+                             /**
+     * Devuelve al usuario a la lista de usuarios
+     */
   const returnList = () => {
     navigate("/user/list");
   };
