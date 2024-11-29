@@ -14,6 +14,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const options = {
   responsive: true,
+  maintainAspectRatio: false, 
   scales: {
     x: {
       title: {
@@ -37,7 +38,6 @@ const options = {
     },
   },
 };
-
 
 export const BarChartMobility = () => {
   const [chartData, setChartData] = useState(null);
