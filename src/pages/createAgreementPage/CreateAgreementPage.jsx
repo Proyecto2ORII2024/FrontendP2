@@ -5,14 +5,32 @@ import AdminLayout from "../../layouts/AdminLayout.jsx";
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { createAgreement } from "../../services/agreement.service";
 
 import { formatDateToDDMMYYYY } from "../../utils/Date.js";
 
+import { messages } from "../../utils/agreementsFormMessages.js";
+
+/**
+ * CreateAgreementPage component allows users to create a new agreement.
+ * It includes a form with fields for country, agreement number, institution, start date, scope, and description.
+ * Upon submission, it sends the data to create an agreement and displays a notification based on the response.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CreateAgreementPage />
+ * )
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
 function CreateAgreementPage() {
   const [open, setOpen] = useState(false);
   const [notification, setNotification] = useState("");
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -61,10 +79,21 @@ function CreateAgreementPage() {
           )}
         </NotificationBox>
 
-        <h2 className="w-full mt-5 p-5 text-lg text-center">
-          A continuación podrá crear un convenio, por favor verifique que la
-          información ingresada es correcta e ingrese todos los campos.
-        </h2>
+        <section className="flex w-full mt-5 p-5 md:items-center flex-col md:flex-row gap-3">
+          <div className="w-fit">
+          <MainButton
+            text="Volver a convenios"
+            bgColor="primary"
+            hoverBg="primary-light"
+            textColor="white"
+            onClick={() => navigate("/admin/agreement")}
+          />
+          </div>
+          <h2 className="w-full text-lg text-center">
+            A continuación podrá crear un convenio, por favor verifique que la
+            información ingresada es correcta e ingrese todos los campos.
+          </h2>
+        </section>
 
         <section className="w-full flex justify-center">
           <form
@@ -74,7 +103,9 @@ function CreateAgreementPage() {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "pais", shortInfo: "Pais" }} />
+                  <InfoBubble
+                    info={{ title: "pais", shortInfo: messages.country }}
+                  />
                   <p>Pais</p>
                 </div>
                 <input
@@ -100,7 +131,9 @@ function CreateAgreementPage() {
 
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo" }} />
+                  <InfoBubble
+                    info={{ title: "Codigo", shortInfo: messages.code }}
+                  />
                   <p>Codigo</p>
                 </div>
                 <input
@@ -131,7 +164,10 @@ function CreateAgreementPage() {
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
                   <InfoBubble
-                    info={{ title: "Institución", shortInfo: "Institución" }}
+                    info={{
+                      title: "Institución",
+                      shortInfo: messages.intitution,
+                    }}
                   />
                   <p>Institución</p>
                 </div>
@@ -161,7 +197,7 @@ function CreateAgreementPage() {
                   <InfoBubble
                     info={{
                       title: "Fecha de inicio",
-                      shortInfo: "Fecha de inicio",
+                      shortInfo: messages.startDate,
                     }}
                   />
                   <p>Fecha de inicio</p>
@@ -180,12 +216,14 @@ function CreateAgreementPage() {
               </label>
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito" }} />
+                  <InfoBubble
+                    info={{ title: "Ambito", shortInfo: messages.scope }}
+                  />
                   <p>Ambito</p>
                 </div>
                 <select
                   id="scope"
-                  className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
+                  className="border-b-2 ml-7 border-neutral-hover outline-none py-1 border-t-transparent"
                   {...register("scope", { required: true })}
                 >
                   <option value="NATIONAL">Nacional</option>
@@ -201,7 +239,10 @@ function CreateAgreementPage() {
             <label htmlFor="description" className="flex flex-col w-full">
               <div className="flex gap-2 items-center">
                 <InfoBubble
-                  info={{ title: "Descripción", shortInfo: "Descripción" }}
+                  info={{
+                    title: "Descripción",
+                    shortInfo: messages.description,
+                  }}
                 />
                 <p>Descripción</p>
               </div>

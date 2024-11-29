@@ -1,20 +1,25 @@
+/**
+ * Detailed information about the data displayed after creating a mobility entry.
+ * Each field has a title, short or long information, and options ready to be displayed.
+ */
+
 export const MoveInfo = {
     sentido: {
-        title: 'Sentido',
+        title: 'Tipo de movilidad',
         longInfo: {
             list: {
-                'SALIENTE PRESENCIAL': 'Cuando el estudiante, funcionario administrativo o profesor, realiza movilidad presencial en otras instituciones o universidades del país o del exterior',
+                'SALIENTE PRESENCIAL': 'Cuando el estudiante, funcionario administrativo o profesor, realizó movilidad presencial en otras instituciones o universidades del país o del exterior',
 
                 'ENTRANTE PRESENCIAL': 'Cuando llegan estudiantes para realizar intercambio o estancias de investigación o para participar en seminarios, congresos, talleres; o, cuando llegan los expertos extranjeros invitados a orientar actividades académicas, investigativas, culturales, en forma presencial en Universidad del Cauca.',
 
-                'SALIENTE VIRTUAL': 'Cuando llegan estudiantes para realizar intercambio o estancias de investigación o para participar en seminarios, congresos, talleres; o, cuando llegan los expertos extranjeros invitados a orientar actividades académicas, investigativas, culturales, en forma presencial en Universidad del Cauca.',
+                'SALIENTE VIRTUAL': 'Si el universitario, estudiante, funcionario administrativo o profesor, realizó movilidad a través de TICs, en otras instituciones o universidades del país o del exterior.',
 
                 'ENTRANTE VIRTUAL': 'Cuando los estudiantes realizan intercambio o participan en seminarios, congresos, talleres; o, cuando los expertos extranjeros invitados orientan actividades académicas, investigativas, culturales, a través de TICs, en Universidad del Cauca.'
             }
         }
     },
     tipo: {
-        title: 'Tipo',
+        title: 'Rol en la movilidad',
         longInfo: {
             list: {
                 'PROFESOR': 'Cuando se trate de un profesor de la Universidad del Cauca.  También debe seleccionar PROFESOR, cuando se trate de un profesor extranjero invitado.',
@@ -134,7 +139,7 @@ export const MoveInfo = {
     },
     descEvento:{
         title: 'Descripción del evento',
-        shortInfo: 'Información solicitada correspondiente al tipo de evento'
+        shortInfo: 'Información corta solicitada correspondiente al tipo de evento'
     },
     programaOrigen:{
         title: 'Programa de origen',

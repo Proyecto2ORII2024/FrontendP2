@@ -7,6 +7,9 @@ import statistics from "../../assets/statistics.svg";
 import reg from "../../assets/reg.svg";
 import logout from "../../assets/logout.svg";
 import asideLeft from "../../assets/asideLeft.svg";
+import changePassword from "../../assets/changePassword.svg"
+import { useContext } from "react";
+import { AuthContext } from "../../context/LoginContext";
 
 function AsideAdmin({open, setOpen}) {
     const navigate = useNavigate();
@@ -15,9 +18,12 @@ function AsideAdmin({open, setOpen}) {
       {title: "Convenios", src:agreements ,Link:"/admin/agreement"},
       {title: "Movilidad", src:forms, Link:"/admin/movilidad"},
       {title: "Estadísticas", src:statistics, Link:"/statistics"},
-      {title: "Registrar Usuarios", src:reg, gap: true, Link:"/usuarios"},
-      {title: "Cerrar Sesión", src:logout}
+      {title: "Registrar Usuarios", src:reg, gap: true, Link:"/user/list"},
+      {title: "Cambiar Contraseña", src:changePassword, Link:"/changePassword"}
     ]
+
+    const { singout } = useContext(AuthContext);
+
     return (
       <div className={`flex fixed h-full z-30 w-screen lg:hidden bg-black/50 backdrop-blur-sm top-0 right-0 
         -translate-x-full ${!open && "translate-x-0"} transition-all`}>
@@ -46,6 +52,14 @@ function AsideAdmin({open, setOpen}) {
                   </button>
                 </li>
               ))}
+              <li className={`text-primary-dark text-sm font-bold flex items-center 
+                gap-x-2 cursor-pointer p-x hover:text-primary-light rounded-md
+                ${"mt-1"}`}>
+                  <button className="flex" onClick={() => singout()}>
+                    <img src={logout} className="w-5"/>
+                    Cerrar Sesión
+                  </button>
+                </li>
             </ul>
           </section>
         </div>

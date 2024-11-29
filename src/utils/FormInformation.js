@@ -1,6 +1,11 @@
+/**
+ * Detailed information about the fields of a mobility form.
+ * Each field has a title, short or long information, and options ready to be displayed.
+ */
+
 export const Info = {
     sentido: {
-        title: 'Sentido',
+        title: 'Tipo de movilidad',
         shortInfo: 'Seleccione entre (SALIENTE PRESENCIAL, ENTRANTE PRESENCIAL, SALIENTE VIRTUAL, ENTRANTE VIRTUAL)',
         longInfo: {
             text: ['Seleccione uno de los siguientes items:'],
@@ -9,14 +14,14 @@ export const Info = {
 
                 'ENTRANTE PRESENCIAL': 'Cuando llegan estudiantes para realizar intercambio o estancias de investigación o para participar en seminarios, congresos, talleres; o, cuando llegan los expertos extranjeros invitados a orientar actividades académicas, investigativas, culturales, en forma presencial en Universidad del Cauca.',
 
-                'SALIENTE VIRTUAL': 'Cuando llegan estudiantes para realizar intercambio o estancias de investigación o para participar en seminarios, congresos, talleres; o, cuando llegan los expertos extranjeros invitados a orientar actividades académicas, investigativas, culturales, en forma presencial en Universidad del Cauca.',
+                'SALIENTE VIRTUAL': 'Si el universitario, estudiante, funcionario administrativo o profesor, realiza movilidad a través de TICs, en otras instituciones o universidades del país o del exterior.',
 
                 'ENTRANTE VIRTUAL': 'Cuando los estudiantes realizan intercambio o participan en seminarios, congresos, talleres; o, cuando los expertos extranjeros invitados orientan actividades académicas, investigativas, culturales, a través de TICs, en Universidad del Cauca.'
             }
         }
     },
     tipo: {
-        title: 'Tipo',
+        title: 'Rol en la movilidad',
         longInfo: {
             text: ['Seleccione uno de los siguientes items:'],
             list: {
@@ -177,7 +182,7 @@ export const Info = {
         }
     },
     profPres:{
-        title: 'Profesor presenta',
+        title: 'Tutor académico',
         shortInfo: 'Este campo únicamente se habilita cuando se trate de estudiantes en Movilidad académica ENTRANTE (pasantía o estancia de investigación o intercambio), escriba el nombre del profesor que ejerce como Tutor o Coordinador de dicha movilidad.'
     },
     facultad:{
@@ -208,10 +213,15 @@ export const Info = {
     }
 }
 
+/**
+ * Object that contains information about the form fields, including their ID, label text, 
+ * whether they are required, available options (in case of a select field), and required validations.
+ * This object organizes the different input fields for a request related to academic mobility.
+ */
 export const inputInfo = {
     sentido:{
         id:'direction',
-        text: 'Sentido',
+        text: 'Tipo de movilidad',
         required: true,
         options: [
             {value: 'OUTGOING_IN_PERSON', text: 'Saliente presencial'},
@@ -222,7 +232,7 @@ export const inputInfo = {
     },
     tipo:{
         id:'personType',
-        text: 'Tipo',
+        text: 'Rol en la movilidad',
         required: true,
         options: [
             {value: 'TEACHER', text: 'Profesor'},
@@ -373,7 +383,7 @@ export const inputInfo = {
     },
     profPres:{
         id: 'teacher',
-        text: 'Profesor presenta',
+        text: 'Tutor académico',
         type: 'text',
         required: false,
         pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ_\-\s]+$/,
@@ -389,7 +399,7 @@ export const inputInfo = {
     },
     financiacion:{
         id: 'funding',
-        text: 'Financiación',
+        text: 'Valor de la financiación',
         type: 'number',
         required: true,
         pattern: /^[0-9]+$/,
@@ -405,6 +415,12 @@ export const inputInfo = {
     }
 }
 
+/**
+ * Creates an array of options for a select field based on the provided agreements list.
+ * The function takes an array of agreement objects and updates the state with the formatted options.
+ * @param {Array<{agreementId: string, agreementNumber: string}>} agreements - An array of agreements, where each agreement has an `agreementId` and an `agreementNumber`.
+ * @param {function} setAgreements - State update function that will be used to set the new value of the options.
+ */
 export const createAgreementOptions = (agreements, setAgreements) => {
     const options = [];
 
@@ -418,6 +434,13 @@ export const createAgreementOptions = (agreements, setAgreements) => {
     setAgreements(options);
 };
 
+/**
+ * Calculates the number of days between two dates.
+ * The function takes two dates and calculates the difference in days, rounding down to the nearest whole number.
+ * @param {string|Date} startDate - The start date in date format or a string that can be interpreted by the `Date` constructor.
+ * @param {string|Date} endDate - The end date in date format or a string that can be interpreted by the `Date` constructor.
+ * @returns {number} The difference in days between `startDate` and `endDate`.
+ */
 export function calcDays(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
@@ -430,6 +453,15 @@ export function calcDays(fechaInicio, fechaFin) {
     return Math.floor(diferenciaDias); // Redondear al número de días
 }
 
+/**
+ * Determines the direction of the mobility (incoming or outgoing) based on the provided value.
+ * @param {string} value - The mobility value, which can be one of the following:
+ *   - 'INCOMING_VIRTUAL'
+ *   - 'INCOMING_IN_PERSON'
+ *   - Any other value is considered as 'OUT'.
+ * @returns {string} 'IN' if the value corresponds to an incoming mobility,
+ *                   'OUT' if it corresponds to an outgoing mobility.
+ */
 export function checkDirection(value) {
     if (value === 'INCOMING_VIRTUAL' || value === 'INCOMING_IN_PERSON') {
         return 'IN';
@@ -438,6 +470,26 @@ export function checkDirection(value) {
     }
 }
 
+/**
+ * Verifies if the event type corresponds to a research or internship event.
+ * @param {number} value - The event type value. This value must be an integer.
+ * @returns {boolean} `true` if the value corresponds to a research (4) or internship (7) event,
+ *                   `false` otherwise.
+ */
+export function checkEventType(value) {
+    return value === 4 || value===7
+}
+
+/**
+ * Verifies if the entry and exit dates are valid based on the direction of mobility.
+ * If the direction is "IN" (incoming), the entry date must be earlier than or equal to the exit date.
+ * If the direction is "OUT" (outgoing), the exit date must be earlier than or equal to the entry date.
+ * @param {string} direction - The direction of mobility. It can be 'IN' (incoming) or 'OUT' (outgoing).
+ * @param {string|Date} entryDate - The entry date, in a valid date format or a string that can be converted to a date.
+ * @param {string|Date} exitDate - The exit date, in a valid date format or a string that can be converted to a date.
+ * 
+ * @returns {boolean} `true` if the dates are valid according to the provided direction, `false` otherwise.
+ */
 export function checkDates(direction, entryDate, exitDate){
     const entry = new Date(entryDate);
     const exit = new Date(exitDate);

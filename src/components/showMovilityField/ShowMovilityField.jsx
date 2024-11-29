@@ -1,6 +1,16 @@
 import InfoBubble from "../infoBubble/InfoBubble";
 import PropTypes from 'prop-types';
 
+/**
+ * Component that displays a mobility field with a title, an informational icon, and dynamic data.
+ * 
+ * @component
+ * @param {Object} props - The component's properties.
+ * @param {Object} props.bblInf - Information passed to the `InfoBubble` component.
+ * @param {string} props.title - The title describing the mobility field.
+ * @param {string} props.data - The data to be displayed within the field.
+ * @returns {JSX.Element} A JSX element representing the mobility field with a title and data.
+ */
 function showMovilityField({ bblInf, title, data }) {
     return(
         <article className="flex flex-col">

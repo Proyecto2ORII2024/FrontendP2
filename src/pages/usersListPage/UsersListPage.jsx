@@ -1,338 +1,374 @@
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import editIcon from "../../assets/icons/editIcon.svg";
-import checkIcon from "../../assets/icons/checkIcon.svg";
 import search from "../../assets/icons/searchIcon.svg";
 import MainButton from "../../components/buttons/MainButton.jsx";
 import { useNavigate } from "react-router-dom";
 
 import NotificationBox from "../../components/notificationBox/NotificationBox.jsx";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
+import EditUser from "../../components/editUser/EditUser.jsx";
+import DeleteUser from "../../components/deleteUser/DeleteUser.jsx";
+import { getUsers, updateUser, deleteUser } from "../../services/user.service.js"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { styles } from "./styles.js";
 
 function UsersListPage() {
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [userID, setUserId] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchStudent, setSearchStudent] = useState([]);
+  const [wasDeleted, setWasDeleted] = useState("");
+  const [wasUpdated, setwasUpdated] = useState("");
+  const [userSelected, setUserSelected] = useState({});
+  const [estudiantes, setEstudiantes] = useState([]);
 
-    const [open, setOpen] = useState(false);
-    const [notification, setNotification] = useState("");
-    const [isEditing, setIsEditing] = useState({ state: false, index: -1 });
-    const [values, setValues] = useState({ correo: "Test", rol: "Usuario" });
-    const [isSearching, setIsSearching] = useState(false);
-    const [searchStudent, setSearchStudent] = useState([]);
-    const [estudiantes, setEstudiantes] = useState([
-        {
+  /**
+   * Recibe los usuarios desde el backend
+   */
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getUsers();
+      setEstudiantes(data.data);
+    };
+    fetchData();
+  }, []);
 
-            Id: 1,
+  const navigate = useNavigate();
 
-            Correo: "ORI@UNICAUCA.EDU.CO",
-            Rol: "Admin",
-            Active: false
-        },
-        {
+  /**
+   * Funcion que actualiza un usuario
+   * @param {int} idToUpdate - La id del usuario que se quiere actualizar
+   * @param {object} data - informacion del usuario que se quiere actualizar
+   */
+  const updateData = async (idToUpdate, data) => {
+    try {
 
-            Id: 2,
-            Correo: "INGENIERIA@UNICAUCA.EDU.CO",
-            Rol: "Usuario",
-            Active: false
-        },
-        {
-            Id: 3,
-            Correo: "jsotelop@UNICAUCA.EDU.CO",
-            Rol: "Usuario",
-            Active: true
-        },
-        {
-            Id: 4,
-            Correo: "cgarcias@UNICAUCA.EDU.CO",
-            Rol: "Usuario",
-            Active: false
-        },
-        {
-            Id: 5,
-            Correo: "jorejuelam@UNICAUCA.EDU.CO",
-            Rol: "Usuario",
-            Active: false
-        },
-        {
-            Id: 6,
+      let id;
+      if (typeof idToUpdate === "string") {
+        id = parseInt(idToUpdate);
+      } else {
+        id = idToUpdate;
+      }
 
-            Correo: "jorgevelasco@UNICAUCA.EDU.CO",
-            Rol: "Admin",
-            Active: true
-        }
-    ]);
+      var userUpt = userSelected;
 
-    const navigate = useNavigate();
+      userUpt.role = data.role;
+      userUpt.faculty = data.faculty;
+      if(userUpt.faculty === null || userUpt.faculty === '' ){
+        delete userUpt.faculty
+      }
+      await updateUser(id, userUpt)
 
-    const role = [
-        'Admin',
-        'Usuario'
-    ];
-
-    const esCorreoValido = (correo) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(correo); // Retorna true si el correo es válido, false si no lo es
+      setEstudiantes(
+        estudiantes.map((estudiante) =>
+          estudiante.userId === id
+            ? { ...estudiante, Rol: data.role, Password: data.password }
+            : estudiante
+        )
+      );
+      setSearchStudent(
+        searchStudent.map((estudiante) =>
+          estudiante.userId === id
+            ? { ...estudiante, Rol: data.role, Password: data.password }
+            : estudiante
+        )
+      );
+      setwasUpdated("success");
+    } catch (error) {
+      setwasUpdated("error");
+      console.log(error);
     }
 
-    const handleEditClick = (e) => {
-        const id = parseInt(e.target.id);
+  };
 
-        if (isEditing.state === false, isEditing.index === -1) {
-            estudiantes.map(estudiante => estudiante.Id === id ? setValues({ correo: estudiante.Correo, rol: estudiante.Rol }) : null);
-            setIsEditing({ state: true, index: id });
-        } else {
-            setNotification("alert");
-            setOpen(true);
-
-        }
-    };
-
-    const handleSaveClick = (e) => {
-
-
-        const id = parseInt(e.target.id);
-        if (esCorreoValido(values.correo) && role.includes(values.rol)) {
-            setIsEditing({ state: false, index: -1 });
-            setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Correo: values.correo, Rol: values.rol } : estudiante));
-            setValues({ correo: "Test", rol: "Usuario" })
-            setNotification("success");
-            setOpen(true);
-        } else {
-            setNotification("error");
-            setOpen(true);
-        }
-    };
-
-    const handleInputChange = (e) => {
-        setValues({ correo: e.target.value, rol: values.rol });
-    };
-
-    const handleSelectChange = (e) => {
-        setValues({ correo: values.correo, rol: e.target.value });
-    };
-
-    const handleDelete = (idToDelete) => {
-        const id = parseInt(idToDelete);
-        setEstudiantes(estudiantes.filter(estudiante => estudiante.Id !== id));
-        setNotification("info");
-        setOpen(true);
-    };
-
-
-    const handleSearch = (e) => {
-        if (e.target.value === "") {
-            setIsSearching(false);
-        } else {
-            setIsSearching(true);
-            setSearchStudent(
-                estudiantes.filter(
-                    (estudiante) =>
-                        estudiante.Correo
-                            .toLowerCase()
-                            .includes(e.target.value.toLowerCase()) ||
-                        estudiante.Rol
-                            .toLowerCase()
-                            .includes(e.target.value.toLowerCase())
-                )
-            );
-        }
-    };
-
-    const handleCheckboxChange = (e) => {
-        const id = parseInt(e.target.id);
-        setEstudiantes(estudiantes.map(estudiante => estudiante.Id === id ? { ...estudiante, Active: !estudiante.Active } : estudiante));
+  /**
+   * Funcion para eliminar un usuario
+   * @param {int} idToDelete - La id del usuario a eliminar
+   */
+  const handleDelete = async (idToDelete) => {
+    try {
+      console.log("idtodelete", idToDelete);
+    let id;
+    if (typeof idToDelete === "string") {
+      id = parseInt(idToDelete);
+    } else {
+      id = idToDelete;
     }
+    console.log(await deleteUser(id));
+    setEstudiantes(estudiantes.filter((estudiante) => estudiante.userId !== id));
+    setWasDeleted("success");
+    } catch (error) {
+      setWasDeleted("error");
+      console.log(error);
+    }
+    
+  };
 
-    return (
-        <AdminLayout>
-            <main>
-
-                <NotificationBox
-                    type={notification}
-                    title={notification === "success" ? "Datos actualizados" : notification === "error" ? "Datos invalidos" : notification === "alert" ? "Accion invalida" : "Datos Eliminados"}
-                    open={open}
-                    setOpen={setOpen}
-                >
-                    {notification === "success" ? (
-                        <p>Los datos han sido enviados.</p>
-                    ) : (
-                        notification === "error" ? (
-                            <p>Los datos ingresados no son validos.</p>
-                        ) : (
-                            notification === "alert" ? (
-                                <p>Debes terminar la accion en curso.</p>
-                            ) : (
-                                <p>Los datos han sido eliminados.</p>
-                            )
-                        )
-                    )}
-                </NotificationBox>
-                <section className="flex justify-between items-center flex-col md:flex-row">
-                    <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col justify-between items-center">
-                        <h2 className="w-full md:m-5 px-5 pt-3 md:pt-0 text-lg text-center">
-                            A continuación se presenta una tabla con los usuarios registrados
-                            actualmente..
-                        </h2>
-                        <MainButton
-                            onClick={() => navigate("/user/register")}
-                            text="Registrar usuario"
-                            bgColor="primary"
-                            hoverBg="primary-light"
-                            textColor="white"
-                            className=""
-                        />
-                    </section>
-                    <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:flex-row justify-between items-center">
-                        <article className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
-                            <input
-                                id="search"
-                                type="text"
-                                placeholder="Ingresa la información que deseas buscar"
-                                className="w-[90%] outline-none bg-transparent"
-                                onChange={(e) => handleSearch(e)}
-                            />
-                            <img src={search} alt="search icon" />
-                        </article>
-                    </section>
-                </section>
-                {!isSearching ? (
-                    <>
-                        <section className="w-full flex justify-center px-20 mb-5">
-                            <table className="w-full text-left table-auto border-collapse md:table">
-                                <thead className="hidden md:table-header-group">
-                                    <tr className="bg-[#928F9A]">
-                                        <th className={`${styles.thIn} w-[200px]`}>Correo</th>
-                                        <th className={`${styles.thIn} w-[100px]`}>Rol</th>
-                                        <th className={`${styles.thIn} w-[150px]`}>Acciones</th>
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {estudiantes.map((estudiante, index) => (
-
-                                        console.log(index, index % 2),
-                                        <tr className={`${index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
-                                            <td className={`${styles.tdIn}`}>
-                                                <span className="md:hidden font-bold">
-                                                    Correo:
-                                                </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
-
-                                                ) : (
-                                                    estudiante.Correo
-                                                )}
-                                            </td>
-                                            <td className={styles.tdIn}>
-                                                <span className="md:hidden font-bold">
-                                                    Rol:
-                                                </span>
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <select
-                                                        className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2"
-                                                        placeholder=""
-                                                        onChange={(e) => handleSelectChange(e)}
-                                                        value={values.rol}
-                                                    >
-                                                        {role.map((option) => (
-                                                            <option key={option} value={option}>
-                                                                {option}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                ) : (
-                                                    estudiante.Rol
-                                                )}
-                                            </td>
-                                            <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
-                                                <div className="flex justify-center space-x-4 md:justify-around px-15 md:px-5">
-                                                    <button className="">
-                                                        {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                            <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
-
-                                                        ) : (
-                                                            <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
-                                                        )}
-                                                    </button>
-                                                    <button>
-                                                        <img className={styles.buttonAction} src={deleteIcon} id={estudiante.Id} onClick={(e) => handleDelete(e.target.id)} alt="deleteIcon" />
-
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td className={styles.tdOut}>
-
-                                                <div className="flex content-center justify-center space-x-1">
-                                                    <span className="md:hidden font-bold">Habilitar: </span>
-                                                    <input id={estudiante.Id} className="h-[25px] w-[25px]" type="checkbox" checked={estudiante.Active} onChange={(e) => handleCheckboxChange(e)} />
-                                                </div>
-
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </section>
-                    </>
-                ) : (
-                    <>
-                        <section className="w-full flex justify-center px-20 mb-5">
-                            <table className="w-full text-left table-auto border-collapse md:table">
-                                <thead className="hidden md:table-header-group">
-                                    <tr className="bg-[#928F9A]">
-                                        <th className={`${styles.thIn} w-[200px]`}>Correo</th>
-                                        <th className={`${styles.thIn} w-[100px]`}>Rol</th>
-                                        <th className={`${styles.thIn} w-[150px]`}>Acciones</th>
-                                        <th className={`${styles.thIn} w-[100px]`}>Habilitar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {searchStudent.map((estudiante, index) => (
-                                        <tr className={`md:${index % 2 != 0 ? "bg-[#E4E1EC]" : "bg-[#FBF8FF]"} flex flex-col md:table-row border-b`} key={estudiante.Correo}>
-                                            <td className={`${styles.tdIn} h-[100px]`}>
-                                                <span className="md:hidden font-bold">Correo: </span>
-
-                                                {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                    <input className="bg-grays rounded-full w-[90%] outline-none border pl-4 p-2" type="text" value={values.correo} onChange={(e) => handleInputChange(e)} />
-                                                ) : (
-
-                                                    estudiante.Correo
-                                                )}
-                                            </td>
-                                            <td className={styles.tdIn}><span className="md:hidden font-bold">Rol: </span>{estudiante.Rol}</td>
-                                            <td className={styles.tdIn}><span className="md:hidden font-bold">Acciones: </span>
-                                                <div className="flex justify-around px-10">
-                                                    <button className="">
-
-                                                        {isEditing.state && isEditing.index === estudiante.Id ? (
-                                                            <img className={styles.buttonAction} src={checkIcon} id={estudiante.Id} onClick={handleSaveClick} alt="checkIcom" />
-
-                                                        ) : (
-                                                            <img className={styles.buttonAction} src={editIcon} id={estudiante.Id} onClick={(e) => handleEditClick(e)} alt="editIcom" />
-
-                                                        )}
-                                                    </button>
-                                                    <button>
-                                                        <img className={styles.buttonAction} src={deleteIcon} alt="deleteIcon" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td className={styles.tdOut}>
-                                                <span className="md:hidden font-bold">Habilitar: </span>
-                                                <input className="h-[25px] w-[25px]" type="checkbox" />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </section>
-                    </>
-                )}
-
-            </main>
-        </AdminLayout>
-    );
-
+  /**
+   * Funcion que controla la busqueda de usuarios
+   * @param {object} e - evento del componente que contiene la informacion de busqueda
+   */
+  const handleSearch = (e) => {
+    if (e.target.value === "") {
+      setIsSearching(false);
+    } else {
+      setIsSearching(true);
+      setSearchStudent(
+        estudiantes.filter(
+          (estudiante) =>
+            estudiante.email.toLowerCase().includes(
+              e.target.value.toLowerCase()
+            ) ||
+            estudiante.role.toLowerCase().includes(e.target.value.toLowerCase())
+        )
+      );
+    }
+  };
+  return (
+    <AdminLayout>
+      <main>
+        <EditUser
+          open={openEdit}
+          setOpen={setOpenEdit}
+          user={userSelected}
+          setUpdated={setwasUpdated}
+          updateData={updateData}
+        />
+        <DeleteUser
+          open={openDelete}
+          setOpen={setOpenDelete}
+          userId={userID}
+          setDeleted={setWasDeleted}
+          handleDelete={handleDelete}
+        />
+        <NotificationBox
+          type={wasDeleted}
+          title={
+            wasDeleted === "success"
+              ? "Usuario eliminado"
+              : "Error al eliminar usuario"
+          }
+          open={wasDeleted === "success" || wasDeleted === "error"}
+          setOpen={() => setWasDeleted("")}
+        >
+          {wasDeleted === "success" ? (
+            <p>El usuario ha sido eliminado exitosamente</p>
+          ) : (
+            <p>
+              Ha ocurrido un error al eliminar el usuario, por favor intente de
+              nuevo
+            </p>
+          )}
+        </NotificationBox>
+        <NotificationBox
+          type={wasUpdated}
+          title={
+            wasUpdated === "success"
+              ? "Usuario editado"
+              : "Error al editar usuario"
+          }
+          open={wasUpdated === "success" || wasUpdated === "error"}
+          setOpen={() => setwasUpdated("")}
+        >
+          {wasUpdated === "success" ? (
+            <p>El usuario ha sido editado exitosamente</p>
+          ) : (
+            <p>
+              Ha ocurrido un error al editar el usuario, por favor intente de
+              nuevo
+            </p>
+          )}
+        </NotificationBox>
+        <section className="flex justify-between items-center flex-col md:flex-row">
+          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col justify-between md:items-center">
+            <h2 className="w-full md:m-5 px-5 pt-3 md:pt-0 text-lg text-center">
+              A continuación se presenta una tabla con los usuarios registrados
+              actualmente..
+            </h2>
+            <div className="w-fit ml-3 md:ml-0">
+            <MainButton
+              onClick={() => navigate("/user/register")}
+              text="Registrar usuario"
+              bgColor="primary"
+              hoverBg="primary-light"
+              textColor="white"
+              className=""
+            />
+            </div>
+          </section>
+          <section className="w-full flex gap-3 md:gap-0 mb-3 md:m-5 flex-col md:flex-row justify-between items-center">
+            <article className="bg-grays w-[350px] rounded-full py-2 px-5 border-2 border-gray-500 flex items-center justify-between xl:mr-48 lg:mr-32 md:mr-20 m-auto">
+              <input
+                id="search"
+                type="text"
+                placeholder="Ingresa la información que deseas buscar"
+                className="w-[90%] outline-none bg-transparent"
+                onChange={(e) => handleSearch(e)}
+              />
+              <img src={search} alt="search icon" />
+            </article>
+          </section>
+        </section>
+        {!isSearching ? (
+          <>
+            <section className="w-full flex justify-center px-20 mb-5 ">
+              <table className="w-full text-left table-auto border-collapse text-primary-dark md:table">
+                <thead className="hidden md:table-header-group bg-neutral">
+                  <tr className="bg-azulClaro bg-opacity-20">
+                    <th className={`${styles.thIn} rounded-tl-xl`}>Correo</th>
+                    <th className={`${styles.thIn}`}>Rol</th>
+                    <th className={`${styles.thIn}`}>Facultad</th>
+                    <th className={`${styles.thIn} rounded-tr-xl`}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {estudiantes.map(
+                    (estudiante) => (
+                      (
+                        <tr
+                          className={"flex flex-col md:table-row border-b"}
+                          key={estudiante.email}
+                        >
+                          <td className={`${styles.tdIn}`}>
+                            <span className="md:hidden font-bold">Correo:</span>
+                            {estudiante.email}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">Rol:</span>
+                            {estudiante.role}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">
+                              Facultad:
+                            </span>
+                            {estudiante.faculty || "N/A"}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">
+                              Acciones:
+                            </span>
+                            <div className="flex justify-center gap-[10%]">
+                              <button
+                                title="Editar usuario"
+                                className=""
+                                onClick={() => {
+                                  setOpenEdit(true);
+                                  setUserSelected(estudiante);
+                                }}
+                              >
+                                <img
+                                  className={styles.buttonAction}
+                                  src={editIcon}
+                                  alt="editIcom"
+                                />
+                              </button>
+                              <button
+                                title="Eliminar usuario"
+                                id={estudiante.userId}
+                                onClick={() => {
+                                  setOpenDelete(true);
+                                  setUserId(estudiante.userId.toString());
+                                }}
+                              >
+                                <img
+                                  className={styles.buttonAction}
+                                  src={deleteIcon}
+                                  alt="deleteIcon"
+                                />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    )
+                  )}
+                </tbody>
+              </table>
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="w-full flex justify-center px-20 mb-5 ">
+              <table className="w-full text-left table-auto border-collapse text-primary-dark md:table">
+                <thead className="hidden md:table-header-group bg-neutral">
+                  <tr className="bg-azulClaro bg-opacity-20">
+                    <th className={`${styles.thIn} rounded-tl-xl`}>Correo</th>
+                    <th className={`${styles.thIn}`}>Rol</th>
+                    <th className={`${styles.thIn}`}>Facultad</th>
+                    <th className={`${styles.thIn} rounded-tr-xl`}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {searchStudent.map(
+                    (estudiante) => (
+                      (
+                        <tr
+                          className={"flex flex-col md:table-row border-b"}
+                          key={estudiante.email}
+                        >
+                          <td className={`${styles.tdIn}`}>
+                            <span className="md:hidden font-bold">Correo:</span>
+                            {estudiante.email}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">Rol:</span>
+                            {estudiante.role}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">
+                              Facultad:
+                            </span>
+                            {estudiante.faculty}
+                          </td>
+                          <td className={styles.tdIn}>
+                            <span className="md:hidden font-bold">
+                              Acciones:
+                            </span>
+                            <div className="flex justify-center gap-[10%]">
+                              <button
+                                title="Editar usuario"
+                                className=""
+                                onClick={() => {
+                                  setOpenEdit(true);
+                                  setUserSelected(estudiante);
+                                }}
+                              >
+                                <img
+                                  className={styles.buttonAction}
+                                  src={editIcon}
+                                  alt="editIcom"
+                                />
+                              </button>
+                              <button
+                                title="Eliminar usuario"
+                                id={estudiante.userId}
+                                onClick={() => {
+                                  setOpenDelete(true);
+                                  setUserId(estudiante.userId.toString());
+                                }}
+                              >
+                                <img
+                                  className={styles.buttonAction}
+                                  src={deleteIcon}
+                                  alt="deleteIcon"
+                                />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    )
+                  )}
+                </tbody>
+              </table>
+            </section>
+          </>
+        )}
+      </main>
+    </AdminLayout>
+  );
 }
 export default UsersListPage;

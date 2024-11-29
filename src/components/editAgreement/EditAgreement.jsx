@@ -3,54 +3,72 @@ import MainButton from "../buttons/MainButton.jsx";
 import InfoBubble from "../infoBubble/InfoBubble.jsx";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { updateAgreement } from "../../services/agreement.service.js";
 
-import { formatDateToYYYYMMDD, formatDateToDDMMYYYY } from "../../utils/Date.js";
+import {
+  formatDateToYYYYMMDD,
+  formatDateToDDMMYYYY,
+} from "../../utils/Date.js";
+import { messages } from "../../utils/agreementsFormMessages.js";
 
-function EditAgreement({agreement, open, setOpen, setUpdated}) {
-    const [isOpened, setIsOpened] = useState(false);
+/**
+ * EditAgreement component allows users to edit an existing agreement.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.agreement - The agreement data to be edited.
+ * @param {boolean} props.open - A boolean indicating if the edit form is open.
+ * @param {Function} props.setOpen - Function to set the open state of the form.
+ * @param {Function} props.setUpdated - Function to set the update status.
+ *
+ * @returns {JSX.Element} The EditAgreement component.
+ */
+function EditAgreement({ agreement, open, setOpen, setUpdated }) {
+  const [isOpened, setIsOpened] = useState(false);
 
-    const {
-      register,
-      handleSubmit,
-      setValue,
-      formState: { errors },
-    } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
-    useEffect(() => {
-      if (open) {
-        setValue("country", agreement.country);
-        setValue("agreementNumber", agreement.agreementNumber);
-        setValue("institution", agreement.institution);
-        setValue("startDate", formatDateToYYYYMMDD(agreement.startDate));
-        setValue("scope", agreement.scope);
-        setValue("description", agreement.description);
-      }
-      setIsOpened(open);
-    }, [open, setValue, agreement]);
-    
-      const onSubmit = (data) => {
-        data.startDate = formatDateToDDMMYYYY(data.startDate);
-        updateAgreement(data, agreement.agreementId).then((res) => {
-          if (res.status === 200) {
-            setIsOpened(false);
-            setOpen(false);
-            setUpdated("success");
-          }else{
-            setUpdated("error");
-          }
-        }).catch((error) => {
-          console.log(error);
+  useEffect(() => {
+    if (open) {
+      setValue("country", agreement.country);
+      setValue("agreementNumber", agreement.agreementNumber);
+      setValue("institution", agreement.institution);
+      setValue("startDate", formatDateToYYYYMMDD(agreement.startDate));
+      setValue("scope", agreement.scope);
+      setValue("description", agreement.description);
+    }
+    setIsOpened(open);
+  }, [open, setValue, agreement]);
+
+  const onSubmit = (data) => {
+    data.startDate = formatDateToDDMMYYYY(data.startDate);
+    updateAgreement(data, agreement.agreementId)
+      .then((res) => {
+        if (res.status === 200) {
+          setIsOpened(false);
+          setOpen(false);
+          setUpdated("success");
+        } else {
           setUpdated("error");
-        });
-      };
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setUpdated("error");
+      });
+  };
 
   return (
     <FloatingContainer open={isOpened} setOpen={() => setOpen(false)}>
       <main>
         <h2 className="w-full mt-5 p-5 text-lg text-center">
-        A continuación edite los campos que considere prudente sin dejar campos vacios.
+          A continuación edite los campos que considere prudente sin dejar
+          campos vacios.
         </h2>
 
         <section className="w-full flex justify-center">
@@ -61,15 +79,24 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
                 <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "pais", shortInfo: "Pais", longInfo: "" }} />
+                  <InfoBubble
+                    info={{ title: "pais", shortInfo: messages.country }}
+                  />
                   <p>Pais</p>
                 </div>
-                <input id="country"
-                autoComplete="off"
+                <input
+                  id="country"
+                  autoComplete="off"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Pais"
-                  {...register("country", { required: true, pattern: { value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/, message: "El pais solo puede contener letras" } })}
+                  {...register("country", {
+                    required: true,
+                    pattern: {
+                      value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/,
+                      message: "El pais solo puede contener letras",
+                    },
+                  })}
                 />
                 {errors.country && (
                   <span className="text-sm text-red-400">
@@ -78,18 +105,31 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
                 )}
               </label>
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Codigo", shortInfo: "Codigo", longInfo: "" }} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble
+                    info={{
+                      title: "Codigo",
+                      shortInfo: messages.code
+                    }}
+                  />
                   <p>Codigo</p>
                 </div>
-                <input id="code"
+                <input
+                  id="code"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Codigo"
-                  {...register("agreementNumber", { required: true, pattern: { value: /^[0-9.-]+$/, message: "El codigo solo puede contener numeros y (. -)" }, minLength: {
-                    value: 4,
-                    message: "El codigo debe tener al menos 4 caracteres"
-                  } })}
+                  {...register("agreementNumber", {
+                    required: true,
+                    pattern: {
+                      value: /^[0-9.-]+$/,
+                      message: "El codigo solo puede contener numeros y (. -)",
+                    },
+                    minLength: {
+                      value: 4,
+                      message: "El codigo debe tener al menos 4 caracteres",
+                    },
+                  })}
                 />
                 {errors.agreementNumber && (
                   <span className="text-sm text-red-400">
@@ -100,15 +140,27 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
             </section>
             <section className="flex">
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Institución", shortInfo: "Institución", longInfo: "" }} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble
+                    info={{
+                      title: "Institución",
+                      shortInfo: messages.intitution
+                    }}
+                  />
                   <p>Institución</p>
                 </div>
-                <input id="institution"
+                <input
+                  id="institution"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="text"
                   placeholder="Institución"
-                  {...register("institution", { required: true, pattern: { value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/, message: "la institución solo puede contener letras" }  })}
+                  {...register("institution", {
+                    required: true,
+                    pattern: {
+                      value: /^[A-Za-zÑñÁÉÍÓÚáéíóúÜü\s]+$/,
+                      message: "la institución solo puede contener letras",
+                    },
+                  })}
                 />
                 {errors.institution && (
                   <span className="text-sm text-red-400">
@@ -119,11 +171,17 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
             </section>
             <section className="grid grid-cols-2 gap-5">
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Fecha de inicio", shortInfo: "Fecha de inicio", longInfo: "" }} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble
+                    info={{
+                      title: "Fecha de inicio",
+                      shortInfo: messages.startDate
+                    }}
+                  />
                   <p>Fecha de inicio</p>
                 </div>
-                <input id="startDate"
+                <input
+                  id="startDate"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   type="date"
                   {...register("startDate", { required: true })}
@@ -135,11 +193,17 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
                 )}
               </label>
               <label className="flex flex-col w-full">
-              <div className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Ambito", shortInfo: "Ambito", longInfo: "" }} />
+                <div className="flex gap-2 items-center">
+                  <InfoBubble
+                    info={{
+                      title: "Ambito",
+                      shortInfo: messages.scope
+                    }}
+                  />
                   <p>Ambito</p>
                 </div>
-                <select id="scope"
+                <select
+                  id="scope"
                   className="border-b-2 ml-7 border-neutral-hover outline-none py-1"
                   {...register("scope", { required: true })}
                 >
@@ -154,10 +218,15 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
               </label>
             </section>
             <label htmlFor="description" className="flex flex-col w-full">
-            <div  className="flex gap-2 items-center">
-                  <InfoBubble info={{ title: "Descripción", shortInfo: "Descripción", longInfo: "" }} />
-                  <p>Descripción</p>
-                </div>
+              <div className="flex gap-2 items-center">
+                <InfoBubble
+                  info={{
+                    title: "Descripción",
+                    shortInfo: messages.description
+                  }}
+                />
+                <p>Descripción</p>
+              </div>
             </label>
             <textarea
               id="description"
@@ -188,10 +257,10 @@ function EditAgreement({agreement, open, setOpen, setUpdated}) {
 }
 
 EditAgreement.propTypes = {
-    agreement: PropTypes.object.isRequired,
-    open: PropTypes.bool.isRequired,
-    setOpen: PropTypes.func.isRequired,
-    setUpdated: PropTypes.func.isRequired
+  agreement: PropTypes.object.isRequired,
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  setUpdated: PropTypes.func.isRequired,
 };
 
 export default EditAgreement;

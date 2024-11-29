@@ -24,10 +24,22 @@ export const getAgreement = async (agreementId) => {
 }
 
 
+/**
+ * Obtains agreements and categorizes them into national and international.
+ * 
+ * @async
+ * @function obtainAgreements
+ * @returns {Promise<Object>} An object containing categorized agreements:
+ * - NATIONAL: Array of national agreements.
+ * - INTERNATIONAL: Array of international agreements.
+ * - ALL: Array of all agreements.
+ */
 export const obtainAgreements = async () => {
     let agreements = await getAgreements();
 
-    agreements = agreements.data.content;
+    console.log(agreements);
+
+    agreements = agreements.data;
 
     const agreementsData = {
         NATIONAL: [],

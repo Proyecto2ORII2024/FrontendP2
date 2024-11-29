@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -8,23 +7,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
 import { Bar } from "react-chartjs-2";
+import { getStatistics } from "../../../services/statistics.service";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
-
-const data = {
-  labels: ["2017", "2018", "2019", "2020", "2021","2022","2023","2024"],
-  datasets: [
-    {
-      label: '',
-      data: [150, 180, 210, 50, 80, 120, 200, 250],
-      backgroundColor: ["#A5DE6F"],
-      borderWidth: 1,
-      barPercentage: 0.5,
-    },
-  ],
-};
 
 const options = {
   responsive: true,
@@ -42,22 +28,60 @@ const options = {
       },
     },
     y: {
-      max: 300,
+      //max: 25,
       title: {
         display: true,
         text: "Número de movilidades",
-        color: "#333",
+        color: "#666",
       },
     },
   },
 };
 
 export const BarChartMobilitiesPerYear = () => {
+  const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getStatistics.getMobilityPerYear();
+        
+        const data = {
+          labels: response.data.years.reverse(),
+          datasets: [
+            {
+              label: 'Movilidades',
+              data: response.data.amountMobility.reverse(),
+              backgroundColor: "#A5DE6F",
+              borderWidth: 1,
+              barPercentage: 0.5,
+            },
+          ],
+        };
+        
+        setChartData(data);
+      } catch (err) {
+        setError("Error al cargar los datos");
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>{error}</div>;
+  if (!chartData) return <div>No hay datos disponibles</div>;
+
   return (
     <div className="w mx-5 h-4/5">
-        <Bar data={data} options={options} />
+      <Bar data={chartData} options={options} />
     </div>
-  )
-}
+  );
+};
 
-export default BarChartMobilitiesPerYear
+export default BarChartMobilitiesPerYear;

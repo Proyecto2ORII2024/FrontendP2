@@ -4,6 +4,18 @@ import PropTypes from "prop-types";
 import editIcon from "../../assets/icons/editIcon.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 
+/**
+ * AgreementTable component renders a table displaying a list of agreements with actions to edit or delete each agreement.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.setOpen - Function to set the state of the modal open for editing an agreement.
+ * @param {Function} props.setAgreementId - Function to set the ID of the agreement to be deleted.
+ * @param {Function} props.setOpenDelete - Function to set the state of the modal open for deleting an agreement.
+ * @param {Array} props.agreements - Array of agreement objects to be displayed in the table.
+ * @param {Function} props.setAgreementSelected - Function to set the selected agreement for editing.
+ *
+ * @returns {JSX.Element} The rendered AgreementTable component.
+ */
 function AgreementTable({
   setOpen,
   setAgreementId,
@@ -14,21 +26,19 @@ function AgreementTable({
   return (
     <table className="w-full text-left table-auto border-collapse md:table">
       <thead className="hidden md:table-header-group">
-        <tr className="bg-grays-dark">
-          <th className={`${styles.thIn} w-[150px]`}>Pais</th>
-          <th className={`${styles.thIn} w-[300px]`}>Institución</th>
-          <th className={`${styles.thIn} w-[200px]`}>Codigo</th>
-          <th className={`${styles.thIn} w-[350px]`}>Descripción</th>
-          <th className={`${styles.thIn} w-[200px]`}>Fecha de inicio</th>
-          <th className={`${styles.thOut} w-[250px]`}>Acciones</th>
+        <tr className="bg-neutral">
+          <th className={`${styles.th} rounded-tl-xl`}>Pais</th>
+          <th className={`${styles.th}`}>Institución</th>
+          <th className={`${styles.th}`}>Codigo</th>
+          <th className={`${styles.th}`}>Descripción</th>
+          <th className={`${styles.th}`}>Fecha de inicio</th>
+          <th className={`${styles.th} rounded-tr-xl`}>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {agreements.map((agreement, index) => (
+        {agreements.map((agreement) => (
           <tr
-            className={`${
-              index % 2 != 0 ? "md:bg-grays" : "md:bg-grays-light"
-            } flex flex-col md:table-row border-b`}
+            className={` flex flex-col md:table-row border-b`}
             key={agreement.agreementId}
           >
             <td className={styles.tdIn}>
@@ -56,6 +66,7 @@ function AgreementTable({
                 <span className="md:hidden font-bold">Acciones:</span>
                 <div className="flex md:gap-0 justify-around w-[80%]">
                   <button
+                  title="Editar convenio"
                     onClick={() => {
                       setOpen(true);
                       setAgreementSelected(agreement);
@@ -68,6 +79,7 @@ function AgreementTable({
                     />
                   </button>
                   <button
+                    title="Eliminar convenio"
                     onClick={() => {
                       setOpenDelete(true);
                       setAgreementId(agreement.agreementId.toString());

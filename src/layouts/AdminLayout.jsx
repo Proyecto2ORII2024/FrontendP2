@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
 import NavbarAdmin from "../components/navbarAdmin/NavbarAdmin";
+import InsideFooter from "../components/insideFooter/InsideFooter";
 
 function AdminLayout({ children }) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <NavbarAdmin />
-      {children}
-    </>
+      <main className="flex-grow">{children}</main>
+      <InsideFooter />
+    </div>
   );
 }
 

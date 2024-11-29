@@ -11,6 +11,7 @@ import { updateForm, getId } from "../../services/movilidad.service.js";
 import { useParams } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout.jsx";
 import { useNavigate } from "react-router-dom";
+import DataContainer from "../../components/dataContainer/DataContainer.jsx";
 
 function UpdateForm() {
     const [days, setDays] = useState(0);
@@ -142,7 +143,7 @@ function UpdateForm() {
 
     return (
         <AdminLayout>
-            <main className="flex flex-col gap-32">
+            <main className="flex flex-col">
                 <NotificationBox
                     type={notification}
                     title={notification === "success" ? "Formulario diligenciado correctamente" : "Error al actualizar el formulario"}
@@ -155,25 +156,55 @@ function UpdateForm() {
                         <p>Ha ocurrido un error al actualizar el convenio, por favor intente de nuevo</p>
                     )}
                 </NotificationBox>
-                <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-                    <section className="grid grid-cols-1 mx-8 mt-10 md:grid-cols-2 lg:grid-cols-4 md:mx-10 lg:mx-20 justify-evenly gap-x-16 gap-y-16">
+
+                <section className="flex w-full p-5 pb-0 md:items-center flex-col md:flex-row">
+                <MainButton
+                    text="Volver a Movilidades"
+                    bgColor="primary"
+                    hoverBg="primary-light"
+                    textColor="white"
+                    onClick={() => navigate("/admin/movilidad")}
+                />
+                </section>
+                <h3 className="mt-5 ml-8">
+                    <span className="font-semibold">Nota: </span>Los campos con{" "}
+                    <span className="text-xl font-semibold text-red-400">*</span> son
+                    obligatorios
+                </h3>
+                <form className="flex flex-col my-5 gap-y-5" onSubmit={handleSubmit(onSubmit)}>
+                    <DataContainer title="Datos de la persona movilizada">
+                        <CustomInput
+                            bubbleInf={Info.nombre}
+                            inputInf={inputInfo.nombre}
+                            register={register}
+                            errors={errors}
+                        />
+
+
+                        <CustomInput
+                            bubbleInf={Info.apellidos}
+                            inputInf={inputInfo.apellidos}
+                            register={register}
+                            errors={errors}
+                        />
+
                         <div>
                             <Controller
-                                name={inputInfo.sentido.id}
+                                name={inputInfo.genero.id}
                                 control={control}
                                 defaultValue=""
-                                rules={{ required: inputInfo.sentido.required }}
+                                rules={{ required: inputInfo.genero.required }}
                                 render={({ field }) => (
                                     <CustomSelect
-                                        inputInf={inputInfo.sentido}
-                                        options={inputInfo.sentido.options}
+                                        inputInf={inputInfo.genero}
+                                        options={inputInfo.genero.options}
                                         value={field.value}
                                         onChange={field.onChange}
-                                        bblInfo={Info.sentido}
+                                        bblInfo={Info.genero}
                                     />
                                 )}
                             />
-                            {errors[inputInfo.sentido.id] && (
+                            {errors[inputInfo.genero.id] && (
                                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                                     Este campo es requerido
                                 </span>
@@ -232,115 +263,77 @@ function UpdateForm() {
                             register={register}
                             errors={errors}
                         />
+                    </DataContainer>
 
-                        <CustomInput
-                            bubbleInf={Info.nombre}
-                            inputInf={inputInfo.nombre}
-                            register={register}
-                            errors={errors}
-                        />
-
-
-                        <CustomInput
-                            bubbleInf={Info.apellidos}
-                            inputInf={inputInfo.apellidos}
-                            register={register}
-                            errors={errors}
-                        />
-
+                    <DataContainer title="Información general de la movilidad">
                         <div>
                             <Controller
-                                name={inputInfo.genero.id}
+                                name={inputInfo.sentido.id}
                                 control={control}
                                 defaultValue=""
-                                rules={{ required: inputInfo.genero.required }}
+                                rules={{ required: inputInfo.sentido.required }}
                                 render={({ field }) => (
                                     <CustomSelect
-                                        inputInf={inputInfo.genero}
-                                        options={inputInfo.genero.options}
+                                        inputInf={inputInfo.sentido}
+                                        options={inputInfo.sentido.options}
                                         value={field.value}
                                         onChange={field.onChange}
-                                        bblInfo={Info.genero}
+                                        bblInfo={Info.sentido}
                                     />
                                 )}
                             />
-                            {errors[inputInfo.genero.id] && (
+                            {errors[inputInfo.sentido.id] && (
                                 <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
                                     Este campo es requerido
                                 </span>
                             )}
                         </div>
 
-                        <label className="flex flex-col w-full">
-                            <div className="flex items-center gap-2">
-                                <InfoBubble info={Info.fechaSalida} />
-                                <p>Fecha de salida</p>
-                            </div>
-                            <input
-                                id="exitDate"
-                                autoComplete="off"
-                                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                                type="date"
-                                placeholder="Fecha de salida"
-                                {...register("exitDate", {
-                                    required: true,
-                                    onChange: updateExitDate,
-                                })}
-                            />
-                            {errors.exitDate && (
-                                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                                    Este campo es requerido
-                                </span>
-                            )}
-                        </label>
-                        <label className="flex flex-col w-full">
-                            <div className="flex items-center gap-2">
-                                <InfoBubble info={Info.fechaEntrada} />
-                                <p>Fecha de entrada</p>
-                            </div>
-                            <input
-                                id="entryDate"
-                                autoComplete="off"
-                                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
-                                type="date"
-                                placeholder="Fecha de entrada"
-                                {...register("entryDate", {
-                                    required: true,
-                                    onChange: updateEntryDate,
-                                })}
-                            />
-                            {errors.entryDate && (
-                                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                                    Este campo es requerido
-                                </span>
-                            )}
-                        </label>
+                        <CustomInput
+                            bubbleInf={Info.facultad}
+                            inputInf={inputInfo.facultad}
+                            errors={errors}
+                            register={register}
+                        />
 
-                        <label className="flex flex-col w-full">
-                            <div className="flex items-center gap-2">
-                                <InfoBubble info={Info.diasEstancia} />
-                                <p>Días de estancia</p>
-                            </div>
-                            <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                                {days ? days : "Días de estancia"}
-                            </p>
-                        </label>
-                        <label className="flex flex-col w-full">
-                            <div className="flex items-center gap-2">
-                                <InfoBubble info={Info.anio} />
-                                <p>Año</p>
-                            </div>
-                            <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
-                                {new Date().getFullYear()}{" "}
-                                {/**Verificar la forma de enviarlo al backend */}
-                            </p>
-                        </label>
+                        <div>
+                            <Controller
+                                name={inputInfo.tipoEvento.id}
+                                control={control}
+                                defaultValue=""
+                                rules={{ required: inputInfo.tipoEvento.required }}
+                                render={({ field }) => (
+                                    <CustomSelect
+                                        inputInf={inputInfo.tipoEvento}
+                                        options={inputInfo.tipoEvento.options}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        bblInfo={Info.tipoEvento}
+                                    />
+                                )}
+                            />
+                            {errors[inputInfo.tipoEvento.id] && (
+                                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                                    Este campo es requerido
+                                </span>
+                            )}
+                        </div>
+                        <CustomInput
+                            bubbleInf={Info.descEvento}
+                            inputInf={inputInfo.descEvento}
+                            errors={errors}
+                            register={register}
+                        />
+                    </DataContainer>
+
+                    <DataContainer title="Detalles de la Movilidad">
                         <CustomInput
                             bubbleInf={Info.uniOrigen}
                             inputInf={inputInfo.uniOrigen}
                             errors={errors}
                             register={register}
                         />
+
                         <CustomInput
                             bubbleInf={Info.uniDestino}
                             inputInf={inputInfo.uniDestino}
@@ -348,6 +341,47 @@ function UpdateForm() {
                             register={register}
                         />
 
+                        <CustomInput
+                            bubbleInf={Info.pais}
+                            inputInf={inputInfo.pais}
+                            errors={errors}
+                            register={register}
+                        />
+
+                        <CustomInput
+                            bubbleInf={Info.ciudad}
+                            inputInf={inputInfo.ciudad}
+                            errors={errors}
+                            register={register}
+                        />
+                    </DataContainer>
+
+                    <DataContainer title="Detalles académicos">
+                        <CustomInput
+                            bubbleInf={Info.programaOrigen}
+                            inputInf={inputInfo.programaOrigen}
+                            errors={errors}
+                            register={register}
+                        />
+                        
+                        <CustomInput
+                            bubbleInf={Info.programaAcogida}
+                            inputInf={inputInfo.programaAcogida}
+                            errors={errors}
+                            register={register}
+                        />
+                        
+                        <div className={`${isStudent ? '' : 'opacity-40 -z-50'}`}>
+                            <CustomInput
+                                bubbleInf={Info.profPres}
+                                inputInf={inputInfo.profPres}
+                                errors={errors}
+                                register={register}
+                            />
+                        </div>
+                    </DataContainer>
+
+                    <DataContainer title="Convenios y patrocinios">
                         <div>
                             <Controller
                                 name={inputInfo.convenio.id}
@@ -394,87 +428,91 @@ function UpdateForm() {
                             )}
                         </div>
 
-                        <div>
-                            <Controller
-                                name={inputInfo.tipoEvento.id}
-                                control={control}
-                                defaultValue=""
-                                rules={{ required: inputInfo.tipoEvento.required }}
-                                render={({ field }) => (
-                                    <CustomSelect
-                                        inputInf={inputInfo.tipoEvento}
-                                        options={inputInfo.tipoEvento.options}
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        bblInfo={Info.tipoEvento}
-                                    />
-                                )}
-                            />
-                            {errors[inputInfo.tipoEvento.id] && (
-                                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
-                                    Este campo es requerido
-                                </span>
-                            )}
-                        </div>
-                        <CustomInput
-                            bubbleInf={Info.descEvento}
-                            inputInf={inputInfo.descEvento}
-                            errors={errors}
-                            register={register}
-                        />
-                        <CustomInput
-                            bubbleInf={Info.programaOrigen}
-                            inputInf={inputInfo.programaOrigen}
-                            errors={errors}
-                            register={register}
-                        />
-                        <CustomInput
-                            bubbleInf={Info.programaAcogida}
-                            inputInf={inputInfo.programaAcogida}
-                            errors={errors}
-                            register={register}
-                        />
-                        <CustomInput
-                            bubbleInf={Info.ciudad}
-                            inputInf={inputInfo.ciudad}
-                            errors={errors}
-                            register={register}
-                        />
-                        <CustomInput
-                            bubbleInf={Info.pais}
-                            inputInf={inputInfo.pais}
-                            errors={errors}
-                            register={register}
-                        />
-                        <div className={`${isStudent ? '' : 'opacity-40 -z-50'}`}>
-                            <CustomInput
-                                bubbleInf={Info.profPres}
-                                inputInf={inputInfo.profPres}
-                                errors={errors}
-                                register={register}
-                            />
-                        </div>
-
-                        <CustomInput
-                            bubbleInf={Info.facultad}
-                            inputInf={inputInfo.facultad}
-                            errors={errors}
-                            register={register}
-                        />
                         <CustomInput
                             bubbleInf={Info.financiacion}
                             inputInf={inputInfo.financiacion}
                             errors={errors}
                             register={register}
                         />
+                        
                         <CustomInput
                             bubbleInf={Info.fuenteFinanciacion}
                             inputInf={inputInfo.fuenteFinanciacion}
                             errors={errors}
                             register={register}
                         />
-                    </section>
-                    <div className="mx-auto my-10">
+                    </DataContainer>
+
+                    <DataContainer title="Tiempo de la estancia">
+                        <label className="flex flex-col w-full">
+                            <div className="flex items-center gap-2">
+                                <InfoBubble info={Info.fechaSalida} />
+                                <p>Fecha de salida</p>
+                            </div>
+                            <input
+                                id="exitDate"
+                                autoComplete="off"
+                                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                                type="date"
+                                placeholder="Fecha de salida"
+                                {...register("exitDate", {
+                                    required: true,
+                                    onChange: updateExitDate,
+                                })}
+                            />
+                            {errors.exitDate && (
+                                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                                    Este campo es requerido
+                                </span>
+                            )}
+                        </label>
+
+                        <label className="flex flex-col w-full">
+                            <div className="flex items-center gap-2">
+                                <InfoBubble info={Info.fechaEntrada} />
+                                <p>Fecha de entrada</p>
+                            </div>
+                            <input
+                                id="entryDate"
+                                autoComplete="off"
+                                className="py-1 border-b-2 outline-none ml-7 border-neutral-hover"
+                                type="date"
+                                placeholder="Fecha de entrada"
+                                {...register("entryDate", {
+                                    required: true,
+                                    onChange: updateEntryDate,
+                                })}
+                            />
+                            {errors.entryDate && (
+                                <span className="text-sm text-red-400 border-b-2 border-b-red-400 ml-7">
+                                    Este campo es requerido
+                                </span>
+                            )}
+                        </label>
+
+                        <label className="flex flex-col w-full">
+                            <div className="flex items-center gap-2">
+                                <InfoBubble info={Info.diasEstancia} />
+                                <p>Días de estancia</p>
+                            </div>
+                            <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
+                                {days ? days : "Días de estancia"}
+                            </p>
+                        </label>
+                        
+                        <label className="flex flex-col w-full">
+                            <div className="flex items-center gap-2">
+                                <InfoBubble info={Info.anio} />
+                                <p>Año</p>
+                            </div>
+                            <p className="py-1 border-b-2 outline-none ml-7 border-neutral-hover">
+                                {new Date().getFullYear()}{" "}
+                                {/**Verificar la forma de enviarlo al backend */}
+                            </p>
+                        </label>
+                    </DataContainer>
+                    
+                    <div className="mx-auto">
                         <MainButton
                             text={"Actualizar"}
                             bgColor={"primary-dark"}
