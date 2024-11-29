@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
 
     localStorage.removeItem("user");
+    sessionStorage.removeItem("movility");
 
     return true;
   };
