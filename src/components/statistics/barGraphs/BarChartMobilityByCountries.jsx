@@ -50,7 +50,7 @@ export const BarChartMobilityByCountries = () => {
         const response = await getStatistics.getMobilityByCountry();
 
         const data = {
-          labels: response.data.countries,
+          labels: response.data.countrys,
           datasets: [
             {
               data: response.data.mobilities,
