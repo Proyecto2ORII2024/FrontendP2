@@ -225,7 +225,9 @@ function FormPage() {
       destinationProgram: data.destinationProgram,
       city: data.city,
       country: data.country,
-      faculty: data.faculty || user.faculty,
+      faculty: data.faculty || facultad.options.find(
+        (option) => option.text === user.faculty
+      )?.value,
       funding: Number(data.funding),
       fundingSource: data.fundingSource,
       destination: data.destination,
@@ -488,7 +490,7 @@ function FormPage() {
                   </div>
                   <p className="py-1 text-left border-b-2 outline-none ml-7 border-neutral-hover">
                     {facultad.options.find(
-                      (option) => option.value === user.faculty
+                      (option) => option.text === user.faculty
                     )?.text || "No disponible"}
                   </p>
                 </label>
