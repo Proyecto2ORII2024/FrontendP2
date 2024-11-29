@@ -42,14 +42,14 @@ const StatisticsPage = () => {
             <BarChartMobilitiesPerYear />
           </div>
         </div>
-        <div className="border border-gray-100 bg-white rounded-2xl h-96 shadow hover:shadow-xl">
+        {/* <div className="border border-gray-100 bg-white rounded-2xl h-96 shadow hover:shadow-xl">
           <div className="flex justify-center mt-5">
             <h2>Movilidades por países</h2>
           </div>
           <div className="mt-5 h-full">
             <BarChartMobilityByCountries />
           </div>
-        </div>
+        </div> */}
         
       </div>
     </AdminLayout>
