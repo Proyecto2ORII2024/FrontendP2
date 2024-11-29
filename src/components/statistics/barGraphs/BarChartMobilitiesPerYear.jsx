@@ -14,6 +14,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const options = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,
@@ -54,7 +55,7 @@ export const BarChartMobilitiesPerYear = () => {
             {
               label: 'Movilidades',
               data: response.data.amountMobility.reverse(),
-              backgroundColor: "#A5DE6F",
+              backgroundColor: "#8CBB22",
               borderWidth: 1,
               barPercentage: 0.5,
             },
