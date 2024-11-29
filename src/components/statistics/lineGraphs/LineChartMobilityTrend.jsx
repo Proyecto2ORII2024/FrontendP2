@@ -25,6 +25,7 @@ ChartJS.register(
 
 const options = {
   responsive: true,
+  maintainAspectRatio: false, 
   plugins: {
     legend: {
       display: false,
@@ -70,7 +71,7 @@ export const LineChartMobilityTrend = () => {
               pointBackgroundColor: "#ffffff",
               pointBorderColor: "#9D0311",
               pointBorderWidth: 2,
-              pointRadius: 3,
+              pointRadius: 2.5,
             },
           ],
         };

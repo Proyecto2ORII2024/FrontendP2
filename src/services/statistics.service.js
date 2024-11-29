@@ -12,5 +12,8 @@ export const getStatistics = {
     },
     getMobilityByEvent: async () => {
         return await axios.get(`${url}/mobilitybyevent`);
+    },
+    getMobilityByCountry: async () => {
+        return await axios.get(`${url}/mobilitybycountry`);
     }
 };

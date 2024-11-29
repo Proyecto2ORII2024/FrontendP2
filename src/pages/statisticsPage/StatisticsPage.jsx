@@ -1,7 +1,6 @@
 import PieChartAgreements from "../../components/statistics/pieGraphs/PieChartAgreements";
 import BarChartMobility from "../../components/statistics/barGraphs/BarChartMobility";
 import LineChartMobilityTrend from "../../components/statistics/lineGraphs/LineChartMobilityTrend";
-import BarChartMobilityByDepartment from "../../components/statistics/barGraphs/BarChartMobilityByDepartment";
 import BarChartMobilityByCountries from "../../components/statistics/barGraphs/BarChartMobilityByCountries";
 import BarChartMobilitiesPerYear from "../../components/statistics/barGraphs/BarChartMobilitiesPerYear";
 import AdminLayout from "../../layouts/AdminLayout";
@@ -51,14 +50,7 @@ const StatisticsPage = () => {
             <BarChartMobilityByCountries />
           </div>
         </div>
-        <div className="border border-gray-100 bg-white rounded-2xl h-96 shadow hover:shadow-xl">
-          <div className="flex justify-center mt-5">
-            <h2>Movilidades por departamentos</h2>
-          </div>
-          <div className="mt-5 h-full">
-            <BarChartMobilityByDepartment />
-          </div>
-        </div>
+        
       </div>
     </AdminLayout>
   );

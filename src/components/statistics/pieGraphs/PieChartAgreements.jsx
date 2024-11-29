@@ -16,12 +16,12 @@ const PieChartAgreements = () => {
         const response = await getStatistics.getMobilityByEvent();
         console.log(JSON.stringify(response.data, null, 2));
         const data = {
-          labels: response.data.agreementType, 
+          labels: response.data.agreementType,
           datasets: [
             {
-              data: response.data.totalMobilityByAgreementsType, 
-              backgroundColor: ["#1D72D3", "#0F9D58", "#F8AE15", "#9D0311", "#C1B8B8"], 
-              hoverOffset: 10, 
+              data: response.data.totalMobilityByAgreementsType,
+              backgroundColor: ["#1D72D3", "#9D0311", "#F8AE15", "#249300", "#C8C5D0"],
+              hoverOffset: 10,
             },
           ],
         };
@@ -44,18 +44,28 @@ const PieChartAgreements = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false, 
     plugins: {
       legend: {
         position: "right", 
       },
+      tooltip: {
+        enabled: true, 
+      },
+    },
+    layout: {
+      padding: 10, 
     },
   };
 
   return (
-    <div className="w ml-5 h-full">
-      <Pie data={chartData} options={options} />
+    <div className="w-full h-[calc(100%-40px)] p-5"> 
+      <div className="h-full"> 
+        <Pie data={chartData} options={options} />
+      </div>
     </div>
   );
+  
 };
 
 export default PieChartAgreements;
