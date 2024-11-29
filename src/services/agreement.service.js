@@ -35,11 +35,12 @@ export const getAgreement = async (agreementId) => {
  * - ALL: Array of all agreements.
  */
 export const obtainAgreements = async () => {
-    let agreements = await getAgreements();
-
-    console.log(agreements);
-
-    agreements = agreements.data;
+    let agreements = await getAgreements().then((response) => {
+        return response.data;
+    }).catch((error) => {
+        console.error(error);
+        return [];
+    });
 
     const agreementsData = {
         NATIONAL: [],

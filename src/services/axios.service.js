@@ -4,8 +4,6 @@ import { apiUrl } from "./env.service.js";
 
 const tokenUser = localStorage.getItem('user') || "";
 
-console.log(tokenUser)
-
 /**
  * Axios instance configured with default settings.
  * 
